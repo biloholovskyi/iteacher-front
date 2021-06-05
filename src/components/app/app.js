@@ -87,11 +87,12 @@ const App = ({loginUser, user}) => {
 
       <Switch>
         {
+          !loading &&
           routingData.map(rout => {
             return (
               <Route exact path={rout.path} key={rout.path}>
                 {
-                  !loading && user.type ? rout.components[user.type] : rout.redirect
+                  user.type ? rout.components[user.type] : rout.redirect
                 }
               </Route>
             )

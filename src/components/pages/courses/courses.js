@@ -33,7 +33,7 @@ const Courses = ({user}) => {
         <Style.Caption>
           <Style.Title>Курсы</Style.Title>
           <Style.AddCourse>
-            <Link to='/addCourses'>Библиотека курсов
+            <Link to='/new-course'>Библиотека курсов
               <img src={library} alt="icon"/>
             </Link>
           </Style.AddCourse>
