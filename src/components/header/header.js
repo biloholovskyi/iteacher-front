@@ -18,6 +18,8 @@ import ava from '../../assets/media/icon/avatar.svg';
 import burger from '../../assets/media/icon/burger.svg';
 import close from '../../assets/media/icon/close.svg';
 
+import ServerSettings from "../../service/serverSettings";
+
 export default class Header extends Component {
   constructor(props) {
     super(props);
@@ -234,6 +236,7 @@ export default class Header extends Component {
 
   render() {
     const {personalDataModal, infoModal, LogOutModal, changePassword, successChangePass, errorEmail, notification, showMobileMenu} = this.state;
+    const server = new ServerSettings();
     // навигация
     const nav = this.props.user.type === 'teacher' ? (
       <>
@@ -265,7 +268,7 @@ export default class Header extends Component {
           </NavList>
           <AvatarBlock>
             <img onClick={this.showNotificationModal} className="bell" src={bell} alt="img"/>
-            {this.props.user.type && <img onClick={this.showInfoModal} className="ava" src={this.props.user.photo ? this.props.user.photo : ava} alt="img"/>}
+            {this.props.user.type && <img onClick={this.showInfoModal} className="ava" src={this.props.user.photo ?  `${server.getApi()}${this.props.user.photo.slice(1)}` : ava} alt="img"/>}
             <img onClick={this.showMobileMenuLayout} className="burger" src={burger} alt="img"/>
           </AvatarBlock>
           {/*profile modal*/}
