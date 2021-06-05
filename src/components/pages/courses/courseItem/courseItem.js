@@ -72,7 +72,7 @@ const CourseItem = ({course}) => {
   }
 
   return (
-    <Style.CoursesItem to={'/coursePage/' + course.id} id={course.id}>
+    <Style.CoursesItem to={'/course-template/' + course.id} id={course.id}>
       <CourseCover course={course}/>
       <h4 className={`title ${!event && 'title--margin'} ${!event && course.student && 'title--student-margin'}`}>{course.name}</h4>
       {

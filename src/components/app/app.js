@@ -89,7 +89,7 @@ const App = ({loginUser, user}) => {
         {
           routingData.map(rout => {
             return (
-              <Route exact path={rout.path} kay={rout.path}>
+              <Route exact path={rout.path} key={rout.path}>
                 {
                   !loading && user.type ? rout.components[user.type] : rout.redirect
                 }

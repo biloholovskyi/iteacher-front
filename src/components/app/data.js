@@ -1,7 +1,9 @@
 import {Redirect} from "react-router";
+
 import Login from "../pages/login/login";
 import Registration from "../pages/registration/registration";
 import Courses from "../pages/courses/courses";
+import CourseTemplate from "../pages/courseTemplate/courseTemplate";
 
 const routingData = [
   {
@@ -36,6 +38,18 @@ const routingData = [
     redirect: <Redirect to={'/login'}/>,
     components: {
       teacher: <Courses/>,
+      admin: <Redirect to={'/admin-panel'}/>,
+      student: <Redirect to={'/schedules'}/>,
+    }
+  },
+  {
+    path: '/course-template/:id',
+    redirect: <Redirect to={'/login'}/>,
+    components: {
+      teacher: ({match}) => {
+        const {id} = match.params
+        return <CourseTemplate courseId={id}/>
+      },
       admin: <Redirect to={'/admin-panel'}/>,
       student: <Redirect to={'/schedules'}/>,
     }
