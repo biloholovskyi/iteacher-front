@@ -24,6 +24,7 @@ class PersonalData extends Component {
   }
 
   componentDidMount() {
+    const server = new ServerSettings();
     // это не совсем понятно зачем
     setTimeout(() => {
       this.file = React.createRef();
@@ -31,7 +32,7 @@ class PersonalData extends Component {
 
     // заменяем фото пользователя
     const photo = this.props.user.photo ? this.props.user.photo : ava;
-    this.setState({imagePreviewUrl: photo})
+    this.setState({imagePreviewUrl: server.getApi() + photo.slice(1)})
   }
 
   // изминения данных пользователя

@@ -5,14 +5,15 @@ import profile from '../../assets/media/icon/profile.svg';
 import lock from '../../assets/media/icon/lock.svg';
 import unlogin from '../../assets/media/icon/unlogin.svg';
 
-//sytled
 import {PersonalData, Photo, ProfileModalWrap, Name, ChangePassword, Exit, Email} from './headerStyle';
 
+import ServerSettings from "../../service/serverSettings";
+const server = new ServerSettings();
+
 const ProfileModal = ({logOut, user, changePass, personalDataModal}) => {
-  console.log(user);
   return(
     <ProfileModalWrap className={'infoModal'}>
-      <Photo className="ava" src={user.photo ? user.photo : ava} alt="img"/>
+      <Photo className="ava" src={user.photo ? `${server.getApi()}${user.photo.slice(1)}` : ava} alt="img"/>
       <Name>{user.name}</Name>
       <Email>{user.email}</Email>
       <div className="btnSection">
