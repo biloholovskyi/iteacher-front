@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import {Redirect, Route, Switch} from "react-router";
+import {Route, Switch} from "react-router";
 import {connect} from "react-redux";
 import axios from "axios";
 
@@ -14,20 +14,22 @@ import {
   getAllTasks
 } from "../../actions";
 
-import Login from "../pages/login/login";
-import Registration from "../pages/registration/registration";
-import Courses from "../pages/courses/courses";
+import Header from "../header/header";
 
 import ServerSettings from "../../service/serverSettings";
+// данные для роутинга
+import {routingData} from "./data";
 
 const App = ({loginUser, user}) => {
   // проверяем загруженны ли данные пользователя
   const [loading, setLoading] = useState(true)
+  // нужно для того что бы понять мы на странице админки или нет
+  const [isAdmin, setIsAdmin] = useState(false)
 
   useEffect(() => {
     // проверяем есть ли токен
     checkToken().then(() => {
-      console.log(user)
+      console.log('token')
     })
   }, [loading])
 
@@ -65,34 +67,36 @@ const App = ({loginUser, user}) => {
     }
   }
 
+  // определяем на странице админки мы или нет
+  useEffect(() => {
+    if (window.location.pathname.split('/')[1] === 'admin-panel' && user.type === 'admin') {
+      setIsAdmin(true)
+    } else {
+      setIsAdmin(false)
+    }
+  }, [loading, user]);
+
   return (
     <>
+      {/*шапка*/}
+      {isAdmin
+        // ? <AdminHeader type="coursesList"/>
+        ? null
+        : <Header user={user}/>
+      }
+
       <Switch>
-        <Route path='/' exact>
-          {
-            loading
-              ? null
-              : <Redirect to='/login'/>
-          }
-        </Route>
-
-        <Route path='/login' exact>
-          {
-            !loading && <Login/>
-          }
-        </Route>
-
-        <Route path='/registration' exact>
-          {
-            !loading && <Registration/>
-          }
-        </Route>
-
-        <Route path='/courses' exact>
-          {
-            !loading && <Courses/>
-          }
-        </Route>
+        {
+          routingData.map(rout => {
+            return (
+              <Route exact path={rout.path} kay={rout.path}>
+                {
+                  !loading && user.type ? rout.components[user.type] : rout.redirect
+                }
+              </Route>
+            )
+          })
+        }
       </Switch>
     </>
   )
