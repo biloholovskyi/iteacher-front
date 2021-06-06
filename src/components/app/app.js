@@ -15,16 +15,18 @@ import {
 } from "../../actions";
 
 import Header from "../header/header";
+import TopAlertLine from "../alerts/topAlertLine/topAlertLine";
 
 import ServerSettings from "../../service/serverSettings";
 // данные для роутинга
 import {routingData} from "./data";
 
-const App = ({loginUser, user}) => {
+const App = ({loginUser, user, topAlert}) => {
   // проверяем загруженны ли данные пользователя
   const [loading, setLoading] = useState(true)
   // нужно для того что бы понять мы на странице админки или нет
   const [isAdmin, setIsAdmin] = useState(false)
+  const [topAlertMessage, setTopAlert] = useState(false)
 
   useEffect(() => {
     // проверяем есть ли токен
@@ -32,6 +34,12 @@ const App = ({loginUser, user}) => {
       console.log('token')
     })
   }, [loading])
+
+  // задаем статуст top alert
+  useEffect(() => {
+    setTopAlert(topAlert)
+  }, [topAlert]);
+
 
   // проверяем наличие токена пользователя
   const checkToken = async () => {
@@ -78,6 +86,12 @@ const App = ({loginUser, user}) => {
 
   return (
     <>
+      {/*alert message*/}
+      {
+        topAlertMessage && <TopAlertLine text={topAlertMessage}/>
+      }
+      {/*alert message*/}
+
       {/*шапка*/}
       {isAdmin
         // ? <AdminHeader type="coursesList"/>
