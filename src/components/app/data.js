@@ -12,6 +12,8 @@ import Students from "../pages/students/students";
 import Schedules from "../pages/shedules/shedules";
 import CalendarSchedule from "../pages/calendarSchedule/calendarSchedule";
 import SingleLesson from "../pages/singleLesson/singleLesson";
+import Dictionary from "../pages/dictionary/dictionary";
+import HomeWork from "../pages/homeWork/homeWork";
 
 const mainPagesTypeUser = {
   teacher: {redirect: <Redirect to={'/courses'}/>, component: <Courses/>},
@@ -147,6 +149,24 @@ const routingData = [
         const {id} = match.params
         return <SingleLesson id={id}/>
       },
+    }
+  },
+  {
+    path: '/dictionary',
+    redirect: <Redirect to={'/login'}/>,
+    components: {
+      teacher: mainPagesTypeUser.teacher.redirect,
+      admin: mainPagesTypeUser.admin.redirect,
+      student: <Dictionary/>
+    }
+  },
+  {
+    path: '/homework',
+    redirect: <Redirect to={'/login'}/>,
+    components: {
+      teacher: mainPagesTypeUser.teacher.redirect,
+      admin: mainPagesTypeUser.admin.redirect,
+      student: <HomeWork/>
     }
   },
 ]
