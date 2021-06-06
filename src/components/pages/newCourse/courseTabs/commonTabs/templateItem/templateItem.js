@@ -9,7 +9,7 @@ export default class TemplateItem extends Component {
     const {course} = this.props;
     return (
       <TemplateItemWrap>
-        <Link to={`/SingleCourses/${course.id}`}>
+        <Link to={`/single-course/${course.id}`}>
           <BgWrap bg={course.background}>
             <div className="firstLeter">{course.name.substr(0, 1)}</div>
             <h3 className={'first'}>{course.name}</h3>

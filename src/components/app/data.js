@@ -5,6 +5,7 @@ import Registration from "../pages/registration/registration";
 import Courses from "../pages/courses/courses";
 import CourseTemplate from "../pages/courseTemplate/courseTemplate";
 import NewCourse from "../pages/newCourse/newCourse";
+import SingleCourse from "../pages/singleCourse/singleCourse";
 
 const routingData = [
   {
@@ -44,7 +45,7 @@ const routingData = [
     }
   },
   {
-    path: '/course-template/:id',
+    path: '/course/:id',
     redirect: <Redirect to={'/login'}/>,
     components: {
       teacher: ({match}) => {
@@ -60,6 +61,18 @@ const routingData = [
     redirect: <Redirect to={'/login'}/>,
     components: {
       teacher: <NewCourse/>,
+      admin: <Redirect to={'/admin-panel'}/>,
+      student: <Redirect to={'/schedules'}/>,
+    }
+  },
+  {
+    path: '/single-course/:id',
+    redirect: <Redirect to={'/login'}/>,
+    components: {
+      teacher: ({match}) => {
+        const {id} = match.params
+        return <SingleCourse courseId={id}/>
+      },
       admin: <Redirect to={'/admin-panel'}/>,
       student: <Redirect to={'/schedules'}/>,
     }
