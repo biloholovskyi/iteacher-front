@@ -14,11 +14,12 @@ import CalendarSchedule from "../pages/calendarSchedule/calendarSchedule";
 import SingleLesson from "../pages/singleLesson/singleLesson";
 import Dictionary from "../pages/dictionary/dictionary";
 import HomeWork from "../pages/homeWork/homeWork";
+import AdminCoursesList from "../pages/adminCoursesList/adminCoursesList";
 
 const mainPagesTypeUser = {
   teacher: {redirect: <Redirect to={'/courses'}/>, component: <Courses/>},
   student: {redirect: <Redirect to={'/schedule'}/>, component: <Schedules/>},
-  admin: {redirect: <Redirect to={'/admin-panel'}/>, component: <Courses/>}
+  admin: {redirect: <Redirect to={'/admin-panel/templates'}/>, component: <AdminCoursesList/>}
 }
 
 const routingData = [
@@ -167,6 +168,15 @@ const routingData = [
       teacher: mainPagesTypeUser.teacher.redirect,
       admin: mainPagesTypeUser.admin.redirect,
       student: <HomeWork/>
+    }
+  },
+  {
+    path: '/admin-panel/templates',
+    redirect: <Redirect to={'/login'}/>,
+    components: {
+      teacher: mainPagesTypeUser.teacher.redirect,
+      admin: mainPagesTypeUser.admin.component,
+      student: mainPagesTypeUser.student.redirect
     }
   },
 ]
