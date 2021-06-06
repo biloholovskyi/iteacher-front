@@ -30,13 +30,13 @@ export default class Calendar extends Component {
   get day() {
     return this.state.date.getDate();
   }
-  // change prev month in CalendarSchedule
+  // change prev month in calendarSchedule
   handlePrevMonthButtonClick = () => {
     const date = new Date(this.year, this.month - 1);
 
     this.setState({ date });
   };
-// change next month in CalendarSchedule
+// change next month in calendarSchedule
   handleNextMonthButtonClick = () => {
     const date = new Date(this.year, this.month + 1);
 

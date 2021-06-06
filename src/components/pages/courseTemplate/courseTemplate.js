@@ -343,7 +343,7 @@ class CourseTemplate extends Component {
               />
               : null
           }
-          {/*add modal CalendarSchedule*/}
+          {/*add modal calendarSchedule*/}
           {
             this.state.calendar
             && (

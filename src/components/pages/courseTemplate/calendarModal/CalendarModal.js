@@ -21,7 +21,7 @@ export default class CalendarModal extends Component {
     }
   }
 
-  // show CalendarSchedule
+  // show calendarSchedule
   showCalendar() {
     this.setState({showCalendar: !this.state.showCalendar})
   }

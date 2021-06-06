@@ -10,6 +10,7 @@ import Resources from "../pages/resourses/resourses";
 import Article from "../pages/article/article";
 import Students from "../pages/students/students";
 import Schedules from "../pages/shedules/shedules";
+import CalendarSchedule from "../pages/calendarSchedule/calendarSchedule";
 
 const routingData = [
   {
@@ -115,6 +116,15 @@ const routingData = [
       teacher: <Schedules/>,
       admin: <Redirect to={'/admin-panel'}/>,
       student: <Redirect to={'/schedules'}/>
+    }
+  },
+  {
+    path: '/schedule',
+    redirect: <Redirect to={'/login'}/>,
+    components: {
+      teacher: <CalendarSchedule/>,
+      admin: <Redirect to={'/admin-panel'}/>,
+      student: <Schedules/>
     }
   },
 ]
