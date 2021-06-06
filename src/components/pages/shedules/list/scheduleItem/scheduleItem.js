@@ -166,8 +166,6 @@ const ScheduleItem = ({done, event, course, type}) => {
               )
             }
 
-
-
             {
               done && (
                 <td className="right">

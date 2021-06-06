@@ -13,41 +13,47 @@ import Schedules from "../pages/shedules/shedules";
 import CalendarSchedule from "../pages/calendarSchedule/calendarSchedule";
 import SingleLesson from "../pages/singleLesson/singleLesson";
 
+const mainPagesTypeUser = {
+  teacher: {redirect: <Redirect to={'/courses'}/>, component: <Courses/>},
+  student: {redirect: <Redirect to={'/schedule'}/>, component: <Schedules/>},
+  admin: {redirect: <Redirect to={'/admin-panel'}/>, component: <Courses/>}
+}
+
 const routingData = [
   {
     path: '/',
     redirect: <Redirect to={'/login'}/>,
     components: {
-      teacher: <Redirect to={'/courses'}/>,
-      admin: <Redirect to={'/admin-panel'}/>,
-      student: <Redirect to={'/schedules'}/>,
+      teacher: mainPagesTypeUser.teacher.redirect,
+      admin: mainPagesTypeUser.admin.redirect,
+      student: mainPagesTypeUser.student.redirect
     }
   },
   {
     path: '/login',
     redirect: <Login/>,
     components: {
-      teacher: <Redirect to={'/courses'}/>,
-      admin: <Redirect to={'/admin-panel'}/>,
-      student: <Redirect to={'/schedules'}/>,
+      teacher: mainPagesTypeUser.teacher.redirect,
+      admin: mainPagesTypeUser.admin.redirect,
+      student: mainPagesTypeUser.student.redirect
     }
   },
   {
     path: '/registration',
     redirect: <Registration/>,
     components: {
-      teacher: <Redirect to={'/courses'}/>,
-      admin: <Redirect to={'/admin-panel'}/>,
-      student: <Redirect to={'/schedules'}/>,
+      teacher: mainPagesTypeUser.teacher.redirect,
+      admin: mainPagesTypeUser.admin.redirect,
+      student: mainPagesTypeUser.student.redirect
     }
   },
   {
     path: '/courses',
     redirect: <Redirect to={'/login'}/>,
     components: {
-      teacher: <Courses/>,
-      admin: <Redirect to={'/admin-panel'}/>,
-      student: <Redirect to={'/schedules'}/>,
+      teacher: mainPagesTypeUser.teacher.component,
+      admin: mainPagesTypeUser.admin.redirect,
+      student: mainPagesTypeUser.student.redirect
     }
   },
   {
@@ -58,8 +64,8 @@ const routingData = [
         const {id} = match.params
         return <CourseTemplate courseId={id}/>
       },
-      admin: <Redirect to={'/admin-panel'}/>,
-      student: <Redirect to={'/schedules'}/>,
+      admin: mainPagesTypeUser.admin.redirect,
+      student: mainPagesTypeUser.student.redirect
     }
   },
   {
@@ -67,8 +73,8 @@ const routingData = [
     redirect: <Redirect to={'/login'}/>,
     components: {
       teacher: <NewCourse/>,
-      admin: <Redirect to={'/admin-panel'}/>,
-      student: <Redirect to={'/schedules'}/>,
+      admin: mainPagesTypeUser.admin.redirect,
+      student: mainPagesTypeUser.student.redirect
     }
   },
   {
@@ -79,8 +85,8 @@ const routingData = [
         const {id} = match.params
         return <SingleCourse courseId={id}/>
       },
-      admin: <Redirect to={'/admin-panel'}/>,
-      student: <Redirect to={'/schedules'}/>,
+      admin: mainPagesTypeUser.admin.redirect,
+      student: mainPagesTypeUser.student.redirect
     }
   },
   {
@@ -88,8 +94,8 @@ const routingData = [
     redirect: <Redirect to={'/login'}/>,
     components: {
       teacher: <Resources/>,
-      admin: <Redirect to={'/admin-panel'}/>,
-      student: <Redirect to={'/schedules'}/>,
+      admin: mainPagesTypeUser.admin.redirect,
+      student: <Resources/>
     }
   },
   {
@@ -106,8 +112,8 @@ const routingData = [
     redirect: <Redirect to={'/login'}/>,
     components: {
       teacher: <Students/>,
-      admin: <Redirect to={'/admin-panel'}/>,
-      student: <Redirect to={'/schedules'}/>
+      admin: mainPagesTypeUser.admin.redirect,
+      student: mainPagesTypeUser.student.redirect
     }
   },
   {
@@ -115,8 +121,8 @@ const routingData = [
     redirect: <Redirect to={'/login'}/>,
     components: {
       teacher: <Schedules/>,
-      admin: <Redirect to={'/admin-panel'}/>,
-      student: <Redirect to={'/schedules'}/>
+      admin: mainPagesTypeUser.admin.redirect,
+      student: mainPagesTypeUser.student.redirect
     }
   },
   {
@@ -124,7 +130,7 @@ const routingData = [
     redirect: <Redirect to={'/login'}/>,
     components: {
       teacher: <CalendarSchedule/>,
-      admin: <Redirect to={'/admin-panel'}/>,
+      admin: mainPagesTypeUser.admin.redirect,
       student: <Schedules/>
     }
   },
@@ -136,7 +142,7 @@ const routingData = [
         const {id} = match.params
         return <SingleLesson id={id}/>
       },
-      admin: <Redirect to={'/admin-panel'}/>,
+      admin: mainPagesTypeUser.admin.redirect,
       student: ({match}) => {
         const {id} = match.params
         return <SingleLesson id={id}/>
