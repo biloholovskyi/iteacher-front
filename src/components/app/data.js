@@ -6,6 +6,8 @@ import Courses from "../pages/courses/courses";
 import CourseTemplate from "../pages/courseTemplate/courseTemplate";
 import NewCourse from "../pages/newCourse/newCourse";
 import SingleCourse from "../pages/singleCourse/singleCourse";
+import Resources from "../pages/resourses/resourses";
+import Article from "../pages/article/article";
 
 const routingData = [
   {
@@ -76,7 +78,25 @@ const routingData = [
       admin: <Redirect to={'/admin-panel'}/>,
       student: <Redirect to={'/schedules'}/>,
     }
-  }
+  },
+  {
+    path: '/resources',
+    redirect: <Redirect to={'/login'}/>,
+    components: {
+      teacher: <Resources/>,
+      admin: <Redirect to={'/admin-panel'}/>,
+      student: <Redirect to={'/schedules'}/>,
+    }
+  },
+  {
+    path: '/article',
+    redirect: <Redirect to={'/login'}/>,
+    components: {
+      teacher: <Article/>,
+      admin: <Article/>,
+      student: <Article/>,
+    }
+  },
 ]
 
 export {routingData}
