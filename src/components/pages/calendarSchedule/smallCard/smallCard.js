@@ -45,7 +45,7 @@ const SmallCard = ({events, course}) => {
           ? (
             <ActiveCard
               id={events.id}
-              onClick={() => history.push('/class_room/' + events.class_room)}
+              onClick={() => history.push('/class-room/' + events.class_room)}
             >
               <div>Урок начался</div>
               <div>Нажмите чтобы войти</div>

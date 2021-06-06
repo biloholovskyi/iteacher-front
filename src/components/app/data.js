@@ -11,6 +11,7 @@ import Article from "../pages/article/article";
 import Students from "../pages/students/students";
 import Schedules from "../pages/shedules/shedules";
 import CalendarSchedule from "../pages/calendarSchedule/calendarSchedule";
+import SingleLesson from "../pages/singleLesson/singleLesson";
 
 const routingData = [
   {
@@ -125,6 +126,21 @@ const routingData = [
       teacher: <CalendarSchedule/>,
       admin: <Redirect to={'/admin-panel'}/>,
       student: <Schedules/>
+    }
+  },
+  {
+    path: '/class-room/:id',
+    redirect: <Redirect to={'/login'}/>,
+    components: {
+      teacher: ({match}) => {
+        const {id} = match.params
+        return <SingleLesson id={id}/>
+      },
+      admin: <Redirect to={'/admin-panel'}/>,
+      student: ({match}) => {
+        const {id} = match.params
+        return <SingleLesson id={id}/>
+      },
     }
   },
 ]

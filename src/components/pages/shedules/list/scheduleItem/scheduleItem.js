@@ -101,7 +101,7 @@ const ScheduleItem = ({done, event, course, type}) => {
 
                 axios.put(`${serverSettings.getApi()}api/schedules/${event.id}/update/`, dataEvent)
                   .then(() => {
-                    history.push('/class_room/' + idClassRoom)
+                    history.push('/class-room/' + idClassRoom)
                   })
                   .catch(error => console.error(error));
               })
@@ -159,7 +159,7 @@ const ScheduleItem = ({done, event, course, type}) => {
                       text={'Войти'}
                       type={'button'}
                       classList={'schedule-start-button'}
-                      func={() => history.push('/class_room/' + event.class_room)}
+                      func={() => history.push('/class-room/' + event.class_room)}
                     />
                   </div>
                 </td>
