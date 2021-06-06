@@ -9,6 +9,7 @@ import SingleCourse from "../pages/singleCourse/singleCourse";
 import Resources from "../pages/resourses/resourses";
 import Article from "../pages/article/article";
 import Students from "../pages/students/students";
+import Schedules from "../pages/shedules/shedules";
 
 const routingData = [
   {
@@ -103,6 +104,15 @@ const routingData = [
     redirect: <Redirect to={'/login'}/>,
     components: {
       teacher: <Students/>,
+      admin: <Redirect to={'/admin-panel'}/>,
+      student: <Redirect to={'/schedules'}/>
+    }
+  },
+  {
+    path: '/schedule-old',
+    redirect: <Redirect to={'/login'}/>,
+    components: {
+      teacher: <Schedules/>,
       admin: <Redirect to={'/admin-panel'}/>,
       student: <Redirect to={'/schedules'}/>
     }
