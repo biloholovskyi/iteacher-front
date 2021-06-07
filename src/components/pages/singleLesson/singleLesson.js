@@ -213,15 +213,19 @@ class SingleLesson extends Component {
 
   // создание websocket
   createWebsocket = () => {
-    const server = new ServerSettings();
+    // const server = new ServerSettings();
     // нужно будет указать более правильный путь
     this.chatSocket = new WebSocket(
       'ws://'
-      + window.location.host
+      + '5.181.108.174:8000'
       + '/ws/chat/'
       + 'test'
       + '/'
     );
+
+    this.chatSocket.onopen = () => {
+      console.log('open');
+    }
 
 
     // прослушиваем сообщения
@@ -349,22 +353,29 @@ class SingleLesson extends Component {
 
   testSocket = () => {
     const socket = this.chatSocket;
-    if(!socket.readyState){
-      setTimeout(function (){
-        socket.send(JSON.stringify({
-          'message': {
-            type: 'testonmessage',
-            message: 'test'
-          }
-        }));
-      },100);
-    } else {
+    if(socket.readyState === 1){
       socket.send(JSON.stringify({
         'message': {
           type: 'testonmessage',
           message: 'test'
         }
       }));
+    } else {
+      console.log('no send')
+      this.chatSocket = new WebSocket(
+        'ws://'
+        + window.location.host
+        + '/ws/chat/'
+        + 'test'
+        + '/'
+      );
+
+      this.chatSocket.send(JSON.stringify({
+        'message': {
+          type: 'testonmessage',
+          message: 'test'
+        }
+      }))
     }
   }
 
