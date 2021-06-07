@@ -34,9 +34,9 @@ class SingleLesson extends Component {
   componentWillUnmount() {
     this.props.setTopAlertText(false);
 
-    clearTimeout(this.interval)
+    // clearTimeout(this.interval)
 
-    this.disconnectUser().catch(e => console.error(e))
+    // this.disconnectUser().catch(e => console.error(e))
 
     // // отключаемся от соиденения сокета
     // this.chatSocket.send(JSON.stringify({
@@ -49,17 +49,17 @@ class SingleLesson extends Component {
     //   }
     // }));
     //
-    // this.chatSocket.close();
+    this.chatSocket.close();
   }
 
   componentDidMount() {
     this.setData();
 
-    this.interval = setInterval(() => {
-      this.alternateWS().catch(error => console.error(error))
-    }, 3000)
+    // this.interval = setInterval(() => {
+    //   this.alternateWS().catch(error => console.error(error))
+    // }, 3000)
 
-    // this.createWebsocket();
+    this.createWebsocket();
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -73,7 +73,7 @@ class SingleLesson extends Component {
       //   this.setState({waitStudentModal: true})
       // }
 
-      // // отправляем запрос на подключение к сокету
+      // отправляем запрос на подключение к сокету
       // this.chatSocket.send(JSON.stringify({
       //   'message': {
       //     type: 'connect',
@@ -213,6 +213,7 @@ class SingleLesson extends Component {
 
   // создание websocket
   createWebsocket = () => {
+    const server = new ServerSettings();
     // нужно будет указать более правильный путь
     this.chatSocket = new WebSocket(
       'ws://'
@@ -222,12 +223,16 @@ class SingleLesson extends Component {
       + '/'
     );
 
+
     // прослушиваем сообщения
     this.chatSocket.onmessage = (e) => {
       const data = JSON.parse(e.data);
 
       // получаем тип сообщения
       switch (data.message.type) {
+        case 'testonmessage':
+          console.log(data.message);
+          break
         case 'connect':
           // проверяем чьи данные пришли
           if (parseInt(data.message.user.id) === parseInt(this.props.user.id)) {
@@ -316,26 +321,53 @@ class SingleLesson extends Component {
       }
     };
 
+    this.chatSocket.onopen = () => {
+      console.log('open');
+    }
+
     // если user уже есть
     if (this.props.user.type) {
-      this.chatSocket.onopen = () => {
-        // отправляем запрос на подключение к сокету
-        this.chatSocket.send(JSON.stringify({
-          'message': {
-            type: 'connect',
-            user: {
-              type: this.props.user.type,
-              id: this.props.user.id
-            }
-          }
-        }));
-      }
+      // this.chatSocket.onopen = () => {
+      //   // отправляем запрос на подключение к сокету
+      //   this.chatSocket.send(JSON.stringify({
+      //     'message': {
+      //       type: 'connect',
+      //       user: {
+      //         type: this.props.user.type,
+      //         id: this.props.user.id
+      //       }
+      //     }
+      //   }));
+      // }
     }
 
     // при разрыве соиденения
     this.chatSocket.onclose = function (e) {
       console.error('Chat socket closed unexpectedly');
     };
+  }
+
+  testSocket = () => {
+    console.log('test')
+    const socket = this.chatSocket;
+    if(!socket.readyState){
+      console.log('her')
+      setTimeout(function (){
+        socket.send(JSON.stringify({
+          'message': {
+            type: 'testonmessage',
+            message: 'test'
+          }
+        }));
+      },100);
+    } else {
+      socket.send(JSON.stringify({
+        'message': {
+          type: 'testonmessage',
+          message: 'test'
+        }
+      }));
+    }
   }
 
   // устанавливаем данные урока
@@ -418,14 +450,14 @@ class SingleLesson extends Component {
 
                     <LeftSideBar data={data.lesson} activeSection={this.state.activeSection}/>
 
-                    <MainContent
-                      activeSection={this.state.activeSection}
-                      tasks={data.lesson}
-                      wsUpdate={this.wsUpdateTask}
-                      nextSection={this.changeActiveSection}
-                    />
+                    {/*<MainContent*/}
+                    {/*  activeSection={this.state.activeSection}*/}
+                    {/*  tasks={data.lesson}*/}
+                    {/*  wsUpdate={this.wsUpdateTask}*/}
+                    {/*  nextSection={this.changeActiveSection}*/}
+                    {/*/>*/}
 
-                    <ChatSection/>
+                    <ChatSection test={this.testSocket}/>
 
                   </LessonBody>
                 </div>
