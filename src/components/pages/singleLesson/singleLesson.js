@@ -348,10 +348,8 @@ class SingleLesson extends Component {
   }
 
   testSocket = () => {
-    console.log('test')
     const socket = this.chatSocket;
     if(!socket.readyState){
-      console.log('her')
       setTimeout(function (){
         socket.send(JSON.stringify({
           'message': {
