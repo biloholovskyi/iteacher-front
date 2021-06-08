@@ -1,5 +1,12 @@
 .idea
 node_modules/
 
+# testing
+/coverage
+
+# production
+/build
+
 *.zip
 *.rar
+package-lock.json
