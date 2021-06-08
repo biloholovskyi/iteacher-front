@@ -16,6 +16,7 @@ import Dictionary from "../pages/dictionary/dictionary";
 import HomeWork from "../pages/homeWork/homeWork";
 import AdminCoursesList from "../pages/adminCoursesList/adminCoursesList";
 import AdminResources from "../pages/resourses/adminResources/adminResources";
+import Users from "../pages/users/users";
 
 const mainPagesTypeUser = {
   teacher: {redirect: <Redirect to={'/courses'}/>, component: <Courses/>},
@@ -186,6 +187,15 @@ const routingData = [
     components: {
       teacher: mainPagesTypeUser.teacher.redirect,
       admin: <AdminResources/>,
+      student: mainPagesTypeUser.student.redirect
+    }
+  },
+  {
+    path: '/admin-panel/users',
+    redirect: <Redirect to={'/login'}/>,
+    components: {
+      teacher: mainPagesTypeUser.teacher.redirect,
+      admin: <Users/>,
       student: mainPagesTypeUser.student.redirect
     }
   },
