@@ -15,6 +15,7 @@ import {
 } from "../../actions";
 
 import Header from "../header/header";
+import AdminHeader from "../header/adminHeader/adminHeader";
 import TopAlertLine from "../alerts/topAlertLine/topAlertLine";
 
 import ServerSettings from "../../service/serverSettings";
@@ -94,8 +95,7 @@ const App = ({loginUser, user, topAlert}) => {
 
       {/*шапка*/}
       {isAdmin
-        // ? <AdminHeader type="coursesList"/>
-        ? null
+        ? <AdminHeader type="coursesList"/>
         : <Header user={user}/>
       }
 
