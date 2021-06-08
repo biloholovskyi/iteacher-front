@@ -18,10 +18,9 @@ const server = new ServerSettings()
 
 // навигация
 const linksArr = [
-  ['Пользователи', '/admin/users'],
-  ['Курсы', '/admin/courses'],
-  ['Полезное', '/admin/resources'],
-  // ['Словарь',         '/']
+  ['Пользователи', '/admin-panel/users'],
+  ['Курсы', '/admin-panel/templates'],
+  ['Полезное', '/admin-panel/resources'],
 ];
 
 class HeaderMain extends React.Component {
