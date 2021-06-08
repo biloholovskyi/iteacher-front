@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 
 import Popup from '../popupContainer/popupContainer';
-import Button from '../../../button/button';
-import InputText from '../../../inputText/inputText';
+import Button from "../../buttons/button/button";
+import InputText from "../../inputs/inputsAdmin/inputText/inputText";
 
-import { PopupTitle } from '../popupContainer/popupStyled';
+import {PopupTitle} from '../popupContainer/popupStyled';
 
 export default class PopupAddPart extends Component {
 
@@ -17,18 +17,18 @@ export default class PopupAddPart extends Component {
 
   render() {
     return (
-      <Popup onClose = { this.props.close }>
+      <Popup onClose={this.props.close}>
         <PopupTitle>Создать раздел</PopupTitle>
         <InputText
-          placeholder = "Название раздела"
-          value = { this.state.name }
-          set = { ( value ) => this.setState({ name: value }) }
+          placeholder="Название раздела"
+          value={this.state.name}
+          set={(value) => this.setState({name: value})}
         />
-        
+
         <Button
-          type = "add-popup"
-          text = "Создать раздел"
-          func = { () => {
+          type="add-popup"
+          text="Создать раздел"
+          func={() => {
             this.props.func(this.state.name);
             this.props.close();
           }}

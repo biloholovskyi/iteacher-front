@@ -20,7 +20,7 @@ const ItemLesson = ({data, id, index, course, count = '1', onTouch, onEdit, onDe
   ));
 
   return (
-    <ItemLessonWrap to={`/admin/courses/${course}/lessons/${lessonData.id}`}>
+    <ItemLessonWrap to={`/admin-panel/templates/${course}/lessons/${lessonData.id}`}>
       <DragHandle/>
       <span className="item-lesson__number">#</span>
       <span className="item-lesson__count">{count}</span>
