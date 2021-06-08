@@ -13,6 +13,9 @@ import logoImg from "../../../../assets/media/icon/logo.svg";
 import burger from "../../../../assets/media/icon/burger.svg";
 import close from "../../../../assets/media/icon/close.svg";
 
+import ServerSettings from "../../../../service/serverSettings";
+const server = new ServerSettings()
+
 // навигация
 const linksArr = [
   ['Пользователи', '/admin/users'],
@@ -229,7 +232,7 @@ class HeaderMain extends React.Component {
             </Link>
           )}
         </NavList>
-        <AvatarBlock avatar={userData.photo ? userData.photo : null}>
+        <AvatarBlock avatar={userData.photo ? `${server.getApi()}${userData.photo.slice(1)}` : null}>
           <div className="bell"/>
           <div className="face" onClick={this.showInfoModal}/>
           <img onClick={this.showMobileMenuLayout} className="burger" src={burger} alt="img"/>
