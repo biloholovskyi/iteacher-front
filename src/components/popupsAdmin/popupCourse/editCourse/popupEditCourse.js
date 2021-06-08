@@ -2,9 +2,9 @@ import React from 'react';
 import { connect } from "react-redux";
 import PopupCourse from '../popupCourse';
 
-import {setTemplate, getAllTemplates} from "../../../../../actions";
+import {setTemplate, getAllTemplates} from "../../../../actions";
 import axios from "axios";
-import ServerSettings from "../../../../../service/serverSettings";
+import ServerSettings from "../../../../service/serverSettings";
 const serverSettings = new ServerSettings();
 
 const PopupEditCourse = (props) => {

@@ -2,11 +2,11 @@ import React from 'react';
 import {connect} from "react-redux";
 import PopupLesson from '../popupLesson';
 
-import {setTemplate, getAllTemplates} from "../../../../../actions";
+import {setTemplate, getAllTemplates} from "../../../../actions";
 import axios from "axios";
-import ServerSettings from "../../../../../service/serverSettings";
+import ServerSettings from "../../../../service/serverSettings";
 
-export const PopupAddLesson = (props) => {
+const PopupAddLesson = (props) => {
   // функция создания урока
   async function addLesson(data) {
     //этот кусок кода имитирует получение последнего id. на продакшене сам решишь как должно быть
@@ -35,6 +35,7 @@ export const PopupAddLesson = (props) => {
       sections: [],
       template: props.course
     }
+
     // создать новый объект шаблона с новым уроков внутри
     const newLessonList = [...props.selectTemplate.lesson, newLesson];
     const newTemplate = {

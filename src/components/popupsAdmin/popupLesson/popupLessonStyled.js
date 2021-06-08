@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import icon_arrow_down from '../../../../assets/media/icon/arrow_down_grey.svg';
+import icon_arrow_down from '../../../assets/media/icon/arrow_down_grey.svg';
 
 const PopupCourseWrap = styled.div`
 

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
 import Popup from '../popupContainer/popupContainer';
-import Button from '../../../button/button';
-import InputText from '../../../InputText/inputText';
+import Button from "../../buttons/button/button";
+import InputText from "../../inputs/inputsAdmin/inputText/inputText";
 
 import { PopupTitle } from '../popupContainer/popupStyled';
 import { PopupCourseWrap } from './popupLessonStyled';

@@ -11,7 +11,7 @@ import {
 
 const ItemCourse = ({course}) => (
   <ItemCourseWrap>
-    <Link to={`/admin/courses/${course.id}`}>
+    <Link to={`/admin-panel/templates/${course.id}`}>
       <CourseCover course={course} template/>
 
       <SpanTitle>

@@ -3,14 +3,14 @@ import {connect} from 'react-redux';
 import Dropzone from 'react-dropzone'
 
 import Popup from '../popupContainer/popupContainer';
-import Button from '../../../button/button';
+import Button from "../../buttons/button/button";
 
-import {setTemplate, getAllTemplates} from "../../../../actions";
+import {setTemplate, getAllTemplates} from "../../../actions";
 
 import {PopupTitle} from '../popupContainer/popupStyled';
 import {CoverWrap} from './popupChangeCoverStyled';
 import axios from "axios";
-import ServerSettings from "../../../../service/serverSettings";
+import ServerSettings from "../../../service/serverSettings";
 
 const PopupChangeCover = (props) => {
 
