@@ -1,4 +1,5 @@
 import React from 'react';
+import {useHistory} from "react-router";
 
 import ava from "../../../assets/media/icon/avatar.svg";
 import more from "../../../assets/media/icon/more.svg";
@@ -6,20 +7,27 @@ import lesson from '../../../assets/media/icon/lesson.svg';
 
 import * as Style from './styled'
 
-const StudentItem = ({ note, data}) => {
+import ServerSettings from "../../../service/serverSettings";
+
+const server = new ServerSettings();
+
+const StudentItem = ({note, data}) => {
+  const history = new useHistory();
+
   let nameCourse = '';
-  if(data.course) {
+  if (data.course) {
     nameCourse = data.course.name;
   }
-  return(
+  return (
     <Style.CoursesItem
       key={data.id}
       className={'courseItems'}
+      onClick={() => history.push(`/students/${data.id}`)}
     >
       <div
         className="right">
         <div className={"right__name"}>
-          <img src={data.photo ? data.photo : ava} alt="img"/>
+          <img src={data.photo ? `${server.getApi()}${data.photo.slice(1)}` : ava} alt="img"/>
           <div className="names">
             <h3>{data.name}</h3>
             <p>{data.email}</p>
@@ -35,7 +43,7 @@ const StudentItem = ({ note, data}) => {
         </Style.Lesson>
         <div className={'navSection'}>
           <div className="lesson">
-            <img className={'openNotes'} onClick={() => note(data.id)}  src={lesson} alt="icon"/>
+            <img className={'openNotes'} onClick={() => note(data.id)} src={lesson} alt="icon"/>
             <div className='number'>0</div>
           </div>
           <button

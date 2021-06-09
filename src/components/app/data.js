@@ -19,6 +19,7 @@ import AdminResources from "../../pages/resourses/adminResources/adminResources"
 import Users from "../../pages/users/users";
 import AdminCourse from "../../pages/adminCourse/adminCourse";
 import AdminLesson from "../../pages/adminLesson/adminLesson";
+import StudentCart from "../../pages/studentCart/studentCart";
 
 const mainPagesTypeUser = {
   teacher: {redirect: <Redirect to={'/courses'}/>, component: <Courses/>},
@@ -222,6 +223,18 @@ const routingData = [
         const {id, idLesson} = match.params
         return <AdminLesson lessonID={idLesson} templateID={id}/>
       },
+      student: mainPagesTypeUser.student.redirect,
+    }
+  },
+  {
+    path: '/students/:id',
+    redirect: <Redirect to={'/login'}/>,
+    components: {
+      teacher: ({match}) => {
+        const {id} = match.params
+        return <StudentCart id={id}/>
+      },
+      admin: mainPagesTypeUser.admin.redirect,
       student: mainPagesTypeUser.student.redirect,
     }
   },
