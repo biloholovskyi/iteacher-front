@@ -4,7 +4,7 @@ import Popup from '../popupContainer/popupContainer';
 import Button from "../../buttons/button/button";
 import InputPrice from "../../inputs/inputsAdmin/inputPrice/inputPrice"; //need to compare with v
 import InputText from "../../inputs/inputsAdmin/inputText/inputText"; //correct
-import SelectList from "../../pages/adminCoursesList/selectList/SelectList";
+import SelectList from "../../../pages/adminCoursesList/selectList/SelectList";
 
 import { PopupTitle } from '../popupContainer/popupStyled';
 
