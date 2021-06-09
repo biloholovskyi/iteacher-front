@@ -15,6 +15,7 @@ import {LessonHeader, LessonBody, LessonWrap} from './singleLessonStyled';
 
 import ClassRoom from "./services";
 import ServerSettings from "../../service/serverSettings";
+import {onMessage} from "./onmessage";
 
 class SingleLesson extends Component {
   constructor(props) {
@@ -31,108 +32,32 @@ class SingleLesson extends Component {
     this.interval = null;
   }
 
-  componentWillUnmount() {
-    this.props.setTopAlertText(false);
-
-    // clearTimeout(this.interval)
-
-    // this.disconnectUser().catch(e => console.error(e))
-
-    // // отключаемся от соиденения сокета
-    // this.chatSocket.send(JSON.stringify({
-    //   'message': {
-    //     type: 'disconnect',
-    //     user: {
-    //       type: this.props.user.type,
-    //       id: this.props.user.id
-    //     }
-    //   }
-    // }));
-    //
-    this.chatSocket.close();
-  }
-
   componentDidMount() {
     this.setData();
-
-    // this.interval = setInterval(() => {
-    //   this.alternateWS().catch(error => console.error(error))
-    // }, 3000)
-
     this.createWebsocket();
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (this.props.user && prevProps.user !== this.props.user) {
       this.setData();
-
-      // если преподаватель выводим сообщение о том что ученик не подключен
-      // if (this.props.user.type === 'teacher') {
-      //   this.props.setTopAlertText('Ученик еще не вошел')
-      // } else {
-      //   this.setState({waitStudentModal: true})
-      // }
-
-      // отправляем запрос на подключение к сокету
-      // this.chatSocket.send(JSON.stringify({
-      //   'message': {
-      //     type: 'connect',
-      //     user: {
-      //       type: this.props.user.type,
-      //       id: this.props.user.id
-      //     }
-      //   }
-      // }));
     }
   }
 
-  // отпправялем данные что пользователь подключен
-  connectUser = async () => {
-    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
-    axios.defaults.xsrfCookieName = 'csrftoken';
+  componentWillUnmount() {
+    this.props.setTopAlertText(false);
 
-    let newData = null;
-
-    if (this.props.user.type === 'student') {
-      newData = {
-        ...this.state.data,
-        student_connect: 'True'
+    // отключаемся от соиденения сокета
+    this.chatSocket.send(JSON.stringify({
+      'message': {
+        type: 'disconnect',
+        user: {
+          type: this.props.user.type,
+          id: this.props.user.id
+        }
       }
-    } else {
-      newData = {
-        ...this.state.data,
-        teacher_connect: 'True'
-      }
-    }
+    }));
 
-    // получаем данные урока
-    const serverSettings = new ServerSettings();
-    await axios.put(`${serverSettings.getApi()}api/classrooms/${this.state.data.id}/update/`, newData)
-      .catch(error => console.error(error));
-  }
-
-  disconnectUser = async () => {
-    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
-    axios.defaults.xsrfCookieName = 'csrftoken';
-
-    let newData = null;
-
-    if (this.props.user.type === 'student') {
-      newData = {
-        ...this.state.data,
-        student_connect: 'False'
-      }
-    } else {
-      newData = {
-        ...this.state.data,
-        teacher_connect: 'False'
-      }
-    }
-
-    // получаем данные урока
-    const serverSettings = new ServerSettings();
-    await axios.put(`${serverSettings.getApi()}api/classrooms/${this.state.data.id}/update/`, newData)
-      .catch(error => console.error(error));
+    this.chatSocket.close();
   }
 
   alternateWS = async () => {
@@ -147,23 +72,6 @@ class SingleLesson extends Component {
         if(activeSectionIndex) {
           this.setState({activeSection: activeSectionIndex})
         }
-
-        if (res.data.student_connect === 'True') {
-          this.props.setTopAlertText(false)
-        } else {
-          this.props.setTopAlertText('Ученик еще не вошел')
-        }
-
-        if (res.data.teacher_connect === 'True') {
-          this.setState({waitStudentModal: false});
-        } else {
-          this.setState({waitStudentModal: true});
-        }
-        // const test = JSON.parse(res.data.lesson).sections[0].tasks[0];
-        // console.log(JSON.parse(test.list_column))
-
-        this.setState({data: res.data})
-        // console.log(JSON.parse(res.data.lesson))
       })
       .catch(error => console.error(error));
   }
@@ -202,18 +110,21 @@ class SingleLesson extends Component {
     })
       .catch(error => console.error(error));
 
-    // // отправляем сообщение преподу что было совершенно изминения задания
-    // this.chatSocket.send(JSON.stringify({
-    //   'message': {
-    //     type: 'update_task',
-    //     data: {...this.state.data, lesson: JSON.stringify(newLesson)}
-    //   }
-    // }));
+    // отправляем сообщение преподу что было совершенно изминения задания
+    this.chatSocket.send(JSON.stringify({
+      'message': {
+        type: 'update_task',
+        data: {...this.state.data, lesson: JSON.stringify(newLesson)},
+        user: {
+          type: this.props.user.type,
+          id: this.props.user.id
+        }
+      }
+    }));
   }
 
   // создание websocket
   createWebsocket = () => {
-    // const server = new ServerSettings();
     // нужно будет указать более правильный путь
     this.chatSocket = new WebSocket(
       'ws://'
@@ -227,126 +138,35 @@ class SingleLesson extends Component {
       console.log('open');
     }
 
-
-    // прослушиваем сообщения
-    this.chatSocket.onmessage = (e) => {
-      const data = JSON.parse(e.data);
-
-      // получаем тип сообщения
-      switch (data.message.type) {
-        case 'testonmessage':
-          console.log(data.message);
-          break
-        case 'connect':
-          // проверяем чьи данные пришли
-          if (parseInt(data.message.user.id) === parseInt(this.props.user.id)) {
-            console.log('fake')
-          } else {
-            // если данные другого пользователя
-            // если подключенный пользователь преподаватель
-            if (this.props.user.type === 'teacher') {
-              // если новый пользователь ученик
-              if (data.message.user.type === 'student') {
-                // убираем уведомления о том что студент не подключен
-                this.props.setTopAlertText(false)
-              }
-            } else {
-              // если подключенный пользователь студент
-
-              // если новый пользователь преподаватель
-              if (data.message.user.type === 'teacher') {
-                // убираем уведомления о том что преподаватель не подключен
-                this.setState({waitStudentModal: false});
-              }
-
-              // отправляем сообщения для препода что ученик уже подключен
-              this.chatSocket.send(JSON.stringify({
-                'message': {
-                  type: 're_connect',
-                  user: {
-                    type: this.props.user.type,
-                    id: this.props.user.id
-                  }
-                }
-              }));
-            }
-          }
-          break
-
-        case 're_connect':
-          // проверяем от нас сообщение или нет
-          if (parseInt(data.message.user.id) === parseInt(this.props.user.id)) {
-            console.log('fake')
-          } else {
-            // если подключенный пользователь преподаватель
-            if (this.props.user.type === 'teacher') {
-              // если сообщение от ученика
-              if (data.message.user.type === 'student') {
-                // убераем оповещение о том что ученик не подключен
-                this.props.setTopAlertText(false)
-              }
-            } else {
-              // если подключенный пользователь студент
-              // если сообщение от препода
-              if (data.message.user.type === 'teacher') {
-                // убераем оповещение о том что препод не подключен
-                this.setState({waitStudentModal: false})
-              }
-            }
-          }
-          break
-
-        case 'disconnect':
-          // проверяем сообщение от нас или нет
-          if (parseInt(data.message.user.id) === parseInt(this.props.user.id)) {
-            console.log('fake')
-          } else {
-            // если подключенный пользователь преподаватель
-            if (this.props.user.type === 'teacher') {
-              // если сообщение от ученика
-              if (data.message.user.type === 'student') {
-                // добавляем оповещение о том что студент отключился
-                this.props.setTopAlertText('Ученик еще не вошел')
-              }
-            } else {
-              // если подключенный пользователь студент
-              // если данные от преподавателя
-              if (data.message.user.type === 'teacher') {
-                // добавляем оповещение что препод отключился
-                this.setState({waitStudentModal: true})
-              }
-            }
-          }
-          break
-
-        case 'update_task':
-          this.setState({data: data.message.data})
-          break
-      }
-    };
-
-    this.chatSocket.onopen = () => {
-      console.log('open');
+    const statusModalConnectTeacher = (status) => {
+      this.setState({waitStudentModal: status});
     }
 
-    // если user уже есть
-    if (this.props.user.type) {
-      // this.chatSocket.onopen = () => {
-      //   // отправляем запрос на подключение к сокету
-      //   this.chatSocket.send(JSON.stringify({
-      //     'message': {
-      //       type: 'connect',
-      //       user: {
-      //         type: this.props.user.type,
-      //         id: this.props.user.id
-      //       }
-      //     }
-      //   }));
-      // }
+    const setDataInState = (data) => {
+      this.setState({data: data.message.data})
+    }
+
+    // прослушиваем сообщения
+    this.chatSocket.onmessage = (e) => onMessage(e, this.chatSocket, this.props.user, this.props.setTopAlertText, statusModalConnectTeacher, setDataInState);
+
+    this.chatSocket.onopen = () => {
+      // если user уже есть
+      if (this.props.user.type) {
+        // отправляем запрос на подключение к сокету
+        this.chatSocket.send(JSON.stringify({
+          'message': {
+            type: 'connect',
+            user: {
+              type: this.props.user.type,
+              id: this.props.user.id
+            }
+          }
+        }));
+      }
     }
 
     // при разрыве соиденения
-    this.chatSocket.onclose = function (e) {
+    this.chatSocket.onclose = (e) => {
       console.error('Chat socket closed unexpectedly');
     };
   }
@@ -367,8 +187,6 @@ class SingleLesson extends Component {
         if (course[this.props.user.type] !== this.props.user.id) {
           this.setState({redirect: true})
         }
-
-        this.connectUser().catch(error => console.error(error));
       }
     })
   }
