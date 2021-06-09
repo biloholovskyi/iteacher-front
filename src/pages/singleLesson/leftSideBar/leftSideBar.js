@@ -11,7 +11,7 @@ const LeftSideBar = ({data, activeSection}) => {
 
       <VideoBlock/>
 
-      {/*<ListLesson data={data} activeSection={activeSection}/>*/}
+      <ListLesson data={data} activeSection={activeSection}/>
 
     </LeftSideBarWrap>
   )

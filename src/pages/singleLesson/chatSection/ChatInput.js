@@ -16,7 +16,6 @@ export default class ChatInput extends Component {
 
   // status input
   onValueChange(e) {
-    this.props.test()
     this.setState({
       text: e.target.value
     })

@@ -36,7 +36,6 @@ export default class TabChat extends Component {
          posts={this.state.data}
        />
        <ChatInput
-         test={this.props.test}
          onAdd={this.addItem}
        />
      </ChatWrap>

@@ -30,7 +30,7 @@ export class ChatSection extends Component {
         <TabBody>
           {
             this.state.tabStatus === 'chat'
-              ?   <TabChat test={this.props.test}/>
+              ?   <TabChat/>
               :   <TabNote/>
           }
         </TabBody>

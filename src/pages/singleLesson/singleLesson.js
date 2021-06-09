@@ -351,34 +351,6 @@ class SingleLesson extends Component {
     };
   }
 
-  testSocket = () => {
-    const socket = this.chatSocket;
-    if(socket.readyState === 1){
-      socket.send(JSON.stringify({
-        'message': {
-          type: 'testonmessage',
-          message: 'test'
-        }
-      }));
-    } else {
-      console.log('no send')
-      this.chatSocket = new WebSocket(
-        'ws://'
-        + window.location.host
-        + '/ws/chat/'
-        + 'test'
-        + '/'
-      );
-
-      this.chatSocket.send(JSON.stringify({
-        'message': {
-          type: 'testonmessage',
-          message: 'test'
-        }
-      }))
-    }
-  }
-
   // устанавливаем данные урока
   setData = () => {
     // проверяем есть ли урок
@@ -459,14 +431,14 @@ class SingleLesson extends Component {
 
                     <LeftSideBar data={data.lesson} activeSection={this.state.activeSection}/>
 
-                    {/*<MainContent*/}
-                    {/*  activeSection={this.state.activeSection}*/}
-                    {/*  tasks={data.lesson}*/}
-                    {/*  wsUpdate={this.wsUpdateTask}*/}
-                    {/*  nextSection={this.changeActiveSection}*/}
-                    {/*/>*/}
+                    <MainContent
+                      activeSection={this.state.activeSection}
+                      tasks={data.lesson}
+                      wsUpdate={this.wsUpdateTask}
+                      nextSection={this.changeActiveSection}
+                    />
 
-                    <ChatSection test={this.testSocket}/>
+                    <ChatSection/>
 
                   </LessonBody>
                 </div>
