@@ -1,4 +1,5 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
+import axios from "axios";
 
 import UserAvatar from "./userAvatar/userAvatar";
 import InfoBlock from "../../components/infoBlock/infoBlock";
@@ -7,11 +8,31 @@ import * as Style from './styled'
 
 import pan from './media/pan.svg'
 
-const StudentCart = () => {
+import ServerSettings from "../../service/serverSettings";
+
+const server = new ServerSettings();
+
+const StudentCart = ({id}) => {
+  const [studentData, setStudentData] = useState(null)
+
+  useEffect(() => {
+    getDataUser().catch(error => {console.error(error)});
+  }, [id])
+
+  const getDataUser = async () => {
+    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
+    axios.defaults.xsrfCookieName = 'csrftoken';
+
+    await axios.get(`${server.getApi()}api/users/${id}/`)
+      .then(res => {
+        setStudentData(res.data)
+      }).catch(error => {console.error(error)});
+  }
+
   return (
     <Style.Wrapper className={'container'}>
       <div className="left">
-        <UserAvatar/>
+        <UserAvatar data={studentData}/>
 
         <InfoBlock
           data={{
@@ -30,7 +51,7 @@ const StudentCart = () => {
               },
               {
                 name: 'Почта',
-                value: 'stasmihaylov228@gmail.com'
+                value: studentData.email
               }
             ],
             button: {

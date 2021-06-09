@@ -15,6 +15,7 @@ const Wrapper = styled.div`
     object-position: center;
     object-fit: cover;
     margin-right: 16px;
+    border-radius: 50%;
   }
   
   .name {
