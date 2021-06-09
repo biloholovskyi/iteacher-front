@@ -6,6 +6,7 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   position: relative;
+  margin-bottom: 32px;
   
   img {
     width: 76px;
