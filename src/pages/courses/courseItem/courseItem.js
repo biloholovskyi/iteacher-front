@@ -7,7 +7,6 @@ import AddButton from "../../../components/buttons/addButton/addButton";
 import * as Style from './styled';
 
 import ava from "../../../assets/media/icon/avatar.svg";
-import plus from '../../../assets/media/icon/plus-blue.svg'
 
 import ServerSettings from "../../../service/serverSettings";
 
@@ -62,7 +61,7 @@ const CourseItem = ({course}) => {
     const server = new ServerSettings();
     await axios.get(`${server.getApi()}api/users/${course.student}/`)
       .then(res => {
-        setPhoto(res.data.photo);
+        setPhoto(`${server.getApi()}${res.data.photo.slice(1)}`);
       })
       .catch(error => console.error(error))
   }
