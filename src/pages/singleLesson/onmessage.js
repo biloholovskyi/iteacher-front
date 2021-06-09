@@ -1,4 +1,4 @@
-const onMessage = (e, socket, user, setTopAlertText, teacherModalConnect, setDataInState) => {
+const onMessage = (e, socket, user, setTopAlertText, teacherModalConnect, setDataInState, setSection) => {
   const data = JSON.parse(e.data);
 
   // проверяем сообщение от нас или нет
@@ -53,6 +53,10 @@ const onMessage = (e, socket, user, setTopAlertText, teacherModalConnect, setDat
             teacherModalConnect(true)
           }
         }
+        break
+
+      case 'change_section':
+        setSection(data.message.activeSection);
         break
 
       case 'update_task':

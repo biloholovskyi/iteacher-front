@@ -26,7 +26,8 @@ const MainContent = ({tasks, wsUpdate, nextSection, activeSection}) => {
   // задаем задания
   useEffect(() => {
     if(!sections) {return}
-
+    console.log(sections);
+    console.log(activeSection);
     setTasks(sections[activeSection].tasks);
   }, [sections]);
 

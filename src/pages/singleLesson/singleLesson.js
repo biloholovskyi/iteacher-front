@@ -60,22 +60,6 @@ class SingleLesson extends Component {
     this.chatSocket.close();
   }
 
-  alternateWS = async () => {
-    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
-    axios.defaults.xsrfCookieName = 'csrftoken';
-
-    // получаем данные урока
-    const serverSettings = new ServerSettings();
-    await axios.get(`${serverSettings.getApi()}api/classrooms/${this.state.data.id}/`)
-      .then(res => {
-        const activeSectionIndex = JSON.parse(res.data.lesson).active_section
-        if(activeSectionIndex) {
-          this.setState({activeSection: activeSectionIndex})
-        }
-      })
-      .catch(error => console.error(error));
-  }
-
   // realtime заданий
   wsUpdateTask = async (data, indexSection, old, typeData) => {
     // получаем данные урока
@@ -146,8 +130,20 @@ class SingleLesson extends Component {
       this.setState({data: data.message.data})
     }
 
+    const setActiveSection = (section) => {
+      this.setState({activeSection: section})
+    }
+
     // прослушиваем сообщения
-    this.chatSocket.onmessage = (e) => onMessage(e, this.chatSocket, this.props.user, this.props.setTopAlertText, statusModalConnectTeacher, setDataInState);
+    this.chatSocket.onmessage = (e) => onMessage(
+      e,
+      this.chatSocket,
+      this.props.user,
+      this.props.setTopAlertText,
+      statusModalConnectTeacher,
+      setDataInState,
+      setActiveSection
+    );
 
     this.chatSocket.onopen = () => {
       // если user уже есть
@@ -180,7 +176,8 @@ class SingleLesson extends Component {
         this.setState({redirect: true})
       } else {
         // если урок найден
-        this.setState({loading: false, data: res.data})
+        const activeSection = JSON.parse(res.data.lesson).active_section || 0;
+        this.setState({loading: false, data: res.data, activeSection})
 
         // проверяем тот ли пользователь вошел
         const course = JSON.parse(res.data.course)
@@ -197,7 +194,9 @@ class SingleLesson extends Component {
     // получаем индекс новой активной секции
     const newSection = this.state.activeSection + 1;
     // если нету секции с таким индексом останавливаем функцию
-    if(newSection === sections.length) {return}
+    if (newSection === sections.length) {
+      return
+    }
     // задаем новую активуню секцию
     this.setState({activeSection: this.state.activeSection + 1});
 
@@ -211,9 +210,21 @@ class SingleLesson extends Component {
       active_section: newSection
     }
 
-    axios.put(`${serverSettings.getApi()}api/classrooms/${this.state.data.id}/update/`, {...this.state.data, lesson: JSON.stringify(newLesson)})
-      .then(res => {
-
+    axios.put(`${serverSettings.getApi()}api/classrooms/${this.state.data.id}/update/`, {
+      ...this.state.data,
+      lesson: JSON.stringify(newLesson)
+    })
+      .then(() => {
+        this.chatSocket.send(JSON.stringify({
+          'message': {
+            type: 'change_section',
+            activeSection: newSection,
+            user: {
+              type: this.props.user.type,
+              id: this.props.user.id
+            }
+          }
+        }));
       })
       .catch(error => console.error(error));
   }
