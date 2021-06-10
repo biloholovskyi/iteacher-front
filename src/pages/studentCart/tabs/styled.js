@@ -14,6 +14,7 @@ const TabsHead = styled.div`
     line-height: 22px;
     letter-spacing: -0.01em;
     color: #000000;
+    cursor: pointer;
     
     &:last-child {
       margin-right: 0;
@@ -23,8 +24,6 @@ const TabsHead = styled.div`
       border-bottom: 2px solid #4F7FFF;
     }
   }
-  
-  
 `
 export {
   TabsHead,
