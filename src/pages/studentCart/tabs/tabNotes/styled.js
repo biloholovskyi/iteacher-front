@@ -35,7 +35,10 @@ const NoteInfo = styled.div`
   }
   .deleteNote {
     margin-left: 8px;
-    color: red;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: -0.01em;
+    color: #DA1E28;
     cursor: pointer;
   }
   `
