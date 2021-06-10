@@ -21,7 +21,7 @@ const TabNotes = () => {
         />
         <Note
           text={'Lorem ipsum dolor sit amet, consectetur adipiscing elit'}
-          date={'Сегодня, 21:25'}
+          date={'21.05.2021, 22:33'}
         />
       </Style.NoteList>
     </Style.Wrapper>

@@ -2,9 +2,19 @@ import styled from "styled-components";
 
 const CourseWrapper = styled.div`
   padding-top: 24px;
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
 `
 
 const AddCourse = styled.div`
+  margin-right: 24px;
+  margin-bottom: 24px;
+
+  &:nth-child(4n) {
+    margin-right: 0;
+  }
+  
   .addSquare {
     display: flex;
     width: 200px;

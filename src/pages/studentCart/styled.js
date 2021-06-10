@@ -4,6 +4,8 @@ const Wrapper = styled.div`
   margin-top: 92px;
   padding-top: 32px;
   display: flex;
+  padding-right: 0;
+  padding-left: 0;
   
   .left {
     width: 420px;
