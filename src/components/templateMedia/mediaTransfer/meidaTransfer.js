@@ -62,7 +62,7 @@ const MediaTransfer = ({data, wsUpdate}) => {
       return (
         <Sentence key={uniqueKey}>
           <p>{sentence.split('[')[0]}</p>
-          <Word key={word}>{word}</Word>
+          <Word key={word} noneMargin={true}>{word}</Word>
           <p>{sentence.split('[')[1].split(']')[1]}</p>
         </Sentence>
       )
@@ -70,12 +70,11 @@ const MediaTransfer = ({data, wsUpdate}) => {
       return (
         <Sentence key={uniqueKey}>
           <p>{sentence.split('[')[0]}</p>
-          <Style.EmptyItem onClick={() => setEmptyWord(sentence)}/>
+          <Style.EmptyItem noneMargin={true} onClick={() => setEmptyWord(sentence)}/>
           <p>{sentence.split('[')[1].split(']')[1]}</p>
         </Sentence>
       )
     }
-
   })
 
   return (

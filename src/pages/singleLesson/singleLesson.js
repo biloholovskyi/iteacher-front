@@ -243,7 +243,6 @@ class SingleLesson extends Component {
           !loading && (
             <>
               <LessonHeader>
-
                 <div className="titleBlock">{data.name}</div>
 
                 <MainButton
@@ -251,7 +250,6 @@ class SingleLesson extends Component {
                   type={'button'}
                   width={197}
                 />
-
               </LessonHeader>
 
               <LessonWrap>

@@ -4,6 +4,7 @@ const Columns = styled.div`
   display: flex;
   width: 100%;
   justify-content: space-between;
+  margin-top: 16px;
 `
 
 const Column = styled.div`

@@ -159,6 +159,8 @@ const LeftSideBarWrap = styled.div`
   align-items: center;
   flex-direction: column;
   margin-right: 24px;
+  width: 318px;
+  min-width: 318px;
 `
 
 export {

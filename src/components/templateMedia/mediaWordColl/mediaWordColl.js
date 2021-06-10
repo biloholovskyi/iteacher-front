@@ -53,7 +53,7 @@ const MediaWordColl = ({data, wsUpdate}) => {
   let words = [];
   let columnsRender = listData.map((col, key) => {
     const setList = col.setList.map(wordItem => {
-      return <Word key={makeRandomArr()}>{wordItem}</Word>
+      return <Word key={makeRandomArr()}>{wordItem.split(',')[0]}</Word>
     })
 
     return (
@@ -65,6 +65,7 @@ const MediaWordColl = ({data, wsUpdate}) => {
       </Style.Column>
     )
   });
+
   listData.forEach(col => {
     col.words.forEach(word => {
       words.push(<Word key={makeRandomArr()} onClick={() => switchActive(word, col)}>{word.split(',')[0]}</Word>)

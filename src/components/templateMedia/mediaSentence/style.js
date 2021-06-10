@@ -2,9 +2,11 @@ import styled from "styled-components";
 
 const EmptyBlock = styled.div`
   display: ${props => props.sentence ? 'block' : 'flex'};
+  margin-top: ${props => props.sentence || props.mt ? '16px' : '0'};
   align-items: center;
   justify-content: flex-start;
   width: 100%;
+  flex-wrap: wrap;
 `
 
 const EmptyItem = styled.div`
@@ -13,7 +15,9 @@ const EmptyItem = styled.div`
   background: #FFFFFF;
   border: 1px solid #DDE1E6;
   border-radius: 100px;
-  margin-right: 14px;
+  margin-right: ${props => props.noneMargin ? '0' : '16px'};
+  margin-bottom: ${props => props.noneMargin ? '0' : '16px'};
+  
   &:last-child {margin-right: 0;}
 `
 

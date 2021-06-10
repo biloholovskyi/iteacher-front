@@ -17,7 +17,8 @@ const WordsSection = styled.div`
   padding: 16px 16px 0 16px;
   display: flex;
   align-items: flex-start;
-  margin-bottom: 16px;
+  flex-wrap: wrap;
+  //margin-bottom: 16px;
 `
 
 const Word = styled.div`
@@ -31,10 +32,10 @@ const Word = styled.div`
   background: #DDE1E6;
   border: 1px solid #DDE1E6;
   border-radius: 100px;
-  margin-right: 14px;
+  margin-right: ${props => props.noneMargin ? '0' : '14px'};
   cursor:pointer;
   height: max-content;
-  margin-bottom: 16px;
+  margin-bottom: ${props => props.noneMargin ? '0' : '16px'};
 `
 
 const SentenceSection = styled.div`

@@ -74,7 +74,7 @@ const MediaSentence = ({data, wsUpdate}) => {
         {wordsRender}
       </WordsSection>
 
-      <Style.EmptyBlock>
+      <Style.EmptyBlock mt>
         {emptyBlock}
       </Style.EmptyBlock>
     </DragWordsWrap>
