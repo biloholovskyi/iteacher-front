@@ -4,7 +4,7 @@ import NotificationSingle from './NotificationSingle';
 
 //styled
 import {NotificationWrap} from './NotificationStyled';
-//icons
+//media
 import close from '../../../assets/media/icon/close.svg';
 
 class NotificationModal extends Component  {

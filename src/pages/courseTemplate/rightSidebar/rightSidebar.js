@@ -25,7 +25,7 @@ const RightSidebar = ({course, showAddStudent, showAddEvent}) => {
       {/*  course.status === 'created' || !course.student ?*/}
       {/*    this.state.success ? (*/}
       {/*      <RightAsideWrap>*/}
-      {/*        <div className={'icons'}>*/}
+      {/*        <div className={'media'}>*/}
       {/*          <div><img src={ok} alt="icon"/></div>*/}
       {/*        </div>*/}
       {/*        <div className="stepBlock">*/}
@@ -41,7 +41,7 @@ const RightSidebar = ({course, showAddStudent, showAddEvent}) => {
       {/*      </RightAsideWrap>*/}
       {/*    ) : this.state.step ? (*/}
       {/*      <RightAsideWrap>*/}
-      {/*        <div className={'icons'}><p>👩</p></div>*/}
+      {/*        <div className={'media'}><p>👩</p></div>*/}
       {/*        <div className="stepBlock">*/}
       {/*          <div className={'step'}>1</div>*/}
       {/*          <div className={'split'}>/</div>*/}
@@ -56,7 +56,7 @@ const RightSidebar = ({course, showAddStudent, showAddEvent}) => {
       {/*      </RightAsideWrap>*/}
       {/*    ) : this.state.stepTwo ? (*/}
       {/*      <RightAsideWrap>*/}
-      {/*        <div className={'icons'}><p>🗓️</p></div>*/}
+      {/*        <div className={'media'}><p>🗓️</p></div>*/}
       {/*        <div className="stepBlock">*/}
       {/*          <div className={'step'}>2</div>*/}
       {/*          <div className={'split'}>/</div>*/}
@@ -71,7 +71,7 @@ const RightSidebar = ({course, showAddStudent, showAddEvent}) => {
       {/*      </RightAsideWrap>*/}
       {/*    ) : this.state.stepThree ? (*/}
       {/*      <RightAsideWrap>*/}
-      {/*        <div className={'icons'}><p>🏁</p></div>*/}
+      {/*        <div className={'media'}><p>🏁</p></div>*/}
       {/*        <div className="stepBlock">*/}
       {/*          <div className={'step'}>3</div>*/}
       {/*          <div className={'split'}>/</div>*/}

@@ -6,7 +6,7 @@ import InputEmail from './personalDateModal/inputEmail';
 import InputDay from './personalDateModal/inputDay';
 import InputMonth from './personalDateModal/inputMonth';
 import InputYear from './personalDateModal/inputYear';
-//styled and icons
+//styled and media
 import close from '../../assets/media/icon/close.svg';
 import {PersonalDataWrap, PersonalDataBody, Form,DeleteBtn, ChangeBtn, SaveChange} from './personalDataStyled';
 import ava from '../../assets/media/icon/avatar.svg';

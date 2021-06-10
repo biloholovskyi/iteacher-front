@@ -37,6 +37,7 @@ const MainInfo = ({data}) => {
       <MainInput
         type={'email'}
         label={'Почта'}
+        defaultValue={data.email}
       />
 
       <Style.Line/>

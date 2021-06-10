@@ -190,7 +190,7 @@ export default class TextModal extends Component {
               options: ['inline', 'image', 'link', 'list',],
               inline: {
                 inDropdown: false,
-                className: 'icons icon_font',
+                className: 'media icon_font',
                 component: undefined,
                 dropdownClassName: undefined,
                 options: ['bold', 'italic', 'underline'],
@@ -200,7 +200,7 @@ export default class TextModal extends Component {
               },
               list: {
                 inDropdown: false,
-                className: 'icons icon_list',
+                className: 'media icon_list',
                 component: undefined,
                 dropdownClassName: undefined,
                 options: ['unordered', 'ordered'],
@@ -209,7 +209,7 @@ export default class TextModal extends Component {
               },
               // textAlign: {
               //   inDropdown: false,
-              //   className: 'icons icon_text',
+              //   className: 'media icon_text',
               //   component: undefined,
               //   dropdownClassName: undefined,
               //   options: ['left', 'center', 'right'],
@@ -220,7 +220,7 @@ export default class TextModal extends Component {
               // },
               link: {
                 inDropdown: false,
-                className: 'icons icon_link',
+                className: 'media icon_link',
                 component: undefined,
                 popupClassName: undefined,
                 dropdownClassName: undefined,
@@ -233,7 +233,7 @@ export default class TextModal extends Component {
               },
               image: {
                 icon: image,
-                className: 'icons',
+                className: 'media',
                 component: undefined,
                 popupClassName: undefined,
                 urlEnabled: true,

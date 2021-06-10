@@ -40,15 +40,15 @@ export default class UserItem extends Component {
             <div className="user">Ученик</div>
           </div>
         </Info>
-        <Email href={"mailto:" + data.email}><img className={'icons'} src={letter} alt="icon"/>{data.email}</Email>
-        <Phone href='#'><img className={'icons'} src={phones} alt="icon"/>+380000000</Phone>
+        <Email href={"mailto:" + data.email}><img className={'media'} src={letter} alt="icon"/>{data.email}</Email>
+        <Phone href='#'><img className={'media'} src={phones} alt="icon"/>+380000000</Phone>
         {
           hover
           ? null
           : <MoreBtn
               className={'more'}
               onClick={this.showBtn}
-            ><img src={more} className={'icons'} alt="icon"/></MoreBtn>
+            ><img src={more} className={'media'} alt="icon"/></MoreBtn>
         }
         {
           hover

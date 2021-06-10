@@ -1,6 +1,6 @@
 import React from "react";
 
-//styled & icons
+//styled & media
 import {NotificationSingleWrap, Photo, Title, Desc, NotificationModal, MainBtnWrap} from './NotificationStyled';
 import photo from '../../../assets/media/image/respurse.png';
 import close from '../../../assets/media/icon/close.svg';

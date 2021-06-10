@@ -3,7 +3,7 @@ import React from "react";
 
 //styled
 import {CardResourceWrap} from './Styled';
-//icons
+//media
 import res from '../../../assets/media/image/respurse.png';
 import like from '../../../assets/media/icon/like.svg';
 import {Link} from "react-router-dom";

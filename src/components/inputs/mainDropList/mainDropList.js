@@ -9,7 +9,8 @@ const MainDropList = ({
                         validation,
                         width,
                         options = [{value: '', name: ''}],
-                        onChange = () => null
+                        onChange = () => null,
+                        classes
                       }) => {
 
   const [showStatus, setShowStatus] = useState(false)
@@ -72,7 +73,7 @@ const MainDropList = ({
   return (
     <Wrapper
       ref={wrapperEl}
-      className={` ${validation && 'valid'} open`}
+      className={` ${validation && 'valid'} open ${classes}`}
       width={width}
       fakeBg={showStatus}
     >

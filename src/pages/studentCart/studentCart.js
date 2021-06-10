@@ -20,7 +20,7 @@ const StudentCart = ({id}) => {
       name: ''
   })
 
-  const [showStudentModal, setShowStudentModal] = useState(true)
+  const [showStudentModal, setShowStudentModal] = useState(false)
 
   useEffect(() => {
     getDataUser().catch(error => {console.error(error)});
@@ -63,7 +63,7 @@ const StudentCart = ({id}) => {
             ],
             button: {
               text: 'Показать больше информации',
-              func: () => alert('some text')
+              func: () => setShowStudentModal(true)
             }
           }}
         />
@@ -93,7 +93,7 @@ const StudentCart = ({id}) => {
       </div>
 
       {
-        showStudentModal && <StudentModal data={studentData}/>
+        showStudentModal && <StudentModal data={studentData} close={() => setShowStudentModal(false)}/>
       }
     </Style.Wrapper>
   )

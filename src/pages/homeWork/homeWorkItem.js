@@ -1,7 +1,7 @@
 import React from "react";
 import {NavLink} from "react-router-dom";
 
-//styled & icons
+//styled & media
 import play from '../../assets/media/icon/playColor.svg';
 import playWhite from '../../assets/media/icon/playWhite.svg';
 import attention from '../../assets/media/icon/attantion.svg';

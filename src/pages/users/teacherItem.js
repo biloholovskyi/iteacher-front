@@ -85,11 +85,11 @@ export default class TeacherItem extends Component {
 
           <EmailBlock>
             <p className={'text'}>EMAIl</p>
-            <Email href={"mailto:" + data.email}><img className={'icons'} src={letter} alt="icon"/>{data.email}</Email>
+            <Email href={"mailto:" + data.email}><img className={'media'} src={letter} alt="icon"/>{data.email}</Email>
           </EmailBlock>
 
           <MoreBtn className={'more'}>
-            <img src={more} className={'icons'} alt="icon"/>
+            <img src={more} className={'media'} alt="icon"/>
           </MoreBtn>
 
         </Right>

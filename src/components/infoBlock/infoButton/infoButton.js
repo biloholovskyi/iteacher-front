@@ -6,7 +6,7 @@ import icon from './media/buttonicon.svg'
 
 const InfoButton  = ({button}) => {
   return (
-    <Style.Wrapper>
+    <Style.Wrapper onClick={button.func}>
       {button.text}
       <img src={icon} alt="icon"/>
     </Style.Wrapper>

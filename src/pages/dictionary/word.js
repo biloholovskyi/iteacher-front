@@ -1,6 +1,6 @@
 import React from "react";
 
-//styled & icons
+//styled & media
 import nails from '../../assets/media/image/nails.png';
 import sound from '../../assets/media/icon/sound.svg';
 import {WordWrap, Image, MainWord, WordTranslate} from './styled';

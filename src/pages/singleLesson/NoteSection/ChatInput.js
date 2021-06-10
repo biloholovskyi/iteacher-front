@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {InputWrap} from "../singleLessonStyled";
 
-// icons
+// media
 import plus from '../../../assets/media/icon/plusW.svg';
 
 export default class ChatInput extends Component {
