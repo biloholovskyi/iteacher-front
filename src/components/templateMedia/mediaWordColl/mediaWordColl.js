@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 
-import { DragWordsWrap, WordsSection, Word } from '../mediaDragWords/dragWordsStyled';
+import {DragWordsWrap, WordsSection, Word} from '../mediaDragWords/dragWordsStyled';
 
 import * as Style from './style'
 
@@ -9,6 +9,7 @@ const MediaWordColl = ({data, wsUpdate}) => {
   // записываем вопросы
   const [listData, setData] = useState([])
   const [active, setActive] = useState(null)
+  // похоже нужно удалить
   const [activeCol, setActiveCol] = useState(null)
 
   const makeRandomArr = () => {
@@ -17,7 +18,7 @@ const MediaWordColl = ({data, wsUpdate}) => {
 
   useEffect(() => {
     let list = JSON.parse(data.list_column).map(item => {
-      if(!item.setList) {
+      if (!item.setList) {
         return {...item, setList: []}
       } else {
         return item
@@ -35,7 +36,9 @@ const MediaWordColl = ({data, wsUpdate}) => {
   // перенос слова
   const setWordToPlace = (name) => {
     // проверяем есть ли активное слово
-    if(!active) {return}
+    if (!active) {
+      return
+    }
 
     // добавляем слово в выбранные
     const index = listData.findIndex(col => col.name === name);
@@ -63,11 +66,10 @@ const MediaWordColl = ({data, wsUpdate}) => {
     )
   });
   listData.forEach(col => {
-  col.words.map(word => {
-      words.push(<Word key={makeRandomArr()} onClick={() => switchActive(word, col)}>{word}</Word>)
+    col.words.forEach(word => {
+      words.push(<Word key={makeRandomArr()} onClick={() => switchActive(word, col)}>{word.split(',')[0]}</Word>)
     })
   })
-
 
 
   // пока не исправили баг с сортировкой при каждом обновление
