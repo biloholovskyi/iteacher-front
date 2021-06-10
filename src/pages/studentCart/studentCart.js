@@ -4,6 +4,7 @@ import axios from "axios";
 import UserAvatar from "./userAvatar/userAvatar";
 import InfoBlock from "../../components/infoBlock/infoBlock";
 import Tabs from "./tabs/tabs";
+import StudentModal from "./studentModal/studentModal";
 
 import * as Style from './styled'
 
@@ -18,6 +19,8 @@ const StudentCart = ({id}) => {
       email: '',
       name: ''
   })
+
+  const [showStudentModal, setShowStudentModal] = useState(true)
 
   useEffect(() => {
     getDataUser().catch(error => {console.error(error)});
@@ -88,6 +91,10 @@ const StudentCart = ({id}) => {
       <div className="right">
         <Tabs/>
       </div>
+
+      {
+        showStudentModal && <StudentModal data={studentData}/>
+      }
     </Style.Wrapper>
   )
 }
