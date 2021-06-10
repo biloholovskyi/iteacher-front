@@ -1,6 +1,6 @@
 import React from 'react'
 
-import * as Style from '../styled'
+import * as Style from './styled'
 
 const Note = ({text,date}) => {
   return (
