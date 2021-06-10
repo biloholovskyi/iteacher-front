@@ -3,6 +3,7 @@ import axios from "axios";
 
 import UserAvatar from "./userAvatar/userAvatar";
 import InfoBlock from "../../components/infoBlock/infoBlock";
+import Tabs from "./tabs/tabs";
 
 import * as Style from './styled'
 
@@ -13,7 +14,10 @@ import ServerSettings from "../../service/serverSettings";
 const server = new ServerSettings();
 
 const StudentCart = ({id}) => {
-  const [studentData, setStudentData] = useState(null)
+  const [studentData, setStudentData] = useState({
+      email: '',
+      name: ''
+  })
 
   useEffect(() => {
     getDataUser().catch(error => {console.error(error)});
@@ -82,7 +86,7 @@ const StudentCart = ({id}) => {
         />
       </div>
       <div className="right">
-
+        <Tabs/>
       </div>
     </Style.Wrapper>
   )
