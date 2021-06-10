@@ -35,6 +35,18 @@ class SingleLesson extends Component {
   componentDidMount() {
     this.setData();
     this.createWebsocket();
+    window.addEventListener('beforeunload', () => {
+      // отключаемся от соиденения сокета
+      this.chatSocket.send(JSON.stringify({
+        'message': {
+          type: 'disconnect',
+          user: {
+            type: this.props.user.type,
+            id: this.props.user.id
+          }
+        }
+      }));
+    })
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -183,6 +195,14 @@ class SingleLesson extends Component {
         const course = JSON.parse(res.data.course)
         if (course[this.props.user.type] !== this.props.user.id) {
           this.setState({redirect: true})
+        } else {
+          // выводим сообщения о том что другой пользователь не подключен
+          // проверяем какой именно пользователь подключен
+          if(this.props.user.type === 'teacher') {
+            this.props.setTopAlertText('Ученик еще не вошел')
+          } else if(this.props.user.type === 'student') {
+            this.setState({waitStudentModal: true})
+          }
         }
       }
     })
@@ -276,7 +296,7 @@ class SingleLesson extends Component {
 
         {
           this.state.waitStudentModal && (
-            <WaitStudentModal/>
+            <WaitStudentModal teacher={data.teacher}/>
           )
         }
       </>

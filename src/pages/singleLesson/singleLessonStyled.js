@@ -679,6 +679,8 @@ const WaitStudentWrap = styled.div`
       width: 80px;
       height: 80px;
       object-fit: cover;
+      object-position: center;
+      border-radius: 50%;
     }
 
   }
