@@ -16,6 +16,60 @@ const TabCourses = () => {
           Добавить курс
         </div>
       </Style.AddCourse>
+
+      <Style.AddCourse>
+        <div className="addSquare">
+          <img src={plus} alt="plus"/>
+        </div>
+        <div className="textAddCourse">
+          Добавить курс
+        </div>
+      </Style.AddCourse>
+
+      <Style.AddCourse>
+        <div className="addSquare">
+          <img src={plus} alt="plus"/>
+        </div>
+        <div className="textAddCourse">
+          Добавить курс
+        </div>
+      </Style.AddCourse>
+
+      <Style.AddCourse>
+        <div className="addSquare">
+          <img src={plus} alt="plus"/>
+        </div>
+        <div className="textAddCourse">
+          Добавить курс
+        </div>
+      </Style.AddCourse>
+
+      <Style.AddCourse>
+        <div className="addSquare">
+          <img src={plus} alt="plus"/>
+        </div>
+        <div className="textAddCourse">
+          Добавить курс
+        </div>
+      </Style.AddCourse>
+
+      <Style.AddCourse>
+        <div className="addSquare">
+          <img src={plus} alt="plus"/>
+        </div>
+        <div className="textAddCourse">
+          Добавить курс
+        </div>
+      </Style.AddCourse>
+
+      <Style.AddCourse>
+        <div className="addSquare">
+          <img src={plus} alt="plus"/>
+        </div>
+        <div className="textAddCourse">
+          Добавить курс
+        </div>
+      </Style.AddCourse>
     </Style.CourseWrapper>
   )
 }

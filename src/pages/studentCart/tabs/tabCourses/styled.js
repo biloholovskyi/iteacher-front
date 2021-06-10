@@ -5,6 +5,10 @@ const CourseWrapper = styled.div`
   display: flex;
   width: 100%;
   flex-wrap: wrap;
+  
+  @media(max-width: 991px) {
+    justify-content: space-between;
+  }
 `
 
 const AddCourse = styled.div`
@@ -14,7 +18,7 @@ const AddCourse = styled.div`
   &:nth-child(4n) {
     margin-right: 0;
   }
-  
+
   .addSquare {
     display: flex;
     width: 200px;
@@ -25,7 +29,7 @@ const AddCourse = styled.div`
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    
+
     img {
       width: 48px;
       height: 48px;
@@ -34,7 +38,7 @@ const AddCourse = styled.div`
       object-position: center;
     }
   }
-  
+
   .textAddCourse {
     margin-top: 16px;
     font-size: 18px;
@@ -42,6 +46,50 @@ const AddCourse = styled.div`
     letter-spacing: -0.01em;
     color: #4F7FFF;
     cursor: pointer;
+  }
+
+  @media (max-width: 1449px) {
+    margin-right: 16px;
+
+    &:nth-child(4n) {
+      margin-right: 16px;
+    }
+
+    &:nth-child(3n) {
+      margin-right: 0;
+    }
+  }
+
+  @media (max-width: 1159px) {
+    margin-right: 32px;
+
+    &:nth-child(4n) {
+      margin-right: 32px;
+    }
+
+    &:nth-child(3n) {
+      margin-right: 32px;
+    }
+
+    &:nth-child(2n) {
+      margin-right: 0;
+    }
+  }
+
+  @media (max-width: 991px) {
+    margin-right: 0;
+
+    &:nth-child(4n) {
+      margin-right: 0;
+    }
+
+    &:nth-child(3n) {
+      margin-right: 0;
+    }
+
+    &:nth-child(2n) {
+      margin-right: 0;
+    }
   }
 `
 
