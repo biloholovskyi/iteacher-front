@@ -24,8 +24,7 @@ const StudentItem = ({note, data}) => {
       className={'courseItems'}
       onClick={() => history.push(`/students/${data.id}`)}
     >
-      <div
-        className="right">
+      <div className="right">
         <div className={"right__name"}>
           <img src={data.photo ? `${server.getApi()}${data.photo.slice(1)}` : ava} alt="img"/>
           <div className="names">
@@ -33,10 +32,14 @@ const StudentItem = ({note, data}) => {
             <p>{data.email}</p>
           </div>
         </div>
-        <Style.Course>
-          <h4 className={'small-title'}>Курс</h4>
-          <p className={'small-desc'}>{nameCourse}</p>
-        </Style.Course>
+        {/*удалено в новом дизайне*/}
+        {/*<Style.Course>*/}
+        {/*  <h4 className={'small-title'}>Курс</h4>*/}
+        {/*  <p className={'small-desc'}>{nameCourse}</p>*/}
+        {/*</Style.Course>*/}
+      </div>
+
+      <div className="left">
         <Style.Lesson>
           <h4 className={'small-title'}>Ближайший урок</h4>
           <p className={'small-desc'}>Завтра, 18:30</p>

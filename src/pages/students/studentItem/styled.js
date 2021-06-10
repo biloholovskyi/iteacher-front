@@ -5,7 +5,7 @@ const CoursesItem = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  box-shadow: 0px 0px 2px rgba(105, 112, 119, 0.06), 0px 2px 2px rgba(105, 112, 119, 0.12);
+  box-shadow: 0 0 2px rgba(105, 112, 119, 0.06), 0 2px 2px rgba(105, 112, 119, 0.12);
   border-radius: 8px;
   margin-bottom: 8px;
   padding: 19px 24px;
@@ -79,73 +79,10 @@ const CoursesItem = styled.div`
       }
 
     }
-
-    .more {
-      background-color: #fff;
-      border: none;
-      cursor: pointer;
-
-      img {
-        background-color: #fff;
-        width: 24px;
-        height: 24px;
-        object-fit: contain;
-        object-position: center;
-      }
-
-      @media (max-width: 767px)
-      {
-        display: none;
-      }
-      
-    }
-
-    .images {
-      display: flex;
-      align-items: center;
-      justify-content: flex-start;
-      background-color: #fff;
-      position: relative;
-
-      img {
-        width: 40px;
-        height: 40px;
-        object-fit: contain;
-        object-position: center;
-        margin-right: 16px;
-        border: 4px solid #fff;
-        border-radius: 50%;
-      }
-
-      & img:nth-child(2) {
-        left: calc(100% - 40px / 2 - 16px);
-        position: absolute;
-      }
-
-      & img:nth-child(3) {
-        position: absolute;
-        left: calc(100% - 40px / 2 - -4px);
-      }
-
-      .all {
-        width: 40px;
-        height: 40px;
-        border: 4px solid #fff;
-        border-radius: 50%;
-        background-color: #000;
-        position: absolute;
-        left: calc(100% - 40px / 2 - -24px);
-        color: #fff;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-style: normal;
-        font-weight: 600;
-        font-size: 16px;
-        line-height: 22px;
-        cursor: pointer;
-      }
-    }
+  }
+  
+  .left {
+    display: flex;
 
     .navSection {
       display: flex;
@@ -205,6 +142,73 @@ const CoursesItem = styled.div`
         transform: translateY(-50%) rotate(45deg);
       }
     }
+
+    .more {
+      background-color: #fff;
+      border: none;
+      cursor: pointer;
+
+      img {
+        background-color: #fff;
+        width: 24px;
+        height: 24px;
+        object-fit: contain;
+        object-position: center;
+      }
+
+      @media (max-width: 767px)
+      {
+        display: none;
+      }
+
+    }
+
+    .images {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      background-color: #fff;
+      position: relative;
+
+      img {
+        width: 40px;
+        height: 40px;
+        object-fit: contain;
+        object-position: center;
+        margin-right: 16px;
+        border: 4px solid #fff;
+        border-radius: 50%;
+      }
+
+      & img:nth-child(2) {
+        left: calc(100% - 40px / 2 - 16px);
+        position: absolute;
+      }
+
+      & img:nth-child(3) {
+        position: absolute;
+        left: calc(100% - 40px / 2 - -4px);
+      }
+
+      .all {
+        width: 40px;
+        height: 40px;
+        border: 4px solid #fff;
+        border-radius: 50%;
+        background-color: #000;
+        position: absolute;
+        left: calc(100% - 40px / 2 - -24px);
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-style: normal;
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 22px;
+        cursor: pointer;
+      }
+    }
   }
 
   @media (max-width: 991px) {
@@ -214,7 +218,8 @@ const CoursesItem = styled.div`
 
 const Lesson = styled.div`
   background-color: transparent;
-  min-width: 115px;
+  
+  margin-right: 170px;
 
   .small-title {
     font-style: normal;
