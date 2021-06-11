@@ -29,8 +29,6 @@ const MediaWordColl = ({data, wsUpdate}) => {
 
   // активация слов
   const switchActive = (word, col) => {
-    console.log(word)
-    console.log(col)
     setActive(word)
     setActiveCol(col)
   }
@@ -44,9 +42,16 @@ const MediaWordColl = ({data, wsUpdate}) => {
 
     // добавляем слово в выбранные
     const index = listData.findIndex(col => col.name === name);
-    const newCol = {...listData[index], setList: [...listData[index].setList, active]}
+    // находим индекс выбраного слова
+    const indexWord = listData[index].words.findIndex(word => word === active)
+    // удаляем слово
+    const newWordsList = [...listData[index].words.slice(0, indexWord), ...listData[index].words.slice(indexWord + 1)]
+    const newCol = {...listData[index], setList: [...listData[index].setList, active], words: newWordsList}
     const newList = [...listData.slice(0, index), newCol, ...listData.slice(index + 1)]
     setData(newList)
+    // делаем слово не активным
+    setActive(false)
+
     wsUpdate(newList, 0, data, 'list_column')
   }
 

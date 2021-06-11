@@ -44,6 +44,7 @@ const MediaTransfer = ({data, wsUpdate}) => {
     ]
 
     setEmpty(newEmptyList)
+    setActiveWord(false)
 
     wsUpdate(newEmptyList, 0, data, 'list_column')
   }
@@ -52,7 +53,18 @@ const MediaTransfer = ({data, wsUpdate}) => {
 
   const wordsRender = dataList.map(sentence => {
     const word = sentence.split('[')[1].split(']')[0]
-    return <Word key={word} onClick={() => setActiveWord(word)}>{word}</Word>
+
+    // првоеряем есть ли такое предложение в уже выполненных
+    let allWords = [];
+
+    emptyList.forEach(s => {
+      allWords.push(s.split('[')[1].split(']')[0]);
+    })
+
+    const result = allWords.find(w => w === word);
+    if(!result) {
+      return <Word key={word} onClick={() => setActiveWord(word)}>{word}</Word>
+    }
   })
 
   const sentencesRender = emptyList.map(sentence => {
