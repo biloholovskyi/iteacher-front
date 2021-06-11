@@ -29,6 +29,8 @@ const MediaWordColl = ({data, wsUpdate}) => {
 
   // активация слов
   const switchActive = (word, col) => {
+    console.log(word)
+    console.log(col)
     setActive(word)
     setActiveCol(col)
   }

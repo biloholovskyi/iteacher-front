@@ -15,6 +15,45 @@ const onMessage = (e, socket, user, setTopAlertText, teacherModalConnect, setDat
           if (data.message.user.type === 'student') {
             // убираем уведомления о том что студент не подключен
             setTopAlertText(false)
+
+            socket.send(JSON.stringify({
+              'message': {
+                type: 're_connect',
+                user: {
+                  type: user.type,
+                  id: user.id
+                }
+              }
+            }))
+          }
+        } else {
+          // если подключенный пользователь студент
+
+          // если новый пользователь преподаватель
+          if (data.message.user.type === 'teacher') {
+            // убираем уведомления о том что преподаватель не подключен
+            teacherModalConnect(false);
+
+            socket.send(JSON.stringify({
+              'message': {
+                type: 're_connect',
+                user: {
+                  type: user.type,
+                  id: user.id
+                }
+              }
+            }))
+          }
+        }
+        break
+
+      case 're_connect':
+        // если подключенный пользователь преподаватель
+        if (user.type === 'teacher') {
+          // если новый пользователь ученик
+          if (data.message.user.type === 'student') {
+            // убираем уведомления о том что студент не подключен
+            setTopAlertText(false)
           }
         } else {
           // если подключенный пользователь студент
@@ -25,16 +64,6 @@ const onMessage = (e, socket, user, setTopAlertText, teacherModalConnect, setDat
             teacherModalConnect(false);
           }
         }
-
-        socket.send(JSON.stringify({
-          'message': {
-            type: 'connect',
-            user: {
-              type: user.type,
-              id: user.id
-            }
-          }
-        }));
         break
 
       case 'disconnect':
