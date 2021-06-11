@@ -13,7 +13,7 @@ const NoneCourses = () => {
       <div className="caption">
         <div className="BigTitle">Курсы</div>
         <AddCourse>
-          <Link to='/addCourses'>Библиотека курсов
+          <Link to='/courses-library'>Библиотека курсов
             <img src={library} alt="icon"/>
           </Link>
         </AddCourse>

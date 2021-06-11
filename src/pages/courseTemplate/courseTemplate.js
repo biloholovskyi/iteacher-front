@@ -1,3 +1,12 @@
+/*
+* название файла и компонента не соответствует действительности
+* это обычный курс, а не шаблон курса
+* нужно будет обязательно это исправить
+* */
+
+// TODO нужно имзенить название файла и компонента
+// TODO нужно часть функционала вынести в отдельные файлы
+
 import React, {Component} from 'react';
 import {connect} from "react-redux";
 import {Redirect} from "react-router-dom";
@@ -87,7 +96,7 @@ class CourseTemplate extends Component {
     }
 
     // если есть хотя бы одно события прокидываем на финальный этап
-    if(course.schedules.length > 0) {
+    if (course.schedules.length > 0) {
       step = false;
       stepTwo = false;
       finish = true;
@@ -95,7 +104,7 @@ class CourseTemplate extends Component {
     }
 
     // вывод alert top
-    if(course.status !== 'active') {
+    if (course.status !== 'active') {
       this.props.setTopAlertText('Курс не активен! Добавьте ученика и назначьте первый урок что бы активировать курс')
     } else {
       this.props.setTopAlertText(false)

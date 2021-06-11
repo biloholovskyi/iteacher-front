@@ -33,12 +33,12 @@ const Courses = ({user}) => {
         <Style.Caption>
           <Style.Title>Курсы</Style.Title>
           <Style.AddCourse>
-            <Link to='/new-course'>Библиотека курсов
+            <Link to='/courses-library'>Библиотека курсов
               <img src={library} alt="icon"/>
             </Link>
           </Style.AddCourse>
           <Style.AddCourseMobile>
-            <Link to='/addCourses'>
+            <Link to='/courses-library'>
               <img src={plus} alt="icon"/>
             </Link>
           </Style.AddCourseMobile>

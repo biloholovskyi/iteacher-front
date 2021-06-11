@@ -9,6 +9,8 @@ import ava from "../../../../assets/media/icon/avatar.svg";
 
 import ServerSettings from "../../../../service/serverSettings";
 
+const server = new ServerSettings();
+
 const Student = ({studentID, show}) => {
   // данные студента
   const [student, setStudent] = useState(null)
@@ -17,7 +19,6 @@ const Student = ({studentID, show}) => {
     axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
     axios.defaults.xsrfCookieName = 'csrftoken';
 
-    const server = new ServerSettings();
     await axios.get(`${server.getApi()}api/users/${studentID}/`)
       .then(res => {
         if(typeof res.data === "object") {
@@ -39,7 +40,7 @@ const Student = ({studentID, show}) => {
           student ? (
             <>
               <div className={student.photo ? 'photo' : 'no-photo'}>
-                <img src={student.photo ? student.photo : ava} alt="icon"/>
+                <img src={student.photo ? server.getApi() + student.photo.slice(1) : ava} alt="icon"/>
               </div>
               <div className="name">
                 {/*<p className={'student'}>{student.name}</p>*/}
