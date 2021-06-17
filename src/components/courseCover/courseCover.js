@@ -2,12 +2,13 @@ import React from "react";
 
 import * as Style from './styled'
 
-const CourseCover = ({course, small, template, extraSmall, medium}) => {
+const CourseCover = ({course, small, template, extraSmall, medium, type}) => {
   return (
     <Style.CoverBlock
       medium={medium}
       small={small}
       extraSmall={extraSmall}
+      type={type}
       bg={
         template
           ? course.background

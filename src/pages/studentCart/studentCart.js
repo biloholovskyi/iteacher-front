@@ -89,7 +89,7 @@ const StudentCart = ({id}) => {
         />
       </div>
       <div className="right">
-        <Tabs/>
+        <Tabs id={id}/>
       </div>
 
       {

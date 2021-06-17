@@ -5,7 +5,7 @@ import TabNotes from "./tabNotes/tabNotes";
 
 import * as Style from './styled.js'
 
-const Tabs = () => {
+const Tabs = ({id}) => {
   const [activeTab, setActiveTab] = useState('courses')
 
   const changeTab = (tab) => {
@@ -30,7 +30,7 @@ const Tabs = () => {
       </Style.TabsHead>
 
       {
-        activeTab === 'courses' ? <TabCourses/> : <TabNotes/>
+        activeTab === 'courses' ? <TabCourses id={id}/> : <TabNotes/>
       }
     </>
   )

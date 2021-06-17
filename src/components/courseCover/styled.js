@@ -50,7 +50,13 @@ const CoverBlock = styled.div`
     color: #fff;
     display: ${props => props.small || props.extraSmall || props.medium ? 'none' : 'block'};
   }
+  
+  ${props => props.type === 'student-courses' && {
+    width: '201px',
+    height: '201px'
+  }}
 }
+
 ${props => !props.small && !props.extraSmall && `
   @media (max-width: 991px) {
     max-width: none;

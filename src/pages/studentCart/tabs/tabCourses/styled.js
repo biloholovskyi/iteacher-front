@@ -6,6 +6,30 @@ const CourseWrapper = styled.div`
   width: 100%;
   flex-wrap: wrap;
   
+  .course-wrapper {
+    .course-title {
+      font-family: Inter, sans-serif;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 18px;
+      line-height: 24px;
+      letter-spacing: -0.01em;
+      color: #000000;
+      margin-top: 16px;
+      margin-bottom: 2px;
+    }
+    
+    .course-next-lesson {
+      font-family: Inter, sans-serif;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 14px;
+      line-height: 20px;
+      letter-spacing: -0.01em;
+      color: #697077;
+    }
+  }
+  
   @media(max-width: 991px) {
     justify-content: space-between;
   }
