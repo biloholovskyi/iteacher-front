@@ -103,6 +103,13 @@ const setActivateCourse = (course) => {
   }
 }
 
+const setCRactiveWord = (word) => {
+ return {
+   type: 'CR_SET_ACTIVE_WORD',
+   word
+ }
+}
+
 // передаем текст в top alert
 const setTopAlertText = (text) => {
   return {type: 'SHOW_TOP_ALERT', text}
@@ -122,5 +129,6 @@ export {
   setActiveSection,
   setActivateCourse,
   getCoursesList,
-  setTopAlertText
+  setTopAlertText,
+  setCRactiveWord
 }

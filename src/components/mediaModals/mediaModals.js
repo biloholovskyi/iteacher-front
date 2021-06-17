@@ -13,7 +13,7 @@ import MediaTest from "../templateMedia/mediaTest/mediaTest";
 import MediaWrite from "../templateMedia/mediaWrite/mediaWrite";
 import MediaTransfer from "../templateMedia/mediaTransfer/meidaTransfer";
 
-const MediaModals = ({type, data, wsUpdate, sectionIndex}) => {
+const MediaModals = ({type, data, wsUpdate, sectionIndex, setActiveWord}) => {
   switch (type) {
     case 'TEXT': return <MediaText textData={data} />
 
@@ -25,7 +25,7 @@ const MediaModals = ({type, data, wsUpdate, sectionIndex}) => {
 
     case 'DOCUMENT': return <MediaDocument documentData={data} />
 
-    case 'LIST_WORD_COLL': return  <MediaWordColl data={data} wsUpdate={wsUpdate} sectionIndex={sectionIndex}/>
+    case 'LIST_WORD_COLL': return  <MediaWordColl data={data} wsUpdate={wsUpdate} sectionIndex={sectionIndex} setActiveWord={setActiveWord}/>
 
     case 'TF': return  <MediaTF data={data} wsUpdate={wsUpdate} sectionIndex={sectionIndex}/>
 

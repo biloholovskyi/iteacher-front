@@ -5,7 +5,7 @@ import MediaModals from "../../../components/mediaModals/mediaModals";
 
 import {BlockWrap, LessonSection, ItemSection} from '../singleLessonStyled'
 
-const MainContent = ({tasks, wsUpdate, nextSection, activeSection}) => {
+const MainContent = ({tasks, wsUpdate, nextSection, activeSection, setActiveWord}) => {
 
   const [jsonData, setJSON] = useState(null)
   const [sections, setSections] = useState(null)
@@ -38,7 +38,13 @@ const MainContent = ({tasks, wsUpdate, nextSection, activeSection}) => {
         {
           task.task_type === 'TEXT'
             ? <MediaModals type={task.task_type} data={task.desc}/>
-            : <MediaModals type={task.task_type} data={task} wsUpdate={wsUpdate} sectionIndex={activeSection}/>
+            : <MediaModals
+              type={task.task_type}
+              data={task}
+              wsUpdate={wsUpdate}
+              sectionIndex={activeSection}
+              setActiveWord={setActiveWord}
+            />
         }
       </ItemSection>
     )

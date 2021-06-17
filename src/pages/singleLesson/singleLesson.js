@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import {Redirect} from "react-router";
 import axios from "axios";
 
-import {setTopAlertText} from "../../actions";
+import {setTopAlertText, setCRactiveWord, setActivateCourse} from "../../actions";
 
 import MainButton from "../../components/buttons/mainButton/mainButton";
 import MainContent from './mainContent/mainContent';
@@ -117,6 +117,8 @@ class SingleLesson extends Component {
         }
       }
     }));
+
+    this.setActiveWord({id: null}, null);
   }
 
   // создание websocket
@@ -146,6 +148,10 @@ class SingleLesson extends Component {
       this.setState({activeSection: section})
     }
 
+    const setActiveWordInRedux = (word) => {
+      this.props.setCRactiveWord(word);
+    }
+
     // прослушиваем сообщения
     this.chatSocket.onmessage = (e) => onMessage(
       e,
@@ -154,7 +160,8 @@ class SingleLesson extends Component {
       this.props.setTopAlertText,
       statusModalConnectTeacher,
       setDataInState,
-      setActiveSection
+      setActiveSection,
+      setActiveWordInRedux
     );
 
     this.chatSocket.onopen = () => {
@@ -249,6 +256,28 @@ class SingleLesson extends Component {
       .catch(error => console.error(error));
   }
 
+  // устанавливаем выбранное слово
+  setActiveWord = (task, word) => {
+    this.props.setCRactiveWord({
+      task: task.id,
+      word: word
+    })
+
+    this.chatSocket.send(JSON.stringify({
+      'message': {
+        type: 'active_word',
+        data: {
+          task: task.id,
+          word: word
+        },
+        user: {
+          type: this.props.user.type,
+          id: this.props.user.id
+        }
+      }
+    }));
+  }
+
   render() {
     const {redirect, data, loading} = this.state;
 
@@ -283,6 +312,7 @@ class SingleLesson extends Component {
                       tasks={data.lesson}
                       wsUpdate={this.wsUpdateTask}
                       nextSection={this.changeActiveSection}
+                      setActiveWord={this.setActiveWord}
                     />
 
                     <ChatSection/>
@@ -312,6 +342,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   setTopAlertText,
+  setCRactiveWord
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SingleLesson);

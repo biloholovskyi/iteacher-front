@@ -1,16 +1,22 @@
 import React, {useState, useEffect} from 'react';
+import {connect} from "react-redux";
 
 import {DragWordsWrap, WordsSection, Word} from '../mediaDragWords/dragWordsStyled';
 
 import * as Style from './style'
 
-
-const MediaWordColl = ({data, wsUpdate}) => {
+const MediaWordColl = ({data, wsUpdate, setActiveWord, user, CRactiveWord}) => {
   // записываем вопросы
   const [listData, setData] = useState([])
   const [active, setActive] = useState(null)
   // похоже нужно удалить
   const [activeCol, setActiveCol] = useState(null)
+  // для замены цвета активного слова
+  const [styleActive, setStyleActive] = useState({task: null, word: null})
+
+  useEffect(() => {
+    setStyleActive(CRactiveWord)
+  }, [CRactiveWord])
 
   const makeRandomArr = () => {
     return Math.random() - 1;
@@ -29,6 +35,7 @@ const MediaWordColl = ({data, wsUpdate}) => {
 
   // активация слов
   const switchActive = (word, col) => {
+    setActiveWord(data, word)
     setActive(word)
     setActiveCol(col)
   }
@@ -75,7 +82,18 @@ const MediaWordColl = ({data, wsUpdate}) => {
 
   listData.forEach(col => {
     col.words.forEach(word => {
-      words.push(<Word key={makeRandomArr()} onClick={() => switchActive(word, col)}>{word.split(',')[0]}</Word>)
+      words.push(
+        <Word
+          key={makeRandomArr()}
+          onClick={() => switchActive(word, col)}
+          user={user}
+          active={styleActive}
+          word={word}
+          task={data.id}
+        >
+          {word.split(',')[0]}
+        </Word>
+      )
     })
   })
 
@@ -96,4 +114,13 @@ const MediaWordColl = ({data, wsUpdate}) => {
   )
 };
 
-export default MediaWordColl;
+const mapStateToProps = (state) => {
+  return {
+    user: state.user,
+    CRactiveWord: state.CRactiveWord
+  }
+};
+
+const mapDispatchToProps = {};
+
+export default connect(mapStateToProps, mapDispatchToProps)(MediaWordColl);

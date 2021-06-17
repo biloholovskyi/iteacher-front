@@ -42,6 +42,12 @@ const initialState = {
   // для активации новго курса
   activateCourse: {},
 
+  // class rooms
+  CRactiveWord: {
+    task: 0,
+    word: ''
+  },
+
   // alert message
   topAlert: false
 }
@@ -142,6 +148,13 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         activateCourse: action.course
+      }
+
+    // для активации новго курса
+    case 'CR_SET_ACTIVE_WORD':
+      return {
+        ...state,
+        CRactiveWord: action.word
       }
 
     // показываем сообщение в top alert
