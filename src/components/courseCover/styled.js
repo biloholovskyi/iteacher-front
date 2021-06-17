@@ -67,6 +67,14 @@ ${props => !props.small && !props.extraSmall && `
     min-height: 246px;
   }
 `}
+
+${props => props.type === 'student-courses' && `
+  @media (max-width: 575px) {
+    min-height: 156px;
+    height: 156px;
+    width: 156px;
+  }
+`}
 `
 
 export {CoverBlock}

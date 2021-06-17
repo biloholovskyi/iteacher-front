@@ -50,6 +50,111 @@ const TabCourses = ({id}) => {
         )
       })}
 
+      {courses.map(course => {
+        return (
+          <div className='course-wrapper'>
+            <CourseCover
+              key={course.id}
+              type={'student-courses'}
+              course={course}
+            />
+
+            <h4 className="course-title">{course.name}</h4>
+            <div className="course-next-lesson">Ближайший урок: <br/> 1 ноября, 16:45</div>
+          </div>
+        )
+      })}
+
+      {courses.map(course => {
+        return (
+          <div className='course-wrapper'>
+            <CourseCover
+              key={course.id}
+              type={'student-courses'}
+              course={course}
+            />
+
+            <h4 className="course-title">{course.name}</h4>
+            <div className="course-next-lesson">Ближайший урок: <br/> 1 ноября, 16:45</div>
+          </div>
+        )
+      })}
+
+      {courses.map(course => {
+        return (
+          <div className='course-wrapper'>
+            <CourseCover
+              key={course.id}
+              type={'student-courses'}
+              course={course}
+            />
+
+            <h4 className="course-title">{course.name}</h4>
+            <div className="course-next-lesson">Ближайший урок: <br/> 1 ноября, 16:45</div>
+          </div>
+        )
+      })}
+
+      {courses.map(course => {
+        return (
+          <div className='course-wrapper'>
+            <CourseCover
+              key={course.id}
+              type={'student-courses'}
+              course={course}
+            />
+
+            <h4 className="course-title">{course.name}</h4>
+            <div className="course-next-lesson">Ближайший урок: <br/> 1 ноября, 16:45</div>
+          </div>
+        )
+      })}
+
+      {courses.map(course => {
+        return (
+          <div className='course-wrapper'>
+            <CourseCover
+              key={course.id}
+              type={'student-courses'}
+              course={course}
+            />
+
+            <h4 className="course-title">{course.name}</h4>
+            <div className="course-next-lesson">Ближайший урок: <br/> 1 ноября, 16:45</div>
+          </div>
+        )
+      })}
+
+      {courses.map(course => {
+        return (
+          <div className='course-wrapper'>
+            <CourseCover
+              key={course.id}
+              type={'student-courses'}
+              course={course}
+            />
+
+            <h4 className="course-title">{course.name}</h4>
+            <div className="course-next-lesson">Ближайший урок: <br/> 1 ноября, 16:45</div>
+          </div>
+        )
+      })}
+
+      {courses.map(course => {
+        return (
+          <div className='course-wrapper'>
+            <CourseCover
+              key={course.id}
+              type={'student-courses'}
+              course={course}
+            />
+
+            <h4 className="course-title">{course.name}</h4>
+            <div className="course-next-lesson">Ближайший урок: <br/> 1 ноября, 16:45</div>
+          </div>
+        )
+      })}
+
     </Style.CourseWrapper>
   )
 }
