@@ -24,7 +24,7 @@ const MediaTF = ({data, wsUpdate, sectionIndex}) => {
       result: dataTask.result === 'True' ? 'False' : 'True'
     }
 
-    const newList = [...questionsData.splice(0, index), newData, ...questionsData.slice(index + 1)];
+    const newList = [...questionsData.slice(0, index), newData, ...questionsData.slice(index + 1)];
 
     setQuestions(newList)
     // надо удалить индекс секции и получать его уже непосредственно в функции
