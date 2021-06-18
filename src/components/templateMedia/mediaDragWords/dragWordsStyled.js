@@ -21,6 +21,7 @@ const WordsSection = styled.div`
 `
 
 const Word = styled.div`
+  user-select: none;
   font-style: normal;
   font-weight: normal;
   font-size: 16px;

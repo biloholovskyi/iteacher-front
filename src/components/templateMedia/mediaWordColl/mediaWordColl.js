@@ -40,6 +40,50 @@ const MediaWordColl = ({data, wsUpdate, setActiveWord, user, CRactiveWord}) => {
     setActiveCol(col)
   }
 
+  // dnd
+  const dndStart = (e, word) => {
+    setTimeout(() => {
+      setActiveWord(data, word)
+      setActive(word)
+
+      const classNameDrag = user.type === 'student' ? 'drag-student' : 'drag-teacher';
+      const allDnDWord = document.querySelectorAll('.' + classNameDrag);
+      allDnDWord.forEach(word => {
+        console.log(word)
+        word.classList.remove(classNameDrag)
+      })
+      e.target.classList.add(classNameDrag)
+    })
+  }
+
+  const dndEnd = (e, word) => {
+    const classNameDrag = user.type === 'student' ? 'drag-student' : 'drag-teacher';
+    e.target.classList.remove(classNameDrag)
+  }
+
+  const dndEnter = (e) => {
+    e.target.classList.add('dnd-hovered');
+  }
+
+  const dndOver = (e) => {
+    e.preventDefault();
+  }
+
+  const dndLeave = (e) => {
+    e.target.classList.remove('dnd-hovered');
+    console.log('leave')
+  }
+
+  const dndDrop = (e, name) => {
+    console.log('drop')
+    e.target.classList.add('dnd-hovered');
+    document.querySelectorAll('.dnd-hovered').forEach(block => {
+      block.classList.remove('dnd-hovered')
+    })
+
+    setWordToPlace(name);
+  }
+
   // перенос слова
   const setWordToPlace = (name) => {
     // проверяем есть ли активное слово
@@ -49,16 +93,30 @@ const MediaWordColl = ({data, wsUpdate, setActiveWord, user, CRactiveWord}) => {
 
     // добавляем слово в выбранные
     const index = listData.findIndex(col => col.name === name);
-    // находим индекс выбраного слова
-    const indexWord = listData[index].words.findIndex(word => word === active)
-    // удаляем слово
-    const newWordsList = [...listData[index].words.slice(0, indexWord), ...listData[index].words.slice(indexWord + 1)]
-    const newCol = {...listData[index], setList: [...listData[index].setList, active], words: newWordsList}
+
+    const newCol = {...listData[index], setList: [...listData[index].setList, active]}
     const newList = [...listData.slice(0, index), newCol, ...listData.slice(index + 1)]
-    setData(newList)
+
+    // удаляем слово
+    // находим из какой колонки слово
+    let indexCol = 0;
+    let indexWord = 0;
+    newList.forEach((col, key) => {
+      // проверяем есть ли слово
+      const _indexWord = col.words.findIndex(word => word === active);
+      if(_indexWord > -1) {
+        indexCol = key;
+        indexWord = _indexWord;
+      }
+    })
+
+    let newWordsList = [...newList[indexCol].words.slice(0, indexWord), ...newList[indexCol].words.slice(indexWord + 1)]
+    const newColDel = {...newList[indexCol], words: newWordsList}
+    const newListDel = [...newList.slice(0, indexCol), newColDel, ...newList.slice(indexCol + 1)]
+
+    setData(newListDel)
     // делаем слово не активным
     setActive(false)
-
     wsUpdate(newList, 0, data, 'list_column')
   }
 
@@ -71,7 +129,19 @@ const MediaWordColl = ({data, wsUpdate, setActiveWord, user, CRactiveWord}) => {
     })
 
     return (
-      <Style.Column key={key}>
+      <Style.Column
+        key={key}
+        onDragEnter={(e) => {
+          dndEnter(e)
+        }}
+        onDragLeave={(e) => {
+          dndLeave(e)
+        }}
+        onDragOver={(e) => {
+          dndOver(e)
+        }}
+        onDrop={(e) => dndDrop(e, col.name)}
+      >
         <div className="title-block">{col.name}</div>
         <div className="words-block" onClick={() => setWordToPlace(col.name)}>
           {setList}
@@ -90,6 +160,13 @@ const MediaWordColl = ({data, wsUpdate, setActiveWord, user, CRactiveWord}) => {
           active={styleActive}
           word={word}
           task={data.id}
+          draggable="true"
+          onDragStart={(e) => {
+            dndStart(e, word)
+          }}
+          onDragEnd={(e) => {
+            dndEnd(e, word)
+          }}
         >
           {word.split(',')[0]}
         </Word>
