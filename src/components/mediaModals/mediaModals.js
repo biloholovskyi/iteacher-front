@@ -33,7 +33,7 @@ const MediaModals = ({type, data, wsUpdate, sectionIndex, setActiveWord}) => {
 
     case 'TRANSFER_WORDS':  return  <MediaTransfer data={data} wsUpdate={wsUpdate}/>
 
-    case 'SENTENCE': return  <MediaSentence data={data} wsUpdate={wsUpdate}/>
+    case 'SENTENCE': return  <MediaSentence data={data} wsUpdate={wsUpdate} setActiveWordRedux={setActiveWord}/>
 
     case 'CONNECT': return <MediaConnects data={data}/>
 
