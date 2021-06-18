@@ -32,6 +32,10 @@ body {
   border: 1px solid #4F7FFF;
 }
 
+.dnd-hovered.dnd-hover {
+  border: 1px solid #4F7FFF !important;
+}
+
 .drag-teacher {
    background-color: rgba(136, 92, 255, 0.1);
    border: 1px solid #885CFF;

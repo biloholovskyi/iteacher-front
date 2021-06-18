@@ -49,7 +49,6 @@ const MediaWordColl = ({data, wsUpdate, setActiveWord, user, CRactiveWord}) => {
       const classNameDrag = user.type === 'student' ? 'drag-student' : 'drag-teacher';
       const allDnDWord = document.querySelectorAll('.' + classNameDrag);
       allDnDWord.forEach(word => {
-        console.log(word)
         word.classList.remove(classNameDrag)
       })
       e.target.classList.add(classNameDrag)
@@ -71,11 +70,9 @@ const MediaWordColl = ({data, wsUpdate, setActiveWord, user, CRactiveWord}) => {
 
   const dndLeave = (e) => {
     e.target.classList.remove('dnd-hovered');
-    console.log('leave')
   }
 
   const dndDrop = (e, name) => {
-    console.log('drop')
     e.target.classList.add('dnd-hovered');
     document.querySelectorAll('.dnd-hovered').forEach(block => {
       block.classList.remove('dnd-hovered')
