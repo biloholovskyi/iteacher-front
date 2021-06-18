@@ -4,13 +4,19 @@ import {DragWordsWrap, WordsSection, Word} from '../mediaDragWords/dragWordsStyl
 
 import * as Style from '../mediaSentence/style'
 import {Sentence} from "./style";
+import {connect} from "react-redux";
 
 
-const MediaTransfer = ({data, wsUpdate}) => {
+const MediaTransfer = ({data, wsUpdate, setActiveWordRedux, CRactiveWord, user}) => {
   // записываем данные
   const [dataList, setData] = useState([])
   const [emptyList, setEmpty] = useState([])
   const [activeWord, setActive] = useState(null)
+  const [styleActive, setStyleActive] = useState({task: null, word: null})
+
+  useEffect(() => {
+    setStyleActive(CRactiveWord)
+  }, [CRactiveWord])
 
   useEffect(() => {
     setData(data.desc.split('\n'))
@@ -26,7 +32,49 @@ const MediaTransfer = ({data, wsUpdate}) => {
     }
   }, [data])
 
+  // dnd
+  const dndStart = (e, word) => {
+    setTimeout(() => {
+      setActiveWordRedux(data, word)
+      setActive(word)
+
+      const classNameDrag = user.type === 'student' ? 'drag-student' : 'drag-teacher';
+      const allDnDWord = document.querySelectorAll('.' + classNameDrag);
+      allDnDWord.forEach(word => {
+        word.classList.remove(classNameDrag)
+      })
+      e.target.classList.add(classNameDrag)
+    })
+  }
+
+  const dndEnd = (e, word) => {
+    const classNameDrag = user.type === 'student' ? 'drag-student' : 'drag-teacher';
+    e.target.classList.remove(classNameDrag)
+  }
+
+  const dndEnter = (e) => {
+    e.target.classList.add('dnd-hovered');
+  }
+
+  const dndOver = (e) => {
+    e.preventDefault();
+  }
+
+  const dndLeave = (e) => {
+    e.target.classList.remove('dnd-hovered');
+  }
+
+  const dndDrop = (e, sentence) => {
+    e.target.classList.add('dnd-hovered');
+    document.querySelectorAll('.dnd-hovered').forEach(block => {
+      block.classList.remove('dnd-hovered')
+    })
+
+    setEmptyWord(sentence)
+  }
+
   const setActiveWord = (word) => {
+    setActiveWordRedux(data, word)
     setActive(word)
   }
 
@@ -63,7 +111,24 @@ const MediaTransfer = ({data, wsUpdate}) => {
 
     const result = allWords.find(w => w === word);
     if(!result) {
-      return <Word key={word} onClick={() => setActiveWord(word)}>{word}</Word>
+      return (
+        <Word
+          key={word}
+          onClick={() => setActiveWord(word)}
+          user={user}
+          active={styleActive}
+          word={word}
+          task={data.id}
+          draggable="true"
+          onDragStart={(e) => {
+            dndStart(e, word)
+          }}
+          onDragEnd={(e) => {
+            dndEnd(e, word)
+          }}
+        >
+          {word}
+        </Word>)
     }
   })
 
@@ -82,7 +147,21 @@ const MediaTransfer = ({data, wsUpdate}) => {
       return (
         <Sentence key={uniqueKey}>
           <p>{sentence.split('[')[0]}</p>
-          <Style.EmptyItem noneMargin={true} onClick={() => setEmptyWord(sentence)}/>
+          <Style.EmptyItem
+            className={'dnd-hover'}
+            noneMargin={true}
+            onClick={() => setEmptyWord(sentence)}
+            onDragEnter={(e) => {
+              dndEnter(e)
+            }}
+            onDragLeave={(e) => {
+              dndLeave(e)
+            }}
+            onDragOver={(e) => {
+              dndOver(e)
+            }}
+            onDrop={(e) => dndDrop(e, sentence)}
+          />
           <p>{sentence.split('[')[1].split(']')[1]}</p>
         </Sentence>
       )
@@ -102,4 +181,13 @@ const MediaTransfer = ({data, wsUpdate}) => {
   )
 };
 
-export default MediaTransfer;
+const mapStateToProps = (state) => {
+  return {
+    user: state.user,
+    CRactiveWord: state.CRactiveWord
+  }
+};
+
+const mapDispatchToProps = {};
+
+export default connect(mapStateToProps, mapDispatchToProps)(MediaTransfer);
