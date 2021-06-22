@@ -41,7 +41,8 @@ const MediaWordColl = ({data, wsUpdate, setActiveWord, user, CRactiveWord}) => {
   }
 
   // dnd
-  const dndStart = (e, word) => {
+  const  dndStart = (e, word) => {
+    e.target.style.opacity = '0.4';
     setTimeout(() => {
       setActiveWord(data, word)
       setActive(word)

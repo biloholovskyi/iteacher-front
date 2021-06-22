@@ -57,6 +57,7 @@ const MediaSentence = ({data, wsUpdate, setActiveWordRedux, CRactiveWord, user})
 
   // dnd
   const dndStart = (e, word) => {
+    e.target.style.opacity = '0.4';
     setTimeout(() => {
       setActiveWordRedux(data, word)
       setActive(word)
