@@ -1,22 +1,28 @@
 import React, {useState, useEffect} from 'react';
+import {connect} from "react-redux";
+
+import {setCRactiveEmpty} from "../../../actions";
 
 import {DragWordsWrap, WordsSection, Word} from '../mediaDragWords/dragWordsStyled';
 
 import * as Style from '../mediaSentence/style'
 import {Sentence} from "./style";
-import {connect} from "react-redux";
 
-
-const MediaTransfer = ({data, wsUpdate, setActiveWordRedux, CRactiveWord, user}) => {
+const MediaTransfer = ({data, wsUpdate, setActiveWordRedux, CRactiveWord, user, setActiveEmptyItem, setCRactiveEmpty, CRactiveEmpty}) => {
   // записываем данные
   const [dataList, setData] = useState([])
   const [emptyList, setEmpty] = useState([])
   const [activeWord, setActive] = useState(null)
   const [styleActive, setStyleActive] = useState({task: null, word: null})
+  const [styleActiveEmpty, setStyleActiveEmpty] = useState({task: null, empty: null})
 
   useEffect(() => {
     setStyleActive(CRactiveWord)
   }, [CRactiveWord])
+
+  useEffect(() => {
+    setStyleActiveEmpty(CRactiveEmpty)
+  }, [CRactiveEmpty])
 
   useEffect(() => {
     setData(data.desc.split('\n'))
@@ -49,12 +55,18 @@ const MediaTransfer = ({data, wsUpdate, setActiveWordRedux, CRactiveWord, user})
   }
 
   const dndEnd = (e, word) => {
+    e.target.style.opacity = '1';
     const classNameDrag = user.type === 'student' ? 'drag-student' : 'drag-teacher';
     e.target.classList.remove(classNameDrag)
   }
 
-  const dndEnter = (e) => {
+  const dndEnter = (e, key) => {
     e.target.classList.add('dnd-hovered');
+    setCRactiveEmpty({
+      task: data.id,
+      empty: key
+    })
+    setActiveEmptyItem(data, key)
   }
 
   const dndOver = (e) => {
@@ -63,6 +75,11 @@ const MediaTransfer = ({data, wsUpdate, setActiveWordRedux, CRactiveWord, user})
 
   const dndLeave = (e) => {
     e.target.classList.remove('dnd-hovered');
+
+    setCRactiveEmpty({
+      task: data.id,
+      empty: -1
+    })
   }
 
   const dndDrop = (e, sentence) => {
@@ -71,6 +88,10 @@ const MediaTransfer = ({data, wsUpdate, setActiveWordRedux, CRactiveWord, user})
       block.classList.remove('dnd-hovered')
     })
 
+    setCRactiveEmpty({
+      task: data.id,
+      empty: -1
+    })
     setEmptyWord(sentence)
   }
 
@@ -95,6 +116,10 @@ const MediaTransfer = ({data, wsUpdate, setActiveWordRedux, CRactiveWord, user})
     setEmpty(newEmptyList)
     setActiveWord(false)
 
+    setCRactiveEmpty({
+      task: data.id,
+      empty: -1
+    })
     wsUpdate(newEmptyList, 0, data, 'list_column')
   }
 
@@ -133,7 +158,7 @@ const MediaTransfer = ({data, wsUpdate, setActiveWordRedux, CRactiveWord, user})
     }
   })
 
-  const sentencesRender = emptyList.map(sentence => {
+  const sentencesRender = emptyList.map((sentence, key) => {
     uniqueKey++
     const word = sentence.split('[')[1].split(']')[0]
     if(word !== '.....') {
@@ -150,10 +175,14 @@ const MediaTransfer = ({data, wsUpdate, setActiveWordRedux, CRactiveWord, user})
           <p>{sentence.split('[')[0]}</p>
           <Style.EmptyItem
             className={'dnd-hover'}
+            task={data.id}
+            empty={key}
+            active={styleActiveEmpty}
+            user={user}
             noneMargin={true}
             onClick={() => setEmptyWord(sentence)}
             onDragEnter={(e) => {
-              dndEnter(e)
+              dndEnter(e, key)
             }}
             onDragLeave={(e) => {
               dndLeave(e)
@@ -185,10 +214,13 @@ const MediaTransfer = ({data, wsUpdate, setActiveWordRedux, CRactiveWord, user})
 const mapStateToProps = (state) => {
   return {
     user: state.user,
-    CRactiveWord: state.CRactiveWord
+    CRactiveWord: state.CRactiveWord,
+    CRactiveEmpty: state.CRactiveEmpty
   }
 };
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  setCRactiveEmpty
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(MediaTransfer);

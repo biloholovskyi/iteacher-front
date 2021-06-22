@@ -13,7 +13,7 @@ import MediaTest from "../templateMedia/mediaTest/mediaTest";
 import MediaWrite from "../templateMedia/mediaWrite/mediaWrite";
 import MediaTransfer from "../templateMedia/mediaTransfer/meidaTransfer";
 
-const MediaModals = ({type, data, wsUpdate, sectionIndex, setActiveWord}) => {
+const MediaModals = ({type, data, wsUpdate, sectionIndex, setActiveWord, setActiveEmptyItem}) => {
   switch (type) {
     case 'TEXT': return <MediaText textData={data} />
 
@@ -25,15 +25,15 @@ const MediaModals = ({type, data, wsUpdate, sectionIndex, setActiveWord}) => {
 
     case 'DOCUMENT': return <MediaDocument documentData={data} />
 
-    case 'LIST_WORD_COLL': return  <MediaWordColl data={data} wsUpdate={wsUpdate} sectionIndex={sectionIndex} setActiveWord={setActiveWord}/>
+    case 'LIST_WORD_COLL': return  <MediaWordColl data={data} wsUpdate={wsUpdate} sectionIndex={sectionIndex} setActiveWord={setActiveWord} setActiveEmptyItem={setActiveEmptyItem}/>
 
     case 'TF': return  <MediaTF data={data} wsUpdate={wsUpdate} sectionIndex={sectionIndex}/>
 
     case 'WRITE_WORD': return  <MediaWrite data={data}/>
 
-    case 'TRANSFER_WORDS':  return  <MediaTransfer data={data} wsUpdate={wsUpdate} setActiveWordRedux={setActiveWord}/>
+    case 'TRANSFER_WORDS':  return  <MediaTransfer data={data} wsUpdate={wsUpdate} setActiveWordRedux={setActiveWord} setActiveEmptyItem={setActiveEmptyItem}/>
 
-    case 'SENTENCE': return  <MediaSentence data={data} wsUpdate={wsUpdate} setActiveWordRedux={setActiveWord}/>
+    case 'SENTENCE': return  <MediaSentence data={data} wsUpdate={wsUpdate} setActiveWordRedux={setActiveWord} setActiveEmptyItem={setActiveEmptyItem}/>
 
     case 'CONNECT': return <MediaConnects data={data}/>
 

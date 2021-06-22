@@ -110,6 +110,13 @@ const setCRactiveWord = (word) => {
  }
 }
 
+const setCRactiveEmpty = (empty) => {
+  return {
+    type: 'CR_SET_ACTIVE_EMPTY',
+    empty
+  }
+}
+
 // передаем текст в top alert
 const setTopAlertText = (text) => {
   return {type: 'SHOW_TOP_ALERT', text}
@@ -130,5 +137,6 @@ export {
   setActivateCourse,
   getCoursesList,
   setTopAlertText,
-  setCRactiveWord
+  setCRactiveWord,
+  setCRactiveEmpty
 }

@@ -17,6 +17,22 @@ const EmptyItem = styled.div`
   border-radius: 100px;
   margin-right: ${props => props.noneMargin ? '0' : '16px'};
   margin-bottom: ${props => props.noneMargin ? '0' : '16px'};
+
+  ${props => props.active
+          && parseInt(props.active.task) === parseInt(props.task)
+          && props.active.empty === props.empty
+          && props.user.type === 'teacher'
+          && {
+            border: '1px solid #885CFF'
+          }}
+
+  ${props => props.active
+          && parseInt(props.active.task) === parseInt(props.task)
+          && props.active.empty === props.empty
+          && props.user.type === 'student'
+          && {
+            border: '1px solid #4F7FFF'
+          }}
   
   &:last-child {margin-right: 0;}
 `

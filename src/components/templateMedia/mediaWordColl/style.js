@@ -32,6 +32,22 @@ const Column = styled.div`
     padding: 16px 16px 0 16px;
     display: flex;
     flex-wrap: wrap;
+
+    ${props => props.active
+            && parseInt(props.active.task) === parseInt(props.task)
+            && props.active.empty === props.empty
+            && props.user.type === 'teacher'
+            && {
+              border: '1px solid #885CFF'
+            }}
+
+    ${props => props.active
+            && parseInt(props.active.task) === parseInt(props.task)
+            && props.active.empty === props.empty
+            && props.user.type === 'student'
+            && {
+              border: '1px solid #4F7FFF'
+            }}
   }
 `
 

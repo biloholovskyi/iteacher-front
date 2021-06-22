@@ -5,7 +5,7 @@ import MediaModals from "../../../components/mediaModals/mediaModals";
 
 import {BlockWrap, LessonSection, ItemSection} from '../singleLessonStyled'
 
-const MainContent = ({tasks, wsUpdate, nextSection, activeSection, setActiveWord}) => {
+const MainContent = ({tasks, wsUpdate, nextSection, activeSection, setActiveWord, setActiveEmptyItem}) => {
 
   const [jsonData, setJSON] = useState(null)
   const [sections, setSections] = useState(null)
@@ -44,6 +44,7 @@ const MainContent = ({tasks, wsUpdate, nextSection, activeSection, setActiveWord
               wsUpdate={wsUpdate}
               sectionIndex={activeSection}
               setActiveWord={setActiveWord}
+              setActiveEmptyItem={setActiveEmptyItem}
             />
         }
       </ItemSection>

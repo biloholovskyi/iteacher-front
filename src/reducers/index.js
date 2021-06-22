@@ -48,6 +48,11 @@ const initialState = {
     word: ''
   },
 
+  CRactiveEmpty: {
+    task: 0,
+    empty: 0
+  },
+
   // alert message
   topAlert: false
 }
@@ -155,6 +160,12 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         CRactiveWord: action.word
+      }
+
+    case 'CR_SET_ACTIVE_EMPTY':
+      return {
+        ...state,
+        CRactiveEmpty: action.empty
       }
 
     // показываем сообщение в top alert

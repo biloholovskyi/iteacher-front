@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import {Redirect} from "react-router";
 import axios from "axios";
 
-import {setTopAlertText, setCRactiveWord, setActivateCourse} from "../../actions";
+import {setTopAlertText, setCRactiveWord, setCRactiveEmpty} from "../../actions";
 
 import MainButton from "../../components/buttons/mainButton/mainButton";
 import MainContent from './mainContent/mainContent';
@@ -152,6 +152,10 @@ class SingleLesson extends Component {
       this.props.setCRactiveWord(word);
     }
 
+    const setActiveEmptyInRedux = (empty) => {
+      this.props.setCRactiveEmpty(empty);
+    }
+
     // прослушиваем сообщения
     this.chatSocket.onmessage = (e) => onMessage(
       e,
@@ -161,7 +165,8 @@ class SingleLesson extends Component {
       statusModalConnectTeacher,
       setDataInState,
       setActiveSection,
-      setActiveWordInRedux
+      setActiveWordInRedux,
+      setActiveEmptyInRedux
     );
 
     this.chatSocket.onopen = () => {
@@ -278,6 +283,28 @@ class SingleLesson extends Component {
     }));
   }
 
+  // устанавливаем выбранную ячейку
+  setActiveEmptyItem = (task, empty) => {
+    this.props.setCRactiveEmpty({
+      task: task.id,
+      word: empty
+    })
+
+    this.chatSocket.send(JSON.stringify({
+      'message': {
+        type: 'active_empty',
+        data: {
+          task: task.id,
+          empty: empty
+        },
+        user: {
+          type: this.props.user.type,
+          id: this.props.user.id
+        }
+      }
+    }));
+  }
+
   render() {
     const {redirect, data, loading} = this.state;
 
@@ -313,6 +340,7 @@ class SingleLesson extends Component {
                       wsUpdate={this.wsUpdateTask}
                       nextSection={this.changeActiveSection}
                       setActiveWord={this.setActiveWord}
+                      setActiveEmptyItem={this.setActiveEmptyItem}
                     />
 
                     <ChatSection/>
@@ -342,7 +370,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   setTopAlertText,
-  setCRactiveWord
+  setCRactiveWord,
+  setCRactiveEmpty
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SingleLesson);

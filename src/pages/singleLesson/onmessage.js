@@ -1,4 +1,4 @@
-const onMessage = (e, socket, user, setTopAlertText, teacherModalConnect, setDataInState, setSection, setActiveWordInRedux) => {
+const onMessage = (e, socket, user, setTopAlertText, teacherModalConnect, setDataInState, setSection, setActiveWordInRedux, setActiveEmptyInRedux) => {
   const data = JSON.parse(e.data);
 
   // проверяем сообщение от нас или нет
@@ -94,6 +94,10 @@ const onMessage = (e, socket, user, setTopAlertText, teacherModalConnect, setDat
 
       case 'active_word':
         setActiveWordInRedux(data.message.data)
+        break
+
+      case 'active_empty':
+        setActiveEmptyInRedux(data.message.data)
         break
     }
   }

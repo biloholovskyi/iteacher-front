@@ -1,11 +1,13 @@
 import React, {useState, useEffect} from 'react';
 import {connect} from "react-redux";
 
+import {setCRactiveEmpty} from "../../../actions";
+
 import {DragWordsWrap, WordsSection, Word} from '../mediaDragWords/dragWordsStyled';
 
 import * as Style from './style'
 
-const MediaWordColl = ({data, wsUpdate, setActiveWord, user, CRactiveWord}) => {
+const MediaWordColl = ({data, wsUpdate, setActiveWord, user, CRactiveWord, CRactiveEmpty, setCRactiveEmpty, setActiveEmptyItem}) => {
   // записываем вопросы
   const [listData, setData] = useState([])
   const [active, setActive] = useState(null)
@@ -13,10 +15,15 @@ const MediaWordColl = ({data, wsUpdate, setActiveWord, user, CRactiveWord}) => {
   const [activeCol, setActiveCol] = useState(null)
   // для замены цвета активного слова
   const [styleActive, setStyleActive] = useState({task: null, word: null})
+  const [styleActiveEmpty, setStyleActiveEmpty] = useState({task: null, empty: null})
 
   useEffect(() => {
     setStyleActive(CRactiveWord)
   }, [CRactiveWord])
+
+  useEffect(() => {
+    setStyleActiveEmpty(CRactiveEmpty)
+  }, [CRactiveEmpty])
 
   const makeRandomArr = () => {
     return Math.random() - 1;
@@ -30,6 +37,33 @@ const MediaWordColl = ({data, wsUpdate, setActiveWord, user, CRactiveWord}) => {
         return item
       }
     })
+
+    let setList = []
+
+    list.forEach(col => {
+      setList = [...setList, ...col.setList]
+    })
+
+    setList.forEach(activeWord => {
+      // удаляем слово
+      // находим из какой колонки слово
+      let indexCol = 0;
+      let indexWord = 0;
+      list.forEach((col, key) => {
+        // проверяем есть ли слово
+        const _indexWord = col.words.findIndex(word => word === activeWord);
+        if(_indexWord > -1) {
+          indexCol = key;
+          indexWord = _indexWord;
+        }
+      })
+
+      let newWordsList = [...list[indexCol].words.slice(0, indexWord), ...list[indexCol].words.slice(indexWord + 1)]
+      const newColDel = {...list[indexCol], words: newWordsList}
+      const newListDel = [...list.slice(0, indexCol), newColDel, ...list.slice(indexCol + 1)]
+      list = newListDel
+    })
+
     setData(list)
   }, [data])
 
@@ -57,11 +91,18 @@ const MediaWordColl = ({data, wsUpdate, setActiveWord, user, CRactiveWord}) => {
   }
 
   const dndEnd = (e, word) => {
+    e.target.style.opacity = '1';
     const classNameDrag = user.type === 'student' ? 'drag-student' : 'drag-teacher';
     e.target.classList.remove(classNameDrag)
   }
 
-  const dndEnter = (e) => {
+  const dndEnter = (e, key) => {
+    setCRactiveEmpty({
+      task: data.id,
+      empty: key
+    })
+
+    setActiveEmptyItem(data, key)
     e.target.classList.add('dnd-hovered');
   }
 
@@ -71,12 +112,24 @@ const MediaWordColl = ({data, wsUpdate, setActiveWord, user, CRactiveWord}) => {
 
   const dndLeave = (e) => {
     e.target.classList.remove('dnd-hovered');
+
+    setCRactiveEmpty({
+      task: data.id,
+      empty: -1
+    })
+
+    setActiveEmptyItem(data, -1)
   }
 
   const dndDrop = (e, name) => {
     e.target.classList.add('dnd-hovered');
     document.querySelectorAll('.dnd-hovered').forEach(block => {
       block.classList.remove('dnd-hovered')
+    })
+
+    setCRactiveEmpty({
+      task: data.id,
+      empty: -1
     })
 
     setWordToPlace(name);
@@ -128,9 +181,13 @@ const MediaWordColl = ({data, wsUpdate, setActiveWord, user, CRactiveWord}) => {
 
     return (
       <Style.Column
+        task={data.id}
+        empty={key}
+        active={styleActiveEmpty}
+        user={user}
         key={key}
         onDragEnter={(e) => {
-          dndEnter(e)
+          dndEnter(e, key)
         }}
         onDragLeave={(e) => {
           dndLeave(e)
@@ -192,10 +249,13 @@ const MediaWordColl = ({data, wsUpdate, setActiveWord, user, CRactiveWord}) => {
 const mapStateToProps = (state) => {
   return {
     user: state.user,
-    CRactiveWord: state.CRactiveWord
+    CRactiveWord: state.CRactiveWord,
+    CRactiveEmpty: state.CRactiveEmpty
   }
 };
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  setCRactiveEmpty
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(MediaWordColl);
