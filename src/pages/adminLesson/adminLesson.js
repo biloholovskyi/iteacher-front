@@ -22,6 +22,7 @@ import Connect from "../../components/popupsAdmin/lessonAddExModal/connect/conne
 import SentenceOfWords from "../../components/popupsAdmin/lessonAddExModal/sentenceOfWords/sentenceOfWords";
 import TransferWords from "../../components/popupsAdmin/lessonAddExModal/transferWords/transferWords";
 import WriteWord from "../../components/popupsAdmin/lessonAddExModal/writeWord/writeWord";
+import Note from "../../components/popupsAdmin/lessonAddExModal/note/note";
 
 import {LessonWrap, CleanPlan} from './adminLessonStyled';
 
@@ -109,7 +110,8 @@ class AdminLesson extends Component {
         addDocument: false,
         gallery: false,
         dragWord: false,
-        test: false
+        test: false,
+        note: false
       },
     };
 
@@ -239,7 +241,8 @@ class AdminLesson extends Component {
         addDocument: false,
         gallery: false,
         dragWord: false,
-        test: false
+        test: false,
+        note: false
       }
     })
   }
@@ -262,7 +265,8 @@ class AdminLesson extends Component {
         addDocument: false,
         gallery: false,
         dragWord: false,
-        test: false
+        test: false,
+        note: false
       }
     })
   }
@@ -314,6 +318,9 @@ class AdminLesson extends Component {
         break
       case 'TEST':
         type = 'test';
+        break
+      case 'NOTE':
+        type = 'note';
         break
       default:
         type = 'textModal'
@@ -428,6 +435,24 @@ class AdminLesson extends Component {
           modalsCreateTask.textModal
             ? <TextModal
               edit={modalsCreateTask.textModal}
+              section={this.state.selectSection}
+              template={this.state.activeTemplate}
+              setTemplate={this.props.setTemplate}
+              allTemplates={this.props.allTemplates}
+              setAllTemplate={this.props.getAllTemplates}
+              lesson={this.props.lessonID}
+              setActiveSection={this.props.setActiveSection}
+              close={this.closeModal}
+              back={this.ReturnPrevModal}
+              update={this.updateActiveData}
+            />
+            : null
+        }
+
+        {
+          modalsCreateTask.note
+            ? <Note
+              edit={modalsCreateTask.note}
               section={this.state.selectSection}
               template={this.state.activeTemplate}
               setTemplate={this.props.setTemplate}

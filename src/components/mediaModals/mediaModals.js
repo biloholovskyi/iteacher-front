@@ -1,4 +1,5 @@
 import React from 'react';
+import {connect} from "react-redux";
 
 import MediaText from "../templateMedia/mediaText/mediaText";
 import MediaDocument from "../templateMedia/mediaDocument/mediaDocument";
@@ -12,8 +13,9 @@ import MediaSentence from "../templateMedia/mediaSentence/mediaSentence";
 import MediaTest from "../templateMedia/mediaTest/mediaTest";
 import MediaWrite from "../templateMedia/mediaWrite/mediaWrite";
 import MediaTransfer from "../templateMedia/mediaTransfer/meidaTransfer";
+import MediaNote from "../templateMedia/mediaNote/mediaNote";
 
-const MediaModals = ({type, data, wsUpdate, sectionIndex, setActiveWord, setActiveEmptyItem}) => {
+const MediaModals = ({type, data, wsUpdate, sectionIndex, setActiveWord, setActiveEmptyItem, user}) => {
   switch (type) {
     case 'TEXT': return <MediaText textData={data} />
 
@@ -39,8 +41,22 @@ const MediaModals = ({type, data, wsUpdate, sectionIndex, setActiveWord, setActi
 
     case 'TEST': return <MediaTest data={data} wsUpdate={wsUpdate}/>
 
+    case 'NOTE':
+      if(user.type === 'teacher' || user.type === 'admin') {
+        return <MediaNote data={data}/>
+      }
+      break
+
     default: return <MediaText textData={data} />
   }
 }
 
-export default MediaModals;
+const mapStateToProps = (state) => {
+  return {
+    user: state.user,
+  }
+};
+
+const mapDispatchToProps = {};
+
+export default connect(mapStateToProps, mapDispatchToProps)(MediaModals);

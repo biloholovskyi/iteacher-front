@@ -3,6 +3,7 @@ import styled from "styled-components";
 const TextBlock = styled.div`
   margin-top: 32px;
   margin-bottom: 16px;
+  width: 100%;
   
   .title {
     font-family: Inter, sans-serif;

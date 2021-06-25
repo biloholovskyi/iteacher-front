@@ -47,6 +47,7 @@ export default class AdminChooseTemplateModal extends Component {
               <ListItem photo={photoTransfer} text={'Перенести слова'} action={() => showModal('transfer')}/>
               <ListItem photo={photoWrite} text={'Заполнить пропуски'} action={() => showModal('write')}/>
               <ListItem photo={photoTest} text={'Тест'} action={() => showModal('test')}/>
+              <ListItem photo={photoText} text={'Заметка для учителя'} action={() => showModal('note')}/>
             </ListBody>
 
           </ChooseTemplateModalBody>

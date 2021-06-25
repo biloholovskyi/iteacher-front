@@ -8,7 +8,16 @@ import {DragWordsWrap, WordsSection, Word} from '../mediaDragWords/dragWordsStyl
 import * as Style from '../mediaSentence/style'
 import {Sentence} from "./style";
 
-const MediaTransfer = ({data, wsUpdate, setActiveWordRedux, CRactiveWord, user, setActiveEmptyItem, setCRactiveEmpty, CRactiveEmpty}) => {
+const MediaTransfer = ({
+                         data,
+                         wsUpdate,
+                         setActiveWordRedux,
+                         CRactiveWord,
+                         user,
+                         setActiveEmptyItem,
+                         setCRactiveEmpty,
+                         CRactiveEmpty
+                       }) => {
   // записываем данные
   const [dataList, setData] = useState([])
   const [emptyList, setEmpty] = useState([])
@@ -26,7 +35,7 @@ const MediaTransfer = ({data, wsUpdate, setActiveWordRedux, CRactiveWord, user, 
 
   useEffect(() => {
     setData(data.desc.split('\n'))
-    if(data.list_column) {
+    if (data.list_column) {
       setEmpty(JSON.parse(data.list_column))
     } else {
       const empty = data.desc.split('\n').map((sentence) => {
@@ -101,7 +110,9 @@ const MediaTransfer = ({data, wsUpdate, setActiveWordRedux, CRactiveWord, user, 
   }
 
   const setEmptyWord = (sentence) => {
-    if(!activeWord) {return}
+    if (!activeWord) {
+      return
+    }
     // получаем нужный нам блок
     const index = emptyList.findIndex(empty => empty === sentence);
 
@@ -136,7 +147,7 @@ const MediaTransfer = ({data, wsUpdate, setActiveWordRedux, CRactiveWord, user, 
     })
 
     const result = allWords.find(w => w === word);
-    if(!result) {
+    if (!result) {
       return (
         <Word
           key={word}
@@ -161,7 +172,7 @@ const MediaTransfer = ({data, wsUpdate, setActiveWordRedux, CRactiveWord, user, 
   const sentencesRender = emptyList.map((sentence, key) => {
     uniqueKey++
     const word = sentence.split('[')[1].split(']')[0]
-    if(word !== '.....') {
+    if (word !== '.....') {
       return (
         <Sentence key={uniqueKey}>
           <p>{sentence.split('[')[0]}</p>
