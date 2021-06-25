@@ -5,7 +5,7 @@ import MediaModals from "../../../components/mediaModals/mediaModals";
 
 import {BlockWrap, LessonSection, ItemSection} from '../singleLessonStyled'
 
-const MainContent = ({tasks, wsUpdate, nextSection, activeSection, setActiveWord, setActiveEmptyItem}) => {
+const MainContent = ({tasks, wsUpdate, nextSection, activeSection, setActiveWord, setActiveEmptyItem, user}) => {
 
   const [jsonData, setJSON] = useState(null)
   const [sections, setSections] = useState(null)
@@ -32,6 +32,7 @@ const MainContent = ({tasks, wsUpdate, nextSection, activeSection, setActiveWord
 
   // render tasks
   const renderTaskList = tasksList.map(task => {
+    if(task.task_type === 'NOTE' && user.type === 'student') {return}
     return (
       <ItemSection key={task.id}>
         <div className="section__title">{task.title}</div>

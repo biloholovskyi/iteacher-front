@@ -335,6 +335,7 @@ class SingleLesson extends Component {
                     <LeftSideBar data={data.lesson} activeSection={this.state.activeSection}/>
 
                     <MainContent
+                      user={this.props.user}
                       activeSection={this.state.activeSection}
                       tasks={data.lesson}
                       wsUpdate={this.wsUpdateTask}

@@ -1,14 +1,16 @@
 import React from 'react';
-import photo_screen from '../../../assets/media/image/respurse.png';
-//ЭТО ЗАГОТОВКА
 
 import { ImageWrap } from './mediaImgStyled';
 
+import ServerSettings from "../../../service/serverSettings";
+const server = new ServerSettings();
+
 const MediaImg = ({imageData}) => {
+  console.log(imageData.file)
   return (
     <ImageWrap>
       <img
-        src={imageData.file}
+        src={`${server.getApi()}${imageData.file.slice(1)}`}
         className="image__container"
         alt={'image'}
       />
