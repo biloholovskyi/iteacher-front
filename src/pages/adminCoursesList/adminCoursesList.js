@@ -6,7 +6,7 @@ import {setTypeAdminHead, getAllTemplates} from "../../actions";
 
 import Button from "../../components/buttons/button/button";
 import ItemCourse from "./itemCourse/itemCourse";
-import {PopupAddCourse} from "../../components/popupsAdmin/popupCourse/addCourse/popupAddCourse";
+import PopupAddCourse from "../../components/popupsAdmin/popupCourse/addCourse/popupAddCourse";
 
 import {
   CoursesListStyleWrap,
@@ -42,6 +42,7 @@ const AdminCoursesList = (props) => {
 
     await axios.get(`${server.getApi()}api/template/`)
       .then(res => {
+        console.log(res.data)
         getAllTemplates(res.data);
         setTemplatesListData(res.data)
       }).catch(error => console.log(error));
