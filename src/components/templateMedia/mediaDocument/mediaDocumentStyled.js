@@ -41,10 +41,9 @@ const DocumentWrap = styled.div`
       align-items: flex-start;
 
       &_1 {
-
         flex-flow: column nowrap;
         margin-right: auto;
-
+        text-decoration: none;
       }
 
       &_2 {
@@ -55,6 +54,13 @@ const DocumentWrap = styled.div`
 
       }
 
+    }
+    
+    &__text {
+      font-size: 16px;
+      line-height: 22px;
+      letter-spacing: -0.01em;
+      color: #111111;
     }
 
     &__subtext {
