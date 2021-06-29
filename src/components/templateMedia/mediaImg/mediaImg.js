@@ -1,16 +1,18 @@
 import React from 'react';
+import {connect} from "react-redux";
 
 import { ImageWrap } from './mediaImgStyled';
 
 import ServerSettings from "../../../service/serverSettings";
+import {bindReporter} from "web-vitals/dist/modules/lib/bindReporter";
 const server = new ServerSettings();
 
-const MediaImg = ({imageData}) => {
-  console.log(imageData.file)
+const MediaImg = ({imageData, user}) => {
+
   return (
     <ImageWrap>
       <img
-        src={`${server.getApi()}${imageData.file.slice(1)}`}
+        src={user.type === 'admin' ? imageData.file : `${server.getApi()}${imageData.file.slice(1)}`}
         className="image__container"
         alt={'image'}
       />
@@ -27,4 +29,14 @@ const MediaImg = ({imageData}) => {
 
 };
 
-export default MediaImg;
+const mapStateToProps = (state) => {
+  return {
+    user: state.user
+  }
+}
+
+const mapDispatchToProps = {
+
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(MediaImg);
