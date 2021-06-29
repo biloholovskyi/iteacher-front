@@ -23,6 +23,7 @@ import SentenceOfWords from "../../components/popupsAdmin/lessonAddExModal/sente
 import TransferWords from "../../components/popupsAdmin/lessonAddExModal/transferWords/transferWords";
 import WriteWord from "../../components/popupsAdmin/lessonAddExModal/writeWord/writeWord";
 import Note from "../../components/popupsAdmin/lessonAddExModal/note/note";
+import RecordAudio from "../../components/popupsAdmin/lessonAddExModal/recordAudio/recordAudio";
 
 import {LessonWrap, CleanPlan} from './adminLessonStyled';
 
@@ -242,7 +243,8 @@ class AdminLesson extends Component {
         gallery: false,
         dragWord: false,
         test: false,
-        note: false
+        note: false,
+        record: false
       }
     })
   }
@@ -266,7 +268,8 @@ class AdminLesson extends Component {
         gallery: false,
         dragWord: false,
         test: false,
-        note: false
+        note: false,
+        record: false
       }
     })
   }
@@ -324,6 +327,9 @@ class AdminLesson extends Component {
         break
       case 'AUDIO':
         type = 'addAudio';
+        break
+      case 'RECORD':
+        type = 'record';
         break
       default:
         type = 'textModal'
@@ -468,6 +474,23 @@ class AdminLesson extends Component {
               update={this.updateActiveData}
             />
             : null
+        }
+
+        {
+          modalsCreateTask.record &&
+            <RecordAudio
+              edit={modalsCreateTask.record}
+              section={this.state.selectSection}
+              template={this.state.activeTemplate}
+              setTemplate={this.props.setTemplate}
+              allTemplates={this.props.allTemplates}
+              setAllTemplate={this.props.getAllTemplates}
+              lesson={this.props.lessonID}
+              setActiveSection={this.props.setActiveSection}
+              close={this.closeModal}
+              back={this.ReturnPrevModal}
+              update={this.updateActiveData}
+            />
         }
 
         {

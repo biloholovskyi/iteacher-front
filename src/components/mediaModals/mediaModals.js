@@ -14,6 +14,8 @@ import MediaTest from "../templateMedia/mediaTest/mediaTest";
 import MediaWrite from "../templateMedia/mediaWrite/mediaWrite";
 import MediaTransfer from "../templateMedia/mediaTransfer/meidaTransfer";
 import MediaNote from "../templateMedia/mediaNote/mediaNote";
+import MediaRecord from "../templateMedia/mediaRecord/mediaRecord";
+import AudioPlace from "../popupsAdmin/lessonAddExModal/recordAudio/audioPlace/audioPlace";
 
 const MediaModals = ({type, data, wsUpdate, sectionIndex, setActiveWord, setActiveEmptyItem, user}) => {
   switch (type) {
@@ -40,6 +42,13 @@ const MediaModals = ({type, data, wsUpdate, sectionIndex, setActiveWord, setActi
     case 'CONNECT': return <MediaConnects data={data}/>
 
     case 'TEST': return <MediaTest data={data} wsUpdate={wsUpdate}/>
+
+    case 'RECORD':
+      if(user.type === 'admin') {
+        return <AudioPlace/>
+      } else {
+        return <MediaRecord data={data}/>
+      }
 
     case 'NOTE':
       if(user.type === 'teacher' || user.type === 'admin') {
