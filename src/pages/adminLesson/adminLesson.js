@@ -28,7 +28,7 @@ import {LessonWrap, CleanPlan} from './adminLessonStyled';
 
 import ServerSettings from "../../service/serverSettings";
 
-export async function addLessonPart (lessonID, data, selectTemplate, list, setTemplate, setTemplates) {
+export async function addLessonPart(lessonID, data, selectTemplate, list, setTemplate, setTemplates) {
   // объект новой секции
   const newSection = {
     name: data,
@@ -122,7 +122,7 @@ class AdminLesson extends Component {
     this.setCurrentSections();
 
     // проверяем есть ли в пропсах список шаблонов
-    if(!this.props.allTemplates || this.props.allTemplates.length < 1) {
+    if (!this.props.allTemplates || this.props.allTemplates.length < 1) {
       this.getTemplates().catch(error => console.error(error))
     }
   }
@@ -321,6 +321,9 @@ class AdminLesson extends Component {
         break
       case 'NOTE':
         type = 'note';
+        break
+      case 'AUDIO':
+        type = 'addAudio';
         break
       default:
         type = 'textModal'
@@ -630,12 +633,20 @@ class AdminLesson extends Component {
         {/*modal for add audio file in lesson template*/}
 
         {
-          modalsCreateTask.addAudio
-            ? <AddAudioModal
-              close={this.closeModal}
-              back={this.ReturnPrevModal}
-            />
-            : null
+          modalsCreateTask.addAudio &&
+          <AddAudioModal
+            edit={modalsCreateTask.addAudio}
+            section={this.state.selectSection}
+            template={this.props.selectTemplate}
+            setTemplate={this.props.setTemplate}
+            allTemplates={this.props.allTemplates}
+            setAllTemplate={this.props.getAllTemplates}
+            lesson={this.props.lessonID}
+            setActiveSection={this.props.setActiveSection}
+            close={this.closeModal}
+            back={this.ReturnPrevModal}
+            update={this.updateActiveData}
+          />
         }
 
         {/*modal for add document file in lesson template*/}

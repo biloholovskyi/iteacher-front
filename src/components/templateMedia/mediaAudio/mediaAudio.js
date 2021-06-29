@@ -1,24 +1,23 @@
 import React, {Component} from 'react';
 import ReactPlayer from "react-player";
+import {connect} from "react-redux";
 
-import { AudioWrap } from './mediaAudioStyled';
+import {AudioWrap} from './mediaAudioStyled';
+
+import ServerSettings from "../../../service/serverSettings";
+
+const api = new ServerSettings();
 
 class MediaAudio extends Component {
-
   constructor(props) {
-
     super(props);
-
     this.state = {
-
       play: false
-
     }
-
   }
 
   PlayMusic = () => {
-    if(!this.state.play) {
+    if (!this.state.play) {
       this.setState(() => {
         return {
           ...this.state,
@@ -36,46 +35,41 @@ class MediaAudio extends Component {
   }
 
   render() {
-
     const {audioData} = this.props;
 
-    const { name, format, size } = audioData;
-
     return (
-
       <AudioWrap>
-
         <button
           onClick={this.PlayMusic}
-          className = "video__container">
-
-          <span className = "video__play" />
-
+          className="video__container"
+        >
+          <span className="video__play"/>
         </button>
-
-        <div className = "video__wrap video__wrap_1">
-
-          <span className = "video__text">{ name }</span>
-
-          <span className = "video__subtext">{ format }, { size }</span>
-
+        <div className="video__wrap video__wrap_1">
+          <span className="video__text">{audioData.name_video}</span>
+          <span
+            className="video__subtext">{audioData.file.split('.')[audioData.file.split('.').length - 1]}, {audioData.file_size}</span>
         </div>
 
         <ReactPlayer
-
           className='react-player'
-          url="https://file-examples-com.github.io/uploads/2017/11/file_example_MP3_700KB.mp3"
+          url={this.props.user.type === 'admin' ? audioData.file : api.getApi() + audioData.file.slice(1)}
           width="400px"
           height="50px"
-          playing={this.state.play ? true : false}
+          playing={this.state.play}
           controls={true}
-
         />
-
       </AudioWrap>
-
     )
   }
-};
+}
 
-export default MediaAudio;
+const mapStateToProps = (state) => {
+  return {
+    user: state.user
+  }
+}
+
+const mapDispatchToProps = {};
+
+export default connect(mapStateToProps, mapDispatchToProps)(MediaAudio);

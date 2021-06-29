@@ -15,7 +15,7 @@ const AudioWrap = styled.div`
   .video {
 
     &__container {
-
+      z-index: 555;
       display: flex;
       justify-content: center;
       align-items: center;

@@ -23,7 +23,7 @@ const MediaModals = ({type, data, wsUpdate, sectionIndex, setActiveWord, setActi
 
     case 'PHOTO': return  <MediaImg imageData={data}/>
 
-    case 'audio': return <MediaAudio audioData={data}/>
+    case 'AUDIO': return <MediaAudio audioData={data}/>
 
     case 'DOCUMENT': return <MediaDocument documentData={data} />
 
