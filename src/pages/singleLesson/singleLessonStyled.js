@@ -725,8 +725,8 @@ const LessonSection = styled.div`
 const ItemSection = styled.div`
   width: 100%;
   padding: 17px 16px 16px 23px;
-  background: #FFFFFF;
-  border: 1px solid #DDE1E6;
+  background: ${props => props.taskType === 'NOTE' ? 'linear-gradient(0deg, #EEF3FF, #EEF3FF), #FFFFFF;' : '#FFFFFF'};
+  border: ${props => props.taskType === 'NOTE' ? '1px solid rgba(79, 127, 255, 0.4)' : '1px solid #DDE1E6'};
   box-sizing: border-box;
   box-shadow: 0 0 2px rgba(105, 112, 119, 0.06), 0 2px 2px rgba(105, 112, 119, 0.12);
   border-radius: 8px;

@@ -34,7 +34,7 @@ const MainContent = ({tasks, wsUpdate, nextSection, activeSection, setActiveWord
   const renderTaskList = tasksList.map(task => {
     if(task.task_type === 'NOTE' && user.type === 'student') {return}
     return (
-      <ItemSection key={task.id}>
+      <ItemSection key={task.id} taskType={task.task_type}>
         <div className="section__title">{task.title}</div>
         {
           task.task_type === 'TEXT'
