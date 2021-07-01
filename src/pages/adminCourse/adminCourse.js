@@ -103,11 +103,8 @@ const AdminCourse = (props) => {
     // нужно более адекватным способом переделать это
     if (!data) {
       setTemplateData({
-        complexity: '',
-        average_lessons_time: '',
         level: '',
         price: '',
-        count_lessons: '',
         // обложка курса по дефолту
         background: "linear-gradient(60.64deg, #0093E9 0%, #80D0C7 100%)"
       })
@@ -127,26 +124,7 @@ const AdminCourse = (props) => {
   }
 
 
-  const {complexity, average_lessons_time, level, price, background, lesson} = templateData;
-
-  let capacityPercent = 0;
-
-  if (complexity) {
-    switch (complexity) {
-      case "hard":
-        capacityPercent = 7;
-        break;
-      case "medium":
-        capacityPercent = 4;
-        break;
-      case "low":
-        capacityPercent = 1;
-        break;
-      default:
-        capacityPercent = +complexity;
-        break;
-    }
-  }
+  const {level, price, background, lesson} = templateData;
 
   // количество уроков
   let count_lessons = 0;
@@ -158,13 +136,11 @@ const AdminCourse = (props) => {
 
   const dataSection = [
     [
-      'Количество',
+      'Длительность курса',
       `${count_lessons}${(count_lessons === 0 || count_lessons >= 5) ? ' уроков' : count_lessons === 1 ? ' урок' : ' урока'}`
     ],
-    ['Длительность урока', `${average_lessons_time} минут`],
-    ['Уровень', level],
-    ['Сложность', capacityPercent],
-    ['Цена', `${price}₽`],
+    ['Длительность урока', '60 минут'],
+    ['Уровень', level]
   ];
 
   return (
