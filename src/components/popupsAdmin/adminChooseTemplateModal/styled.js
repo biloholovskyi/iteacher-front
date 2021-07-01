@@ -51,7 +51,7 @@ const ListBody = styled.div`
   width: 100%;
   display: flex;
   height: 100%;
-  align-items: center;
+  align-items: flex-start;
   justify-content: flex-start;
   flex-wrap: wrap;
   overflow: auto;

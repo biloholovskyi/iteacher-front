@@ -20,19 +20,14 @@ import photoTest from '../../../assets/media/image/tasks/test.png'
 
 
 export default class AdminChooseTemplateModal extends Component {
-
   render() {
-
     const {close, showModal} = this.props;
 
     return(
       <>
         <ChooseTemplateModalOverlay>
-
           <ChooseTemplateModalBody>
-
             <img onClick={close} className={'closed'} src={closed} alt="icon"/>
-
             <h2 className={'title'}>Выберите шаблон</h2>
 
             <ListBody>
@@ -51,9 +46,7 @@ export default class AdminChooseTemplateModal extends Component {
               <ListItem photo={photoDocument} text={'Аудио'} action={() => showModal('addAudio')}/>
               <ListItem photo={photoDocument} text={'Запись аудио'} action={() => showModal('record')}/>
             </ListBody>
-
           </ChooseTemplateModalBody>
-
         </ChooseTemplateModalOverlay>
       </>
     )
