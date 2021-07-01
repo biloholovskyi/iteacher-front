@@ -125,7 +125,7 @@ class SingleLesson extends Component {
   createWebsocket = () => {
     // нужно будет указать более правильный путь
     this.chatSocket = new WebSocket(
-      'ws://'
+      'wss://'
       + '5.181.108.174:8000'
       + '/ws/chat/'
       + 'test'
