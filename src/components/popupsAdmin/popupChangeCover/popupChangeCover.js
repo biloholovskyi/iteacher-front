@@ -13,7 +13,6 @@ import axios from "axios";
 import ServerSettings from "../../../service/serverSettings";
 
 const PopupChangeCover = (props) => {
-
   // список градиентов
   const gradient = [
     "linear-gradient(60.64deg, #0093E9 0%, #80D0C7 100%)",
@@ -41,8 +40,8 @@ const PopupChangeCover = (props) => {
   function uploadImage(file) {
     console.log(`Загружено изображение ${file.name}:`, file);
     //TODO UPLOAD TO SERVER, get URL, and:
-    //changeCover(`background-image(${url})`)
-    props.close();
+    // changeCover(`background-image(${url})`)
+    // props.close();
   }
 
    const changeBackground = async (background) => {
