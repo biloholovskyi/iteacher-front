@@ -5,11 +5,12 @@ import ListLesson from "./listLesson";
 
 import {LeftSideBarWrap} from './leftSideBarStyled';
 
-const LeftSideBar = ({data, activeSection}) => {
+const LeftSideBar = ({data, activeSection, classRoom}) => {
+  
   return (
     <LeftSideBarWrap>
 
-      <VideoBlock/>
+      <VideoBlock classRoom={classRoom}/>
 
       <ListLesson data={data} activeSection={activeSection}/>
 
