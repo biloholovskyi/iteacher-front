@@ -54,7 +54,7 @@ const NextLesson = ({data, show}) => {
         {
           event ? (
             <p className="date">{event}</p>
-          ) : <AddButton text={'Названчить занятие'} func={show}/>
+          ) : <AddButton text={'Назначить занятие'} func={show}/>
         }
       </div>
     </SidebarItem>

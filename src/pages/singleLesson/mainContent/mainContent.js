@@ -5,11 +5,17 @@ import MediaModals from "../../../components/mediaModals/mediaModals";
 
 import {BlockWrap, LessonSection, ItemSection} from '../singleLessonStyled'
 
-const MainContent = ({tasks, wsUpdate, nextSection, activeSection, setActiveWord, setActiveEmptyItem, user}) => {
+const MainContent = ({data, tasks, wsUpdate, nextSection, activeSection, setActiveWord, setActiveEmptyItem, user}) => {
 
   const [jsonData, setJSON] = useState(null)
   const [sections, setSections] = useState(null)
   const [tasksList, setTasks] = useState([])
+  const [sectionName, setSectionName] = useState(null);
+
+  useEffect(() => {
+    setSectionName(JSON.parse(data.lesson).sections[activeSection].name);
+  }, [data, activeSection]);
+
 
   // задаем все данные
   useEffect(() => {
@@ -54,7 +60,7 @@ const MainContent = ({tasks, wsUpdate, nextSection, activeSection, setActiveWord
 
   return (
     <BlockWrap>
-      <div className="title__block">Reading</div>
+      <div className="title__block">{sectionName}</div>
       <LessonSection>
         {renderTaskList}
       </LessonSection>

@@ -125,15 +125,6 @@ class SingleLesson extends Component {
 
   // создание websocket
   createWebsocket = () => {
-    // нужно будет указать более правильный путь
-    // this.chatSocket = new WebSocket(
-    //   'ws://'
-    //   + '5.181.108.174:8000'
-    //   + '/ws/chat/'
-    //   + 'test'
-    //   + '/'
-    // );
-
     this.chatSocket = new WebSocket(
       ws_url
     );
@@ -342,6 +333,7 @@ class SingleLesson extends Component {
                     <LeftSideBar data={data.lesson} activeSection={this.state.activeSection} classRoom={this.props.id}/>
 
                     <MainContent
+                      data={data}
                       user={this.props.user}
                       activeSection={this.state.activeSection}
                       tasks={data.lesson}
