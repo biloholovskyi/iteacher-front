@@ -5,7 +5,7 @@ import decor from  './media/triangles.svg'
 const Wrapper = styled.div`
   display: flex;
   position: relative;
-  z-index: 10;
+  z-index: 8;
   
   .left {
     padding-right: 115px;

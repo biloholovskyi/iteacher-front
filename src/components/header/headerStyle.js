@@ -115,13 +115,13 @@ const ProfileModalWrap = styled.div`
   border-radius: 8px;
   width: 100%;
   max-width: 320px;
-  max-height: 402px;
+  //max-height: 402px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
   padding-top: 40px;
-  z-index: 30;
+  z-index: 350;
   .btnSection {
     display: flex;
     flex-direction: column;
@@ -161,7 +161,6 @@ const Email = styled.div`
     padding-bottom: 16px;
     width: 100%;
     text-align: center;
-    border-bottom: 1px solid #DDE1E6;
     background-color: transparent;
     margin-bottom: 8px;
 

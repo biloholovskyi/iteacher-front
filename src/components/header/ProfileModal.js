@@ -1,5 +1,7 @@
 import React from "react";
 
+import PricingBlock from "./pricingBlock/pricingBlock";
+
 import ava from "../../assets/media/icon/avatar.svg";
 import profile from '../../assets/media/icon/profile.svg';
 import lock from '../../assets/media/icon/lock.svg';
@@ -16,6 +18,9 @@ const ProfileModal = ({logOut, user, changePass, personalDataModal}) => {
       <Photo className="ava" src={user.photo ? `${server.getApi()}${user.photo.slice(1)}` : ava} alt="img"/>
       <Name>{user.name}</Name>
       <Email>{user.email}</Email>
+
+      <PricingBlock/>
+
       <div className="btnSection">
         <PersonalData
           onClick={personalDataModal}
