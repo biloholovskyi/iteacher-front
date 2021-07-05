@@ -17,6 +17,8 @@ import ClassRoom from "./services";
 import ServerSettings from "../../service/serverSettings";
 import {onMessage} from "./onmessage";
 
+const ws_url = process.env.REACT_APP_WS_URL;
+
 class SingleLesson extends Component {
   constructor(props) {
     super(props);
@@ -124,13 +126,18 @@ class SingleLesson extends Component {
   // создание websocket
   createWebsocket = () => {
     // нужно будет указать более правильный путь
+    // this.chatSocket = new WebSocket(
+    //   'ws://'
+    //   + '5.181.108.174:8000'
+    //   + '/ws/chat/'
+    //   + 'test'
+    //   + '/'
+    // );
+
     this.chatSocket = new WebSocket(
-      'wss://'
-      + '5.181.108.174:8000'
-      + '/ws/chat/'
-      + 'test'
-      + '/'
+      ws_url
     );
+    
 
     this.chatSocket.onopen = () => {
       console.log('open');
@@ -307,7 +314,7 @@ class SingleLesson extends Component {
 
   render() {
     const {redirect, data, loading} = this.state;
-
+    
     return (
       <>
         {/*если нету урока*/}
@@ -331,8 +338,8 @@ class SingleLesson extends Component {
               <LessonWrap>
                 <div className="container">
                   <LessonBody>
-
-                    <LeftSideBar data={data.lesson} activeSection={this.state.activeSection}/>
+                    
+                    <LeftSideBar data={data.lesson} activeSection={this.state.activeSection} classRoom={this.props.id}/>
 
                     <MainContent
                       user={this.props.user}
