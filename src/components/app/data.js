@@ -21,6 +21,7 @@ import AdminCourse from "../../pages/adminCourse/adminCourse";
 import AdminLesson from "../../pages/adminLesson/adminLesson";
 import StudentCart from "../../pages/studentCart/studentCart";
 import AddCourses from "../../pages/addCourses/addCourses";
+import Pricing from "../../pages/pricing/pricing";
 
 const mainPagesTypeUser = {
   teacher: {redirect: <Redirect to={'/courses'}/>, component: <Courses/>},
@@ -244,6 +245,15 @@ const routingData = [
     redirect: <Redirect to={'/login'}/>,
     components: {
       teacher: <AddCourses/>,
+      admin: mainPagesTypeUser.admin.redirect,
+      student: mainPagesTypeUser.student.redirect,
+    }
+  },
+  {
+    path: '/pricing',
+    redirect: <Redirect to={'/login'}/>,
+    components: {
+      teacher: <Pricing/>,
       admin: mainPagesTypeUser.admin.redirect,
       student: mainPagesTypeUser.student.redirect,
     }
