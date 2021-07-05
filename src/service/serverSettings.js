@@ -1,7 +1,9 @@
+
+const api_url = process.env.REACT_APP_API_URL;
 class ServerSettings {
   constructor() {
-    this.api = 'http://dev4.i-teacher.online/';
-    // this.api = 'http://127.0.0.1:8000/';
+    // this.api = 'http://dev4.i-teacher.online/';
+    this.api = api_url;
 
   }
 
