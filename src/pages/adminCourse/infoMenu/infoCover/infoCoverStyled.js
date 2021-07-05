@@ -4,7 +4,7 @@ const CoverLi = styled.li`
 
   height: 238px;
   position: relative;
-  background: ${(props) => props.image};
+  background: ${props => props.bgType === 'image' ? `url(${props.bgImage})` : props.image};
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;

@@ -10,7 +10,7 @@ export default class TemplateItem extends Component {
     return(
       <TemplateItemWrap>
         <Link to={`/single-course/${course.id}`}>
-          <BgWrap bg={course.background}>
+          <BgWrap bg={course.background} bgType={course.bg_type} bgImage={course.background_image}>
             <div className="firstLeter">{course.name.substr(0,1)}</div>
             <h3 className={'first'}>{course.name}</h3>
           </BgWrap>

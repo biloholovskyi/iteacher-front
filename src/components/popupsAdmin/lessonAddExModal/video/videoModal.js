@@ -17,7 +17,6 @@ export default class VideoModal extends Component {
     this.state = {
       text: '',
       link: '',
-      name: '',
       type: 'add',
       indexTask: 0,
       indexSection: 0,
@@ -42,7 +41,6 @@ export default class VideoModal extends Component {
         type: 'edit',
         text: currentTaskData.title,
         link: currentTaskData.link,
-        name: currentTaskData.name_video,
         indexTask: currentTaskIndex,
         indexLesson: currentLessonIndex,
         indexSection: currentSectionIndex
@@ -64,7 +62,6 @@ export default class VideoModal extends Component {
       section: this.props.section.id,
       title: this.state.text,
       link: this.state.link,
-      name_video: this.state.name,
       task_type: 'VIDEO',
     }
 
@@ -85,13 +82,12 @@ export default class VideoModal extends Component {
   // изминения задания
   editTask = async () => {
     const {section, setActiveSection, close, template, setTemplate, allTemplates, setAllTemplate} = this.props;
-    const {indexTask, text, link, name, indexSection, indexLesson} = this.state;
+    const {indexTask, text, link, indexSection, indexLesson} = this.state;
 
     // обновляем текущую секцию
     const newTask = {
       ...section.tasks[indexTask],
       link,
-      name_video: name,
       task_type: 'VIDEO',
       title: text
     }
@@ -145,12 +141,6 @@ export default class VideoModal extends Component {
             />
             <p>Вставьте ссылку на видео из Youtube, Google Drive, Vkontakte, Vimeo или TED. </p>
           </div>
-
-          <InputText
-            placeholder={'Название видео (необязательно)'}
-            value = { this.state.name }
-            set = { ( value ) => this.setState({ name: value }) }
-          />
 
           <Button
             type = ""

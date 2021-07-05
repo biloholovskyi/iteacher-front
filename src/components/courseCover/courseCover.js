@@ -16,6 +16,8 @@ const CourseCover = ({course, small, template, extraSmall, medium, type}) => {
           ? 'linear-gradient( 32deg ,#333 -2%,#ccc 104%);'
           : course.background
       }
+      bgType={course.bg_type}
+      bgImage={course.background_image}
     >
       {/*Добавляем индикатор на не активный курс*/}
       {

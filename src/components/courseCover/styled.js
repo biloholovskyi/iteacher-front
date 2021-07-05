@@ -4,7 +4,7 @@ const CoverBlock = styled.div`
   position: relative;
   width: ${props => props.small ? '48px' : props.extraSmall ? '40px' : props.medium ? '76px' : '204px'};
   height: ${props => props.small ? '48px' : props.extraSmall ? '40px' : props.medium ? '76px' : '204px'};
-  background: ${props => props.bg};
+  background: ${props => props.bgType === 'image' ? `url(${props.bgImage})` : props.bg};
   border-radius: ${props => props.small || props.extraSmall || props.medium ? '4px' : '8px'};
   padding: ${props => props.small ? '5px' : props.extraSmall ? '3.75px' : props.medium ? '7px' : '15px'};
   display: flex;

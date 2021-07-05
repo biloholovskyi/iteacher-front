@@ -13,6 +13,7 @@ const TitleSection = styled.div`
   margin-bottom: 26px;
   width: 100%;
   justify-content: space-between;
+
   h1 {
     font-style: normal;
     font-weight: bold;
@@ -22,11 +23,11 @@ const TitleSection = styled.div`
 `
 
 const TabsHead = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    border-bottom: 1px solid #DDE1E6;
-    margin-bottom: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  border-bottom: 1px solid #DDE1E6;
+  margin-bottom: 32px;
 `
 
 const TabsHeadNav = styled.div`
@@ -37,63 +38,66 @@ const TabsHeadNav = styled.div`
   color: #697077;
   padding-bottom: 20px;
   cursor: pointer;
- &.tabs-active {
+
+  &.tabs-active {
     color: #000;
     padding-bottom: 18px;
     border-bottom: 2px solid #4F7FFF;
   }
+
   &:first-child {
     margin-right: 32px;
   }
 `
 
 const TabsBody = styled.div`
-   display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
 `
 
 const CommonWrap = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    flex-wrap: wrap;
-     width: 100%; 
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  width: 100%;
 `
 
 const BgWrap = styled.div`
-    position: relative;
-    width: 204px;
-    height: 204px;
-    background: ${props => props.bg};
-    border-radius: 8px;
-    padding: 15px;
-    display: flex;
-    align-items: flex-end;
-    margin-bottom: 16px;
-    
-    h3 {
-      font-style: normal;
-      font-weight: 600;
-      font-size: 28px;
-      line-height: 32px;
-      letter-spacing: -0.01em;
-      color: #fff;
-      background-color: transparent;
-    }
-    .firstLeter {
-        font-style: normal;
-        font-weight: 800;
-        font-size: 220px;
-        line-height: 100%;
-        background: transparent;
-        position: absolute;
-        bottom: -38px;
-        left: -7px;
-        letter-spacing: -0.01em;
-        color: rgba(255,255,255,.1);
-    }
+  position: relative;
+  width: 204px;
+  height: 204px;
+  background: ${props => props.bgType === 'image' ? `url(${props.bgImage})` : props.bg};
+  border-radius: 8px;
+  padding: 15px;
+  display: flex;
+  align-items: flex-end;
+  margin-bottom: 16px;
+
+  h3 {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 28px;
+    line-height: 32px;
+    letter-spacing: -0.01em;
+    color: #fff;
+    background-color: transparent;
+  }
+
+  .firstLeter {
+    font-style: normal;
+    font-weight: 800;
+    font-size: 220px;
+    line-height: 100%;
+    background: transparent;
+    position: absolute;
+    bottom: -38px;
+    left: -7px;
+    letter-spacing: -0.01em;
+    color: rgba(255, 255, 255, .1);
+  }
 `
 
 const TemplateItemWrap = styled.div`
@@ -102,10 +106,12 @@ const TemplateItemWrap = styled.div`
   height: 100%;
   // margin-right: 24px;
   margin-bottom: 24px;
+
   a {
     display: block;
     text-decoration: none;
   }
+
   .title {
     font-style: normal;
     font-weight: normal;
@@ -114,6 +120,7 @@ const TemplateItemWrap = styled.div`
     letter-spacing: -0.01em;
     color: #111111;
   }
+
   .desc {
     color: #697077;
     font-style: normal;
@@ -122,6 +129,7 @@ const TemplateItemWrap = styled.div`
     line-height: 20px;
     letter-spacing: -0.01em;
   }
+
   .price {
     font-style: normal;
     font-weight: 600;
@@ -150,27 +158,40 @@ const AddCourse = styled.button`
   flex-direction: row-reverse;
   cursor: pointer;
   margin-right: 18px;
+
   img {
     background-color: transparent;
-      width: 24px;
-      height: 24px;
-      object-fit: contain;
-      object-position: center;
-      margin-right: 8px;
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    object-position: center;
+    margin-right: 8px;
   }
+
   a {
     font-style: normal;
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 20px;
-  color: #FFFFFF;
-  text-decoration: none;
-  background-color: transparent;
-  align-items: center;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 20px;
+    color: #FFFFFF;
+    text-decoration: none;
+    background-color: transparent;
+    align-items: center;
     display: flex;
     flex-direction: row-reverse;
     padding: 14px 20px;
   }
 `
 
-export {AddCourse, Caption, AddCoursesWrap, TitleSection, TabsHead, TabsHeadNav, TabsBody, CommonWrap, BgWrap, TemplateItemWrap}
+export {
+  AddCourse,
+  Caption,
+  AddCoursesWrap,
+  TitleSection,
+  TabsHead,
+  TabsHeadNav,
+  TabsBody,
+  CommonWrap,
+  BgWrap,
+  TemplateItemWrap
+}

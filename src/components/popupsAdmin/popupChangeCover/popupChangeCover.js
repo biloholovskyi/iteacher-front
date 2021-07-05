@@ -39,35 +39,44 @@ const PopupChangeCover = (props) => {
   // для переключения табов
   const [isFirstTab, setIsFirstTab] = useState(true);
 
-  // загрузка изображения, пока не ясно какого
+  // загрузка изображения
   const uploadImage = async (file) => {
-    console.log(`Загружено изображение ${file.name}:`, file);
-
     const data = new FormData();
     data.set("background_image", file[0]);
+    data.set("bg_type", 'image');
 
+    // обновляем данные на сервере
     await axios.put(`${api.getApi()}api/template/${props.selectTemplate.id}/update/`, data)
       .then(res => {
-        // обновляем данные на сервере
-        // обновляем все шаблоны
-        // получаем нужным нам шаблон
-        const currentTemplateIndex = props.allTemplates.findIndex(t => t.id.toString() === props.id.toString());
-        const newArrayTemplates = [...props.allTemplates.slice(0, currentTemplateIndex), data, ...props.allTemplates.slice(currentTemplateIndex + 1)];
-        props.getAllTemplates(newArrayTemplates);
-        // обновляем выбраный шаблон
-        props.setTemplate(data);
-        props.close();
-      }).catch(error => console.log(error))
+        axios.get(`${api.getApi()}api/template/${props.selectTemplate.id}/`)
+          .then(res => {
+            // обновляем все шаблоны
+            // получаем нужным нам шаблон
+            const currentTemplateIndex = props.allTemplates.findIndex(t => t.id.toString() === props.selectTemplate.id.toString());
+            const newArrayTemplates = [...props.allTemplates.slice(0, currentTemplateIndex), {...res.data, background_image: `${api.getApi()}${res.data.background_image.slice(1)}`}, ...props.allTemplates.slice(currentTemplateIndex + 1)];
+            props.getAllTemplates(newArrayTemplates);
+            // обновляем выбраный шаблон
+            props.setTemplate({...res.data, background_image: `${api.getApi()}${res.data.background_image.slice(1)}`});
+            props.close();
+          })
+      }).catch(error => console.error(error))
   }
 
   const changeBackground = async (background) => {
     // заменить данные в текущем шаблоне
     const newTemplate = {
       ...props.selectTemplate,
-      background
+      background,
+      bg_type: 'gradient'
     }
 
+    const data = new FormData();
+    data.set("background", background);
+    data.set("bg_type", 'gradient');
+
     props.setTemplate(newTemplate)
+
+    console.log(newTemplate)
 
     // заменить данные в списке всех курсов
     // получаем index текущего шаблона
@@ -83,7 +92,7 @@ const PopupChangeCover = (props) => {
 
     const serverSettings = new ServerSettings();
 
-    await axios.put(`${serverSettings.getApi()}api/template/${newTemplate.id}/update/`, newTemplate)
+    await axios.put(`${serverSettings.getApi()}api/template/${newTemplate.id}/update/`, data)
       .then(res => {
         console.log(res);
         props.close();
@@ -126,8 +135,6 @@ const PopupChangeCover = (props) => {
 
             ))}
           </div>
-
-          // это экран изображения нам он пока что не нужен
           : <Dropzone onDrop={acceptedFile => uploadImage(acceptedFile)}>
 
             {({getRootProps, getInputProps, isDragActive}) => (

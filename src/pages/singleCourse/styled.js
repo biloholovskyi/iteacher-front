@@ -126,7 +126,7 @@ const MobileBlock = styled.div`
 
 const Banner = styled.div`
   width: 100%;
-  background: ${props => props.bg};
+  background: ${props => props.bgType === 'image' ? `url(${props.bgImage})` : props.bg};
   border-radius: 8px;
   height: 320px;
   position: relative;
@@ -135,6 +135,9 @@ const Banner = styled.div`
   align-items: flex-end;
   margin-bottom: 24px;
   overflow: hidden;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 
   h2 {
     background-color: transparent;

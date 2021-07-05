@@ -45,6 +45,8 @@ const InfoMenu = (props) => {
             ? <InfoCover
               func={props.func}
               image={props.image}
+              bgImage={props.bgImage}
+              bgType={props.bgType}
             />
 
             : _type === 'section'

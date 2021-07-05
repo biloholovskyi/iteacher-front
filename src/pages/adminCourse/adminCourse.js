@@ -87,6 +87,7 @@ const AdminCourse = (props) => {
     }
 
     // находим нужный нам шаблон из общего списка
+    console.log(props)
     const data = props.templates.find(t => t.id.toString() === props.templateID.toString());
     // передаем данные которые мы получили
     setTemplateData(data);
@@ -124,7 +125,7 @@ const AdminCourse = (props) => {
   }
 
 
-  const {level, price, background, lesson} = templateData;
+  const {level, price, background, lesson, background_image, bg_type} = templateData;
 
   // количество уроков
   let count_lessons = 0;
@@ -204,6 +205,8 @@ const AdminCourse = (props) => {
             type="cover"
             title="Обложка"
             image={background}
+            bgImage={background_image}
+            bgType={bg_type}
           />
 
           </div>

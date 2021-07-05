@@ -165,6 +165,17 @@ class SingleCourse extends Component {
       teacher: this.props.user.id,
       lessons
     }
+
+    const data = new FormData();
+    data.set('teacher', this.props.user.id);
+    data.set('lessons', lessons);
+    data.set('name', this.state.template.name);
+    data.set('level', this.state.template.level);
+    data.set('small_desc', this.state.template.small_desc);
+    data.set('background', this.state.template.background);
+    data.set('background_image', this.state.template.background_image);
+    data.set('bg_type', this.state.template.bg_type);
+
     // удаляем не нужные свойства
     delete newCourse.price;
     delete newCourse.id;
@@ -173,7 +184,7 @@ class SingleCourse extends Component {
     axios.defaults.xsrfCookieName = 'csrftoken';
 
     const server = new ServerSettings();
-    await axios.post(`${server.getApi()}api/courses/`, newCourse)
+    await axios.post(`${server.getApi()}api/courses/`, data)
       .then(res => {
         // обновляем данные пользователя в сторе
         const oldDataUser = this.props.user;
@@ -216,7 +227,7 @@ class SingleCourse extends Component {
             </Link>
             <div className='title'>{template.name}</div>
             <div className='desc'>{template.small_desc}</div>
-            <Banner bg={template.background}>
+            <Banner bg={template.background} bgType={template.bg_type} bgImage={template.background_image}>
               <div className="firstLeter">{template.name.substr(0, 1)}</div>
               <h2>{template.name}</h2>
             </Banner>
@@ -236,7 +247,7 @@ class SingleCourse extends Component {
               </div>
               <div className="infoItem">
                 <div className="top">
-                  <h4>{template.average_lessons_time}</h4>
+                  <h4>60</h4>
                   <p>минут</p>
                 </div>
                 <div className="bottom">Длительность
