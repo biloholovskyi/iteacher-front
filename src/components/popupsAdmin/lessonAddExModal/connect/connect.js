@@ -61,7 +61,7 @@ const Connect = ({
         setWords([
           {
             start: '',
-            end: 'True'
+            end: ''
           }
         ])
       }

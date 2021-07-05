@@ -307,7 +307,7 @@ class SingleLesson extends Component {
 
   render() {
     const {redirect, data, loading} = this.state;
-
+    console.log(data)
     return (
       <>
         {/*если нету урока*/}

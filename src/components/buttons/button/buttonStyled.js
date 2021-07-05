@@ -52,7 +52,7 @@ const ButtonAdd = styled(ButtonMain)`
 const ButtonAddRound = styled(ButtonAdd)`
   padding: 28px;
   border-radius: 100%;
-  position: sticky;
+  position: sticky !important;
   bottom: 16px;
   width: 56px;
   height: 56px;

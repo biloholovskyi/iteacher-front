@@ -1,12 +1,18 @@
 import styled from "styled-components";
 
 const CleanWrapp = styled.div`
-
   width: 100%;
   display: flex;
   flex-flow: column nowrap;
   justify-content: center;
-  align-items: center;
+  align-items: flex-end;
+  
+  .flex-wrap {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
   .lesson {
 
@@ -20,11 +26,11 @@ const CleanWrapp = styled.div`
   }
 
   span {
-
+    width: 100%;
     font-size: 16px;
     line-height: 22px;
     color: #697077;
-
+    text-align: center;
   }
 
   .clear_title {

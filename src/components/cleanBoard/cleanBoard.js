@@ -10,7 +10,9 @@ const CleanBoard = ({subtitle, descr, textButton, func, open}) => (
 
   <CleanWrapp>
 
-    <img src={empty} className="lesson" alt={'image'}/>
+    <div className="flex-wrap">
+      <img src={empty} className="lesson" alt={'image'}/>
+    </div>
 
     <span className="clear_title">
       {subtitle}

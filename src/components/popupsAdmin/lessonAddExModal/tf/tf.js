@@ -193,7 +193,7 @@ const TF = ({
 
           <Style.AddMore onClick={addMore}>
             <img src={plus} alt="plus"/>
-            <p>Добавить утрвеждение</p>
+            <p>Добавить утверждение</p>
           </Style.AddMore>
         </Style.QuestionsBlock>
 

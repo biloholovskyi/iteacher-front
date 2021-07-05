@@ -8,7 +8,8 @@ import * as Style from '../style'
 const Question = ({connect, data}) => {
   return (
     <Style.Question>
-      {connect
+      {
+        connect
         ? (
           <SimpleInput
             type={'text'}
