@@ -2,6 +2,8 @@ import React, {useState, useEffect} from 'react';
 import {Link} from "react-router-dom";
 import {connect} from "react-redux";
 
+import {setTopAlertText} from "../../actions";
+
 import CourseItem from "./courseItem/courseItem";
 import NoneCourses from "./noneCourse/noneCourse";
 
@@ -13,11 +15,12 @@ import arrow from '../../assets/media/icon/arrow.svg';
 import sort from '../../assets/media/icon/sort.svg';
 import plus from '../../assets/media/icon/plus-blue.svg';
 
-const Courses = ({user}) => {
+const Courses = ({user, setTopAlertText}) => {
   const [courses, setCourses] = useState([])
 
   // обновляем список курсов
   useEffect(() => {
+    setTopAlertText(false);
     if (user) {
       setCourses(user.courses)
     }
@@ -80,6 +83,8 @@ const mapStateToProps = (state) => {
   }
 };
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  setTopAlertText
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Courses);

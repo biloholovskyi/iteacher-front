@@ -48,11 +48,13 @@ const Schedules = ({teacher, user}) => {
         // отбираем только события текущего пользователя
         // если это преподаватель
         if (user.type === 'teacher') {
-          const list = res.data.filter(event => parseInt(event.user) === parseInt(user.id));
+          const list = res.data.filter(event => parseInt(event.user) === parseInt(user.id))
+            .filter(event => event.status !== 'completed');
           setList(list);
         } else {
           // если это студент
-          const list = res.data.filter(event => parseInt(event.student) === parseInt(user.id));
+          const list = res.data.filter(event => parseInt(event.student) === parseInt(user.id))
+            .filter(event => event.status !== 'completed');
           setList(list);
         }
       })

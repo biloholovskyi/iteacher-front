@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import {Redirect} from "react-router";
 import axios from "axios";
+import {useHistory} from "react-router";
 
 import {setTopAlertText, setCRactiveWord, setCRactiveEmpty} from "../../actions";
 
@@ -28,7 +29,7 @@ class SingleLesson extends Component {
       redirect: false,
       data: null,
       activeSection: 0,
-      chatData: []
+      chatData: [],
     }
     this.ClassRoomService = new ClassRoom()
     this.chatSocket = null;
@@ -40,15 +41,20 @@ class SingleLesson extends Component {
     this.createWebsocket();
     window.addEventListener('beforeunload', () => {
       // отключаемся от соиденения сокета
-      this.chatSocket.send(JSON.stringify({
-        'message': {
-          type: 'disconnect',
-          user: {
-            type: this.props.user.type,
-            id: this.props.user.id
+      if (this.chatSocket.readyState === 1) {
+        this.props.setTopAlertText(false);
+        this.chatSocket.send(JSON.stringify({
+          'message': {
+            type: 'disconnect',
+            user: {
+              type: this.props.user.type,
+              id: this.props.user.id
+            }
           }
-        }
-      }));
+        }));
+      } else {
+        this.props.setTopAlertText(false);
+      }
     })
   }
 
@@ -62,15 +68,19 @@ class SingleLesson extends Component {
     this.props.setTopAlertText(false);
 
     // отключаемся от соиденения сокета
-    this.chatSocket.send(JSON.stringify({
-      'message': {
-        type: 'disconnect',
-        user: {
-          type: this.props.user.type,
-          id: this.props.user.id
+    if (this.chatSocket.readyState === 1) {
+      this.chatSocket.send(JSON.stringify({
+        'message': {
+          type: 'disconnect',
+          user: {
+            type: this.props.user.type,
+            id: this.props.user.id
+          }
         }
-      }
-    }));
+      }));
+    } else {
+      this.props.setTopAlertText(false);
+    }
 
     this.chatSocket.close();
   }
@@ -159,6 +169,10 @@ class SingleLesson extends Component {
       this.setState({chatData: data});
     }
 
+    const endClassRoom = () => {
+      this.setState({redirect: true})
+    }
+
     // прослушиваем сообщения
     this.chatSocket.onmessage = (e) => onMessage(
       e,
@@ -170,7 +184,8 @@ class SingleLesson extends Component {
       setActiveSection,
       setActiveWordInRedux,
       setActiveEmptyInRedux,
-      updateChatData
+      updateChatData,
+      endClassRoom
     );
 
     this.chatSocket.onopen = () => {
@@ -204,6 +219,9 @@ class SingleLesson extends Component {
         this.setState({redirect: true})
       } else {
         // если урок найден
+        if(res.data.status === 'completed') {
+          this.setState({redirect: true});
+        }
         const activeSection = JSON.parse(res.data.lesson).active_section || 0;
         this.setState({loading: false, data: res.data, activeSection})
 
@@ -313,6 +331,51 @@ class SingleLesson extends Component {
     this.setState({chatData: data})
   }
 
+  // завершение урока
+  endClassRoom = async () => {
+    // меняем статус урока на сервере
+    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
+    axios.defaults.xsrfCookieName = 'csrftoken';
+
+    // получаем данные урока
+    const serverSettings = new ServerSettings();
+    await axios.put(`${serverSettings.getApi()}api/classrooms/${this.state.data.id}/update/`, {
+      ...this.state.data,
+      status: 'completed'
+    })
+      .then(() => {
+
+        axios.get(`${serverSettings.getApi()}api/schedules/`)
+          .then(res => {
+            console.log(res.data);
+            const needEvent = res.data.find(event => parseInt(event.class_room) === parseInt(this.state.data.id));
+
+            axios.put(`${serverSettings.getApi()}api/schedules/${needEvent.id}/update/`, {
+              ...needEvent,
+              status: 'completed'
+            })
+              .then(() => {
+                this.chatSocket.send(JSON.stringify({
+                  'message': {
+                    type: 'end_class_room',
+                    user: {
+                      type: this.props.user.type,
+                      id: this.props.user.id
+                    }
+                  }
+                }));
+
+                this.setState({redirect: true});
+              })
+              .catch(error => console.error(error))
+          })
+          .catch(error => console.error(error))
+      })
+      .catch(error => console.error(error));
+    console.log(this.props)
+    console.log(this.state)
+  }
+
   render() {
     const {redirect, data, loading} = this.state;
     
@@ -333,6 +396,7 @@ class SingleLesson extends Component {
                   text={'Закончить задание'}
                   type={'button'}
                   width={197}
+                  func={this.endClassRoom}
                 />
               </LessonHeader>
 

@@ -1,4 +1,18 @@
-const onMessage = (e, socket, user, setTopAlertText, teacherModalConnect, setDataInState, setSection, setActiveWordInRedux, setActiveEmptyInRedux, updateChatData) => {
+import {useHistory} from "react-router";
+
+const onMessage = (
+  e,
+  socket,
+  user,
+  setTopAlertText,
+  teacherModalConnect,
+  setDataInState,
+  setSection,
+  setActiveWordInRedux,
+  setActiveEmptyInRedux,
+  updateChatData,
+  endClassRoom
+) => {
   const data = JSON.parse(e.data);
 
   // проверяем сообщение от нас или нет
@@ -102,6 +116,10 @@ const onMessage = (e, socket, user, setTopAlertText, teacherModalConnect, setDat
 
       case 'chat_message':
         updateChatData(data.message.data)
+        break
+
+      case 'end_class_room':
+        endClassRoom();
         break
     }
   }

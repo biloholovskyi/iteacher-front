@@ -32,8 +32,10 @@ const VideoBlock = ({ user, classRoom }) => {
       });
 
     return () => {
-      socketRef.current.close();
-      connectionRef.current.destroy();
+      if(socketRef.current) {
+        socketRef.current.close();
+        connectionRef.current.destroy();
+      }
     };
   }, []);
 
