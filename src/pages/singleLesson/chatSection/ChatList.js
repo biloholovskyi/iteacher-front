@@ -6,11 +6,10 @@ import {ChatBody} from "./ChatStyled";
 const ChatList = ({posts}) => {
 
   const elements = posts.map((item) =>{
-    const {id, ...itemProps} = item;
     return (
       <ChatItem
-        key={id}
-        {...itemProps}
+        key={item.id}
+        post={item}
       />
     )
   });

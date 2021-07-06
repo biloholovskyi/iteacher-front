@@ -27,7 +27,8 @@ class SingleLesson extends Component {
       loading: true,
       redirect: false,
       data: null,
-      activeSection: 0
+      activeSection: 0,
+      chatData: []
     }
     this.ClassRoomService = new ClassRoom()
     this.chatSocket = null;
@@ -154,6 +155,10 @@ class SingleLesson extends Component {
       this.props.setCRactiveEmpty(empty);
     }
 
+    const updateChatData = (data) => {
+      this.setState({chatData: data});
+    }
+
     // прослушиваем сообщения
     this.chatSocket.onmessage = (e) => onMessage(
       e,
@@ -164,7 +169,8 @@ class SingleLesson extends Component {
       setDataInState,
       setActiveSection,
       setActiveWordInRedux,
-      setActiveEmptyInRedux
+      setActiveEmptyInRedux,
+      updateChatData
     );
 
     this.chatSocket.onopen = () => {
@@ -303,6 +309,10 @@ class SingleLesson extends Component {
     }));
   }
 
+  chatSendMessage = (data) => {
+    this.setState({chatData: data})
+  }
+
   render() {
     const {redirect, data, loading} = this.state;
     
@@ -343,7 +353,7 @@ class SingleLesson extends Component {
                       setActiveEmptyItem={this.setActiveEmptyItem}
                     />
 
-                    <ChatSection/>
+                    <ChatSection socket={this.chatSocket} data={this.state.chatData} send={this.chatSendMessage}/>
 
                   </LessonBody>
                 </div>

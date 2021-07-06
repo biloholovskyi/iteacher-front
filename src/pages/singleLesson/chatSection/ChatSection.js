@@ -30,7 +30,7 @@ export class ChatSection extends Component {
         <TabBody>
           {
             this.state.tabStatus === 'chat'
-              ?   <TabChat/>
+              ?   <TabChat socket={this.props.socket} data={this.props.data} send={this.props.send}/>
               :   <TabNote/>
           }
         </TabBody>
