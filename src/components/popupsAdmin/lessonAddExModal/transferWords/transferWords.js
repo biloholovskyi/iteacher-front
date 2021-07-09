@@ -142,7 +142,7 @@ const TransferWords = ({
         <Style.TextBlock>
           <div className="title">Текст задания</div>
           <div className="desc">Напишите текст. Слова и фразы, которые нужно вставить из рамочки, заключите в квадратные
-            скобки.
+            скобки. В конце каждого предложения ставьте точку или запятую.
           </div>
         </Style.TextBlock>
 

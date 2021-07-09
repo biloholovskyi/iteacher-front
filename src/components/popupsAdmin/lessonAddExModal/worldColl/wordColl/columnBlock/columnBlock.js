@@ -3,6 +3,7 @@ import React from "react";
 import MainInput from "../../../../../inputs/mainInput/mainInput";
 
 import * as Style from './style'
+import {TextBlock} from "../../../sentenceOfWords/style";
 
 const ColumnBlock = ({col}) => {
   // список слов
@@ -19,6 +20,9 @@ const ColumnBlock = ({col}) => {
   return (
     <Style.Wrapper>
       <Style.Title>Колонка</Style.Title>
+      <TextBlock>
+        <div className="desc">Напишите слова для этой колонки через пробел</div>
+      </TextBlock>
       <MainInput
         type={'text'}
         label={'Название колонки'}
