@@ -79,9 +79,14 @@ const WordColl = ({
     setColumn([...column, {name: '', words: ''}])
   }
 
+  const makeRandomArr = () => {
+    return Math.random() - 0.5;
+  }
+
   // создание задания
   const createTask = async (e) => {
     e.preventDefault();
+
     const columns = e.target.name_column;
     const words = e.target.words_column;
     // массив колонок
@@ -92,7 +97,8 @@ const WordColl = ({
       // название колонки
       const name = col.value;
       // слова в колонке
-      const wordArray = words[counter].value.split(' ');
+      const wordArray = words[counter].value.split(', ');
+      wordArray.sort(makeRandomArr);
       counter++;
       listColumns.push({name, words: wordArray});
     })
@@ -132,7 +138,8 @@ const WordColl = ({
       // название колонки
       const name = col.value;
       // слова в колонке
-      const wordArray = words[counter].value.split(' ');
+      const wordArray = words[counter].value.split(', ');
+      wordArray.sort(makeRandomArr);
       counter++;
       listColumns.push({name, words: wordArray});
     })

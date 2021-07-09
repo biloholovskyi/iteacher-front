@@ -21,7 +21,7 @@ const ColumnBlock = ({col}) => {
     <Style.Wrapper>
       <Style.Title>Колонка</Style.Title>
       <TextBlock>
-        <div className="desc">Напишите слова для этой колонки через пробел</div>
+        <div className="desc">Напишите слова для этой колонки через ", "</div>
       </TextBlock>
       <MainInput
         type={'text'}

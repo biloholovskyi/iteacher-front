@@ -52,10 +52,20 @@ const SentenceOfWords = ({
     }
   }, [])
 
+  const makeRandomArr = () => {
+    return Math.random() - 0.5;
+  }
+
   // создание задания
   const createTask = async (e) => {
     e.preventDefault();
-    const text = e.target.text.value;
+    let text = e.target.text.value;
+    const sortArray = text.split('/').sort(makeRandomArr)
+
+    text = '';
+    sortArray.forEach(word => {
+      text += word + '/';
+    })
 
     // создаем объект задания
     const task = {
