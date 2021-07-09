@@ -133,23 +133,23 @@ const CalendarSchedule = ({user}) => {
 
           <div className="arrow"/>
 
-          <SearchBlock>
-            <img src={search} alt="icon"/>
-            <input type="text" placeholder="Поиск"/>
+          {/*<SearchBlock>*/}
+          {/*  <img src={search} alt="icon"/>*/}
+          {/*  <input type="text" placeholder="Поиск"/>*/}
 
-            <InputItem>
-              Brandon Garcia
-              <img src={close} alt="icon"/>
-            </InputItem>
+          {/*  <InputItem>*/}
+          {/*    Brandon Garcia*/}
+          {/*    <img src={close} alt="icon"/>*/}
+          {/*  </InputItem>*/}
 
-          </SearchBlock>
+          {/*</SearchBlock>*/}
 
-          <MainDropList
-            name={'calendar'}
-            type={'text'}
-            options={dropListName}
-            onChange={selectCalendarType}
-          />
+          {/*<MainDropList*/}
+          {/*  name={'calendar'}*/}
+          {/*  type={'text'}*/}
+          {/*  options={dropListName}*/}
+          {/*  onChange={selectCalendarType}*/}
+          {/*/>*/}
 
         </SubCaptionBlock>
 

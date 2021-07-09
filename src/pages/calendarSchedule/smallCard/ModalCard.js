@@ -1,44 +1,144 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
+import {useHistory} from "react-router";
 import axios from "axios";
+
+import MainButton from "../../../components/buttons/mainButton/mainButton";
 
 import {ModalCardWrap, Caption, InfoBlock} from './styled';
 
 import closed from '../../../assets/media/icon/close.svg';
-import editor from '../../../assets/media/icon/edit.svg';
+import editor from './media/edit.svg'
 import ava from "../../../assets/media/icon/avatar.svg";
 
 import ServerSettings from "../../../service/serverSettings";
+const server = new ServerSettings();
 
-const ModalCard = ({close, event, course, lesson}) => {
-
+const ModalCard = ({close, event, course, lesson, studentData}) => {
   const [student, setStudent] = useState('');
 
-  // получаем нужного студента
-  const getStudent = async () => {
+  const history = useHistory();
+
+  useEffect(() => {
+    setStudent(studentData);
+  }, [studentData])
+
+  // создание урока (классной комнаты)
+  const startLesson = async () => {
+    let idClassRoom = null;
     axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
     axios.defaults.xsrfCookieName = 'csrftoken';
 
-    const server = new ServerSettings();
-    await axios.get(`${server.getApi()}api/users/${course.student}/`)
+    // получаем данные урока
+    await axios.get(`${server.getApi()}api/lesson/${event.lesson}/`)
       .then(res => {
-        setStudent(res.data);
+        const data = {
+          name: res.data.name,
+          lesson: JSON.stringify(res.data),
+          lesson_id: event.lesson,
+          status: 'progress',
+          status_teacher: 'false',
+          status_student: 'false',
+          student: event.student,
+          teacher: event.user
+        }
+
+        // получаем данные курса для формирования JSON
+        axios.get(`${server.getApi()}api/courses/${event.course}/`)
+          .then(res => {
+            data.course = JSON.stringify(res.data)
+          })
+          .then(() => {
+            // создаем новую комнату
+            axios.post(`${server.getApi()}api/classrooms/`, data)
+              .then(res => {
+                idClassRoom = res.data.id
+                // обновляем статус события
+                const dataEvent = {
+                  ...event,
+                  status: 'process',
+                  class_room: idClassRoom
+                }
+
+                axios.put(`${server.getApi()}api/schedules/${event.id}/update/`, dataEvent)
+                  .then(() => {
+                    history.push('/class-room/' + idClassRoom)
+                  })
+                  .catch(error => console.error(error));
+              })
+              .catch(error => console.error(error));
+          })
+          .catch(er => console.error(er))
       })
-      .catch(error => console.error(error))
+      .catch(error => console.error(error));
   }
 
-  if (course.student) {
-    getStudent();
+  const [time, setTime] = useState(null);
+  // добавляем 0
+  const addZero = (number) => {
+    return parseInt(number) < 10 ? `0${number}` : number;
   }
+  // запускаем таймер
+  setInterval(() => {
+    // получаем текущее время по москве
+    const getCurrentTime = () => {
+      const time = new Date(Date.now());
+      const year = time.getUTCFullYear();
+      const month = time.getUTCMonth();
+      const day = time.getUTCDate();
+      const second = time.getUTCSeconds();
+      const hour = time.getUTCHours();
+      const minute = time.getUTCMinutes();
+
+      const needTime = new Date(Date.UTC(year, month, day, hour, minute, second));
+      return needTime.getTime();
+    }
+
+    const currentTime = getCurrentTime();
+
+    // получаем время начала урока
+    const getStartTime = () => {
+      const stringDate = `${event.date.split('.')[2]}-${event.date.split('.')[1]}-${event.date.split('.')[0]} ${event.time}:00`
+      const time = new Date(stringDate);
+      return time.getTime();
+    }
+
+    const startTime = getStartTime();
+
+    // получаем разницу во времени
+    const timeToStart = startTime - currentTime;
+
+    // переводим в читабельную строку
+    let hour = timeToStart / 3600000;
+    hour = hour.toString().split('.')[0];
+
+    let minute = timeToStart / 60000;
+    // отнимаем часы из минут
+    minute = minute - (parseInt(hour) * 60)
+    minute = minute.toString().split('.')[0];
+
+    let second = timeToStart / 1000;
+    // отинмаем минуты из секунд
+    second = second - (parseInt(timeToStart / 60000) * 60);
+    second = second.toString().split('.')[0];
+
+    let timeString = `${addZero(hour)}:${addZero(minute)}:${addZero(second)}`;
+    if (timeToStart < 0) {
+      timeString = false;
+    }
+    setTime(timeString)
+  }, 1000)
 
   return (
     <ModalCardWrap className={'card'}>
-      <div className="indicator"/>
       <div className="right">
 
         <Caption>
           <div className="title_block">
-            <div className="title">{lesson.name}</div>
-            <div className="date">{event.date} / {event.time}</div>
+            <img src={student && student.photo ? `${server.getApi()}${student.photo.slice(1)}` : ava} alt="photo" className="photo"/>
+            <div className="info-block">
+              <div className="title">{student.name}</div>
+              <div className="date">{event.date}, {event.time}</div>
+            </div>
           </div>
           <div className="btn_block">
             <button><img src={editor} alt="icon"/></button>
@@ -53,17 +153,37 @@ const ModalCard = ({close, event, course, lesson}) => {
             <span>Курс</span>
             <div className="course_name">{course.name}</div>
           </div>
-          <div className="info">
-            <span>Студент</span>
+          <div className="info info--last">
+            <span>Занятие</span>
             <div className="student_name">
-              {
-                student
-                  ? <img src={student.photo} alt="photo" className={'photo'}/>
-                  : <img src={ava} alt="photo" className={'photo'}/>
-              }
-              <div className="name">{student.name ? student.name : student.email}</div>
+              <div className="name">{lesson.name}</div>
             </div>
           </div>
+          {
+            event.status !== 'process' ? (
+              <div className={'timer-block'}>
+                <div className="timer-block__text">{time ? 'Начнется через' : 'Скоро начнется'}</div>
+                <div className="timer-block__info">
+                  <div className="timer">{time}</div>
+                  <MainButton
+                    text={'Начать'}
+                    func={startLesson}
+                  />
+                </div>
+              </div>
+            ) : (
+              <div className={'timer-block'}>
+                <div className="timer-block__text">Урок начался!</div>
+                <div className="timer-block__info">
+                  <MainButton
+                    text={'Войти'}
+                    func={() => history.push('/class-room/' + event.class_room)}
+                  />
+                </div>
+              </div>
+            )
+          }
+
         </InfoBlock>
 
       </div>

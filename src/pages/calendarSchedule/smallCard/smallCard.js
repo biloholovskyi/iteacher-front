@@ -1,17 +1,25 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {useHistory} from "react-router";
+import axios from "axios";
 
 import ModalCard from './ModalCard';
 
 import {SmallCardWrap, ActiveCard} from "./styled";
 
 import arrow from '../../../assets/media/icon/arrow-modal.svg'
+import ava from '../../../assets/media/icon/avatar.svg'
+
+import ServerSettings from "../../../service/serverSettings";
+
+const api = new ServerSettings();
 
 const SmallCard = ({events, course}) => {
   const history = useHistory();
 
   const [modalCard, setModalCard] = useState(false);
   const [lessonData, setLessonData] = useState({})
+  // данные студента
+  const [studentData, setStudentData] = useState(null)
 
   useEffect(() => {
     // получаем нужный урок
@@ -38,33 +46,42 @@ const SmallCard = ({events, course}) => {
     document.addEventListener("click", (e) => closeOutsideClick(e));
   }, []);
 
+  // получаем данные студента
+  const getStudentData = async () => {
+    await axios.get(`${api.getApi()}api/users/${events.user}/`)
+      .then(res => {
+        setStudentData(res.data);
+      })
+      .catch(error => console.error(error))
+  }
+
+  useEffect(() => {
+    getStudentData().catch(error => console.error(error));
+  }, [events]);
+
+
   return (
     <>
       {
-        events.status === 'process'
-          ? (
-            <ActiveCard
-              id={events.id}
-              onClick={() => history.push('/class-room/' + events.class_room)}
-            >
-              <div>Урок начался</div>
-              <div>Нажмите чтобы войти</div>
-              <img src={arrow} alt="icon"/>
-            </ActiveCard>
-          ) : (
-            <SmallCardWrap
-              id={events.id}
-              ref={selectListEl}
-              onClick={() => setModalCard(true)}>
-              <div className="indicator"/>
-              <div className="title">{lessonData.name}</div>
-            </SmallCardWrap>
-          )
+        events.status !== 'completed' &&
+        (
+          <SmallCardWrap
+            id={events.id}
+            ref={selectListEl}
+            onClick={() => setModalCard(true)}
+          >
+            {/*<div className="indicator"/>*/}
+            <img src={studentData && studentData.photo ? `${api.getApi()}${studentData.photo.slice(1)}` : ava}
+                 alt="photo" className="photo"/>
+            <div className="title">{studentData && studentData.name}</div>
+          </SmallCardWrap>
+        )
       }
 
       {
         modalCard && (
           <ModalCard
+            studentData={studentData}
             event={events}
             course={course}
             lesson={lessonData}

@@ -9,15 +9,24 @@ const SmallCardWrap = styled.div`
   overflow: hidden;
   height: 40px;
   flex-grow: 1;
-  background: rgba(79, 127, 255, 0.1);
-  border-radius: 4px;
   align-items: center;
   justify-content: flex-start;
-  padding: 0 16px;
+  padding: 8px 12px;
   position: relative;
+  background: #FFFFFF;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.16), 0 0.5px 0.5px rgba(0, 0, 0, 0.1), 0 0.1px 0.1px rgba(0, 0, 0, 0.07);
+  border-radius: 4px;
 
   @media (max-width: 1260px) {
     padding: 0 10px;
+  }
+  
+  .photo {
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    border-radius: 50%;
+    margin-right: 12px;
   }
 
   .title {
@@ -26,7 +35,7 @@ const SmallCardWrap = styled.div`
     font-size: 14px;
     line-height: 20px;
     letter-spacing: -0.01em;
-    color: #4F7FFF;
+    color: #111111;
 
     @media (max-width: 1260px) {
       font-size: 12px;
@@ -58,7 +67,7 @@ const ModalCardWrap = styled.div`
   z-index: 9;
   width: 100%;
   padding: 16px;
-  min-width: 320px;
+  min-width: 370px;
   top: 1px;
   left: 1px;
   box-shadow: 0px 0px 6px rgb(105 112 119 / 8%), 0px 4px 8px rgb(105 112 119 / 10%);
@@ -66,7 +75,14 @@ const ModalCardWrap = styled.div`
   display: flex;
   align-items: flex-start;
   overflow: hidden;
-  min-width: fit-content;
+  
+  .photo {
+    width: 40px;
+    max-width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 16px;
+  }
 
   .indicator {
     background: #4F7FFF;
@@ -101,13 +117,12 @@ const Caption = styled.div`
 
   .title_block {
     display: flex;
-    flex-direction: column;
 
     .title {
       font-style: normal;
-      font-weight: 600;
-      font-size: 18px;
-      line-height: 24px;
+      font-weight: normal;
+      font-size: 16px;
+      line-height: 22px;
       letter-spacing: -0.01em;
       color: #111111;
       
@@ -147,6 +162,10 @@ const Caption = styled.div`
 
     & button:first-child {
       margin-right: 16px;
+      
+      img {
+        width: 16px;
+      }
     }
   }
 `
@@ -156,10 +175,48 @@ const InfoBlock = styled.div`
   flex-direction: column;
   width: 100%;
 
+  .timer-block {
+    background: rgba(79, 127, 255, 0.1);
+    border: 1px solid rgba(79, 127, 255, 0.1);
+    border-radius: 8px;
+    padding: 4px 4px 4px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    
+    &__text {
+      font-style: normal;
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 20px;
+      letter-spacing: -0.01em;
+      color: #4F7FFF;
+    }
+    
+    &__info {
+      display: flex;
+      align-items: center;
+      
+      .timer {
+        margin-right: 12px;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 20px;
+        letter-spacing: -0.01em;
+        color: #4F7FFF;
+      }
+    }
+  }
+
   .info {
     display: flex;
     align-items: center;
     justify-content: flex-start;
+    
+    &--last {
+      margin-bottom: 16px;
+    }
 
     span {
       font-style: normal;
