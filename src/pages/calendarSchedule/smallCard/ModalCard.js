@@ -1,8 +1,9 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useRef} from "react";
 import {useHistory} from "react-router";
 import axios from "axios";
 
 import MainButton from "../../../components/buttons/mainButton/mainButton";
+import ModalButtons from "./modalButtons/modalButtons";
 
 import {ModalCardWrap, Caption, InfoBlock} from './styled';
 
@@ -16,7 +17,15 @@ const server = new ServerSettings();
 const ModalCard = ({close, event, course, lesson, studentData}) => {
   const [student, setStudent] = useState('');
 
+  // состояние модалки "редактировать/удалить"
+  const [buttonsModal, setButtonsModal] = useState(false)
+
   const history = useHistory();
+
+  useEffect(() => {
+    document.addEventListener("click", (e) => closeModalButtons(e));
+  }, []);
+
 
   useEffect(() => {
     setStudent(studentData);
@@ -128,9 +137,24 @@ const ModalCard = ({close, event, course, lesson, studentData}) => {
     setTime(timeString)
   }, 1000)
 
+  // ссылка на модалку
+  const modalEl = useRef(null);
+  // закрытие модалки "редактировать/удалить"
+  const closeModalButtons = (e) => {
+    // проверяем был ли клик по списку
+    if (modalEl.current === e.target && !modalEl.current.contains(e.target)) {
+      setButtonsModal(false);
+    }
+  }
+
   return (
     <ModalCardWrap className={'card'}>
       <div className="right">
+
+        {/*модалка "редактировать/удалить"*/}
+        {
+          buttonsModal && <ModalButtons/>
+        }
 
         <Caption>
           <div className="title_block">
@@ -141,7 +165,9 @@ const ModalCard = ({close, event, course, lesson, studentData}) => {
             </div>
           </div>
           <div className="btn_block">
-            <button><img src={editor} alt="icon"/></button>
+            <button onClick={() => {
+              setButtonsModal(true)
+            }}><img src={editor} alt="icon"/></button>
             <button
               onClick={close}
             ><img src={closed} alt="icon"/></button>

@@ -13,7 +13,7 @@ import ServerSettings from "../../../service/serverSettings";
 const api = new ServerSettings();
 
 const SmallCard = ({events, course}) => {
-  console.log(events)
+
   const [modalCard, setModalCard] = useState(false);
   const [lessonData, setLessonData] = useState({})
   // данные студента
@@ -25,7 +25,7 @@ const SmallCard = ({events, course}) => {
     setLessonData(JSON.parse(course.lessons)[lessonIndex]);
   }, [])
 
-  // ссылка на модалку
+  // ссылка на карточку
   const selectListEl = useRef(null);
 
   const closeCardModal = () => {
@@ -34,10 +34,13 @@ const SmallCard = ({events, course}) => {
 
   // закрытие при клике вне списка области
   const closeOutsideClick = (e) => {
-    // проверяем был ли клик по списку
-    if (selectListEl.current && !selectListEl.current.contains(e.target)) {
-      setModalCard(false);
-    }
+    // // проверяем был ли клик по списку
+    // if (e.target !== selectListEl.current && !selectListEl.current.contains(e.target)) {
+    //   console.log(e.target !== selectListEl.current)
+    //   console.log(e.target)
+    //   console.log(selectListEl.current)
+    //   setModalCard(false);
+    // }
   }
 
   useEffect(() => {
