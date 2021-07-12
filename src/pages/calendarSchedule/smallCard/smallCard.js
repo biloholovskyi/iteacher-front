@@ -4,9 +4,8 @@ import axios from "axios";
 
 import ModalCard from './ModalCard';
 
-import {SmallCardWrap, ActiveCard} from "./styled";
+import {SmallCardWrap} from "./styled";
 
-import arrow from '../../../assets/media/icon/arrow-modal.svg'
 import ava from '../../../assets/media/icon/avatar.svg'
 
 import ServerSettings from "../../../service/serverSettings";
@@ -14,8 +13,7 @@ import ServerSettings from "../../../service/serverSettings";
 const api = new ServerSettings();
 
 const SmallCard = ({events, course}) => {
-  const history = useHistory();
-
+  console.log(events)
   const [modalCard, setModalCard] = useState(false);
   const [lessonData, setLessonData] = useState({})
   // данные студента
@@ -48,7 +46,7 @@ const SmallCard = ({events, course}) => {
 
   // получаем данные студента
   const getStudentData = async () => {
-    await axios.get(`${api.getApi()}api/users/${events.user}/`)
+    await axios.get(`${api.getApi()}api/users/${events.student}/`)
       .then(res => {
         setStudentData(res.data);
       })
