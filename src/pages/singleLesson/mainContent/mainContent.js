@@ -13,7 +13,11 @@ const MainContent = ({data, tasks, wsUpdate, nextSection, activeSection, setActi
   const [sectionName, setSectionName] = useState(null);
 
   useEffect(() => {
-    setSectionName(JSON.parse(data.lesson).sections[activeSection].name);
+    try {
+      setSectionName(JSON.parse(data.lesson).sections[activeSection].name);
+    } catch (e) {
+      setSectionName('')
+    }
   }, [data, activeSection]);
 
 
@@ -32,7 +36,11 @@ const MainContent = ({data, tasks, wsUpdate, nextSection, activeSection, setActi
   // задаем задания
   useEffect(() => {
     if(!sections) {return}
-    setTasks(sections[activeSection].tasks);
+    try {
+      setTasks(sections[activeSection].tasks);
+    } catch (e) {
+      setTasks([]);
+    }
   }, [sections]);
 
 
