@@ -36,6 +36,8 @@ const SmallCardWrap = styled.div`
     line-height: 20px;
     letter-spacing: -0.01em;
     color: #111111;
+    width: ${props => props.titleW + 'px'};
+    overflow: hidden;
 
     @media (max-width: 1260px) {
       font-size: 12px;
@@ -46,7 +48,10 @@ const SmallCardWrap = styled.div`
       font-size: 11px;
       line-height: 18px;
     }
-
+    
+    @media (max-width: 991px) {
+      width: auto;
+    }
   }
 
   .indicator {

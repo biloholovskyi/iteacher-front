@@ -19,6 +19,26 @@ const SmallCard = ({events, course, update}) => {
   // данные студента
   const [studentData, setStudentData] = useState(null)
 
+  // ширина эмейла студента
+  const [titleW, setTitleW] = useState(0)
+
+  useEffect(() => {
+    setTitleWidthOnResize();
+    window.addEventListener('resize', setTitleWidthOnResize)
+  }, [])
+
+  const setTitleWidthOnResize = () => {
+    try {
+      if(window.innerWidth > 991) {
+        const k = window.innerWidth < 1260 ? 64 : 68;
+        const width = selectListEl.current.parentNode.parentNode.parentNode.parentNode.childNodes[0].childNodes[0].childNodes[1].clientWidth - k;
+        setTitleW(width)
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
   useEffect(() => {
     // получаем нужный урок
     const lessonIndex = JSON.parse(course.lessons).findIndex(l => parseInt(l.id) === parseInt(events.lesson));
@@ -66,6 +86,7 @@ const SmallCard = ({events, course, update}) => {
         events.status !== 'completed' &&
         (
           <SmallCardWrap
+            titleW={titleW}
             id={events.id}
             ref={selectListEl}
             onClick={() => setModalCard(true)}
@@ -73,7 +94,7 @@ const SmallCard = ({events, course, update}) => {
             {/*<div className="indicator"/>*/}
             <img src={studentData && studentData.photo ? `${api.getApi()}${studentData.photo.slice(1)}` : ava}
                  alt="photo" className="photo"/>
-            <div className="title">{studentData && studentData.name}</div>
+            <div className="title">{studentData ? studentData.name ? studentData.name : studentData.email : ''}</div>
           </SmallCardWrap>
         )
       }

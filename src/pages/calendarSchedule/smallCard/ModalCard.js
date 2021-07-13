@@ -160,7 +160,7 @@ const ModalCard = ({close, event, course, lesson, studentData, update}) => {
           <div className="title_block">
             <img src={student && student.photo ? `${server.getApi()}${student.photo.slice(1)}` : ava} alt="photo" className="photo"/>
             <div className="info-block">
-              <div className="title">{student.name}</div>
+              <div className="title">{student.name || student.email}</div>
               <div className="date">{event.date}, {event.time}</div>
             </div>
           </div>
