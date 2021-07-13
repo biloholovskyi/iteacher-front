@@ -10,7 +10,8 @@ const MainDropList = ({
                         width,
                         options = [{value: '', name: ''}],
                         onChange = () => null,
-                        classes
+                        classes,
+                        defaultValue
                       }) => {
 
   const [showStatus, setShowStatus] = useState(false)
@@ -24,8 +25,18 @@ const MainDropList = ({
 
   // выводим options
   const optionsList = options.map((item, key) => {
-    return <option hidden key={key} value={item.value}>{item.name}</option>
+    if(defaultValue && defaultValue === item.value) {
+      return <option hidden key={key} value={item.value}>{item.name}</option>
+    } else {
+      return <option hidden key={key} value={item.value}>{item.name}</option>
+    }
   })
+
+
+  useEffect(() => {
+    changeOptions(defaultValue)
+  }, [defaultValue]);
+
 
   // кастомный дроплист
   const dropdownList = options.map((item, key) => {
@@ -78,17 +89,36 @@ const MainDropList = ({
       fakeBg={showStatus}
     >
       <div className="select-arrow"/>
-      <select
-        onClick={(e) => {
-          showOptions(e)
-        }}
-        className={'input select'}
-        name={name}
-        required={required}
-        ref={selectEl}
-      >
-        {optionsList}
-      </select>
+
+      {
+        defaultValue ? (
+          <select
+            onClick={(e) => {
+              showOptions(e)
+            }}
+            className={'input select'}
+            name={name}
+            required={required}
+            ref={selectEl}
+            defaultValue={defaultValue}
+          >
+            {optionsList}
+          </select>
+        ) : (
+          <select
+            onClick={(e) => {
+              showOptions(e)
+            }}
+            className={'input select'}
+            name={name}
+            required={required}
+            ref={selectEl}
+          >
+            {optionsList}
+          </select>
+        )
+      }
+
       {
         showStatus && (
           <DropLIstItems

@@ -10,7 +10,7 @@ import {TextModalBody, TextModalOverlay} from "./styled";
 import closed from "../../assets/media/icon/close.svg";
 import ServerSettings from "../../service/serverSettings";
 
-const AddEventModal = ({close, courses, user, studentsList, update}) => {
+const AddEventModal = ({close, courses, user, studentsList, update, updateData}) => {
   // список студентов
   const [students, setStudents] = useState([]);
   // список курсов
@@ -21,6 +21,16 @@ const AddEventModal = ({close, courses, user, studentsList, update}) => {
   const [needStudent, setNeedStudent] = useState({})
   // выбранный курс
   const [needCourse, setNeedCourse] = useState({});
+
+  // проверяем модалка на редактирование или на создание
+  const [data, setData] = useState(false);
+
+  useEffect(() => {
+    if(updateData) {
+      setData(updateData)
+    }
+  }, [updateData]);
+
 
   useEffect(() => {
     // получаем список курсов для инпута
@@ -116,52 +126,151 @@ const AddEventModal = ({close, courses, user, studentsList, update}) => {
       .catch(error => console.error(error));
   }
 
+  // обновление события
+  const updateSchedule = async (e) => {
+    e.preventDefault()
+
+    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
+    axios.defaults.xsrfCookieName = 'csrftoken';
+
+    const dataServer = {
+      ...data,
+      user: user.id,
+      course: parseInt(e.target.course.value),
+      lesson: parseInt(e.target.lesson.value),
+      date: e.target.date.value,
+      time: e.target.time.value,
+      student: parseInt(e.target.student.value)
+    }
+
+
+    const serverSettings = new ServerSettings();
+    await axios.put(`${serverSettings.getApi()}api/schedules/${data.id}/update/`, dataServer)
+      .then(res => {
+        update({...data, ...dataServer});
+        close()
+        // eslint-disable-next-line no-restricted-globals
+        location.reload()
+      })
+      .catch(error => console.error(error));
+  }
+
   return (
     <TextModalOverlay>
       <TextModalBody
-        onSubmit={(e) => createNewEvent(e)}
+        onSubmit={(e) => {
+          if(data) {
+            updateSchedule(e).catch(error => console.error(error))
+          } else {
+            createNewEvent(e).catch(error => console.error(error))
+          }
+        }}
         className={'EventModalBody'}
       >
         <img onClick={close} className={'closed'} src={closed} alt="icon"/>
-        <h2 className={'title'}>Добавить событие</h2>
+        <h2 className={'title'}>{data ? 'Редактировать событие' : 'Добавить событие'}</h2>
         <div className="double">
-          <MainInput
-            label={'Дата'}
-            name={'date'}
-            type={'text'}
-            required={false}
-          />
 
-          <MainInput
-            label={'Время'}
-            name={'time'}
-            type={'text'}
-            required={false}
-          />
+          {
+            data ? (
+              <MainInput
+                label={'Дата'}
+                name={'date'}
+                type={'text'}
+                required={false}
+                defaultValue={data.date}
+              />
+            ) : (
+              <MainInput
+                label={'Дата'}
+                name={'date'}
+                type={'text'}
+                required={false}
+              />
+            )
+          }
+
+          {
+            data ? (
+              <MainInput
+                label={'Время'}
+                name={'time'}
+                type={'text'}
+                required={false}
+                defaultValue={data.time}
+              />
+            ) : (
+              <MainInput
+                label={'Время'}
+                name={'time'}
+                type={'text'}
+                required={false}
+              />
+            )
+          }
+
         </div>
 
-        <MainDropList
-          label={'Выберите студента'}
-          name={'student'}
-          required={true}
-          options={students}
-          onChange={onChangeStudentHandler}
-        />
+        {
+          data ? (
+            <MainDropList
+              label={'Выберите студента'}
+              name={'student'}
+              required={true}
+              options={students}
+              onChange={onChangeStudentHandler}
+              defaultValue={data.student}
+            />
+          ) : (
+            <MainDropList
+              label={'Выберите студента'}
+              name={'student'}
+              required={true}
+              options={students}
+              onChange={onChangeStudentHandler}
+            />
+          )
+        }
 
-        <MainDropList
-          label={'Выберите курс'}
-          name={'course'}
-          required={true}
-          options={coursesList}
-          onChange={onChangeCourseHandler}
-        />
+        {
+          data ? (
+            <MainDropList
+              label={'Выберите курс'}
+              name={'course'}
+              required={true}
+              options={coursesList}
+              onChange={onChangeCourseHandler}
+              defaultValue={data.course}
+            />
+          ) : (
+            <MainDropList
+              label={'Выберите курс'}
+              name={'course'}
+              required={true}
+              options={coursesList}
+              onChange={onChangeCourseHandler}
+            />
+          )
+        }
 
-        <MainDropList
-          label={'Выберите урок'}
-          name={'lesson'}
-          type={'text'}
-          options={lessons}
-        />
+        {
+          data ? (
+            <MainDropList
+              label={'Выберите урок'}
+              name={'lesson'}
+              type={'text'}
+              options={lessons}
+              defaultValue={data.lesson}
+            />
+          ) : (
+            <MainDropList
+              label={'Выберите урок'}
+              name={'lesson'}
+              type={'text'}
+              options={lessons}
+            />
+          )
+        }
 
         <MainButton
           text={'Добавить'}

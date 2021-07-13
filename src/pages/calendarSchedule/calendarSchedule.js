@@ -18,6 +18,7 @@ import ServerSettings from "../../service/serverSettings";
 const CalendarSchedule = ({user}) => {
 
   const [EventModal, setEventMModal] = useState(false);
+  const [updateData, setUpdateData] = useState(false);
   // записиваем тип календаря в стейт
   const [calendarType, setCalendarType] = useState([]);
   // список событий
@@ -109,6 +110,13 @@ const CalendarSchedule = ({user}) => {
     setList([...scheduleList, event])
   }
 
+  // открытия модалки на редактирование
+  const updateSchedule = (event) => {
+    if(event.status === 'process') {return}
+    setUpdateData(event)
+    setEventMModal(true)
+  }
+
   return (
     <>
       <CalendarWrap>
@@ -118,7 +126,10 @@ const CalendarSchedule = ({user}) => {
 
           <AddEventBtn
             type={'button'}
-            onClick={() => setEventMModal(true)} >
+            onClick={() => {
+              setUpdateData(false);
+              setEventMModal(true)
+            }} >
             Добавить событие
             <img src={plus} alt="icon"/>
           </AddEventBtn>
@@ -154,6 +165,7 @@ const CalendarSchedule = ({user}) => {
         </SubCaptionBlock>
 
         <Calendar
+          update={updateSchedule}
           courses={user.courses}
           schedules={scheduleList}
         />
@@ -163,6 +175,7 @@ const CalendarSchedule = ({user}) => {
       {
         EventModal && (
           <AddEventModal
+            updateData={updateData}
             courses={user.courses}
             close={closeEventModal}
             user={user}

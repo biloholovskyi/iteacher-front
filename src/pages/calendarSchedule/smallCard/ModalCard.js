@@ -14,7 +14,7 @@ import ava from "../../../assets/media/icon/avatar.svg";
 import ServerSettings from "../../../service/serverSettings";
 const server = new ServerSettings();
 
-const ModalCard = ({close, event, course, lesson, studentData}) => {
+const ModalCard = ({close, event, course, lesson, studentData, update}) => {
   const [student, setStudent] = useState('');
 
   // состояние модалки "редактировать/удалить"
@@ -153,7 +153,7 @@ const ModalCard = ({close, event, course, lesson, studentData}) => {
 
         {/*модалка "редактировать/удалить"*/}
         {
-          buttonsModal && <ModalButtons/>
+          buttonsModal && <ModalButtons update={update} event={event}/>
         }
 
         <Caption>

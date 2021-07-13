@@ -12,7 +12,7 @@ import ServerSettings from "../../../service/serverSettings";
 
 const api = new ServerSettings();
 
-const SmallCard = ({events, course}) => {
+const SmallCard = ({events, course, update}) => {
 
   const [modalCard, setModalCard] = useState(false);
   const [lessonData, setLessonData] = useState({})
@@ -60,7 +60,6 @@ const SmallCard = ({events, course}) => {
     getStudentData().catch(error => console.error(error));
   }, [events]);
 
-
   return (
     <>
       {
@@ -82,6 +81,7 @@ const SmallCard = ({events, course}) => {
       {
         modalCard && (
           <ModalCard
+            update={update}
             studentData={studentData}
             event={events}
             course={course}

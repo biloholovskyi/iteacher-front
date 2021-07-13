@@ -8,7 +8,7 @@ import {CalendarWrapp, CalendarArrow, CalendarTable} from './CalendarStyled';
 import calendarImg from '../../../assets/media/icon/calendar.svg';
 import arrow from '../../../assets/media/icon/calendarArrow.svg';
 
-const Calendar = ({courses, schedules}) => {
+const Calendar = ({courses, schedules, update}) => {
 
   // дание что б построить сетку по часам
   const startTime = Duration.fromObject({hours: 0})
@@ -229,6 +229,7 @@ const Calendar = ({courses, schedules}) => {
                             return (
                               newTableFormat === dateFromModal && (
                                 <SmallCard
+                                  update={update}
                                   events={items}
                                   key={dateFromModal}
                                   course={course}
