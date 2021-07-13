@@ -6,7 +6,7 @@ import Calendar from './calendar/calendar';
 import MainDropList from "../../components/inputs/mainDropList/mainDropList";
 import AddEventModal from "./addEventModal";
 
-import {CalendarWrap, AddEventBtn, SubCaptionBlock, SearchBlock, InputItem, FilterBtn} from './styled';
+import {CalendarWrap, AddEventBtn, SubCaptionBlock, SearchBlock, InputItem, FilterBtn, SelectTodayBtn} from './styled';
 
 import plus from "../../assets/media/icon/plusW.svg";
 import search from "../../assets/media/icon/search.svg";
@@ -124,15 +124,19 @@ const CalendarSchedule = ({user}) => {
         <div className="caption">
           <h1>Расписание</h1>
 
-          <AddEventBtn
-            type={'button'}
-            onClick={() => {
-              setUpdateData(false);
-              setEventMModal(true)
-            }} >
-            Добавить событие
-            <img src={plus} alt="icon"/>
-          </AddEventBtn>
+          <div className={'btn_section'}>
+            <SelectTodayBtn>Сегодня</SelectTodayBtn>
+
+            <AddEventBtn
+              type={'button'}
+              onClick={() => {
+                setUpdateData(false);
+                setEventMModal(true)
+              }} >
+              Добавить урок
+              <img src={plus} alt="icon"/>
+            </AddEventBtn>
+          </div>
 
           <FilterBtn>
             <img src={filter} alt="icon"/>
@@ -140,29 +144,29 @@ const CalendarSchedule = ({user}) => {
 
         </div>
 
-        <SubCaptionBlock>
+        {/*<SubCaptionBlock>*/}
 
-          <div className="arrow"/>
+        {/*  <div className="arrow"/>*/}
 
-          {/*<SearchBlock>*/}
-          {/*  <img src={search} alt="icon"/>*/}
-          {/*  <input type="text" placeholder="Поиск"/>*/}
+        {/*  <SearchBlock>*/}
+        {/*    <img src={search} alt="icon"/>*/}
+        {/*    <input type="text" placeholder="Поиск"/>*/}
 
-          {/*  <InputItem>*/}
-          {/*    Brandon Garcia*/}
-          {/*    <img src={close} alt="icon"/>*/}
-          {/*  </InputItem>*/}
+        {/*    <InputItem>*/}
+        {/*      Brandon Garcia*/}
+        {/*      <img src={close} alt="icon"/>*/}
+        {/*    </InputItem>*/}
 
-          {/*</SearchBlock>*/}
+        {/*  </SearchBlock>*/}
 
-          {/*<MainDropList*/}
-          {/*  name={'calendar'}*/}
-          {/*  type={'text'}*/}
-          {/*  options={dropListName}*/}
-          {/*  onChange={selectCalendarType}*/}
-          {/*/>*/}
+        {/*  <MainDropList*/}
+        {/*    name={'calendar'}*/}
+        {/*    type={'text'}*/}
+        {/*    options={dropListName}*/}
+        {/*    onChange={selectCalendarType}*/}
+        {/*  />*/}
 
-        </SubCaptionBlock>
+        {/*</SubCaptionBlock>*/}
 
         <Calendar
           update={updateSchedule}

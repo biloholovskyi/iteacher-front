@@ -143,7 +143,7 @@ const Calendar = ({courses, schedules, update}) => {
       )
   }
 
-  let changeMonthName = month || todayDay.c.month === 'январь'
+  let changeMonthName = month === 'январь'
     ? 'января'
     : month === 'февраль'
       ? 'февраля'
@@ -176,18 +176,21 @@ const Calendar = ({courses, schedules, update}) => {
         windowWidth > 991 ? (
           <>
             {/*недельный календар*/}
-            <CalendarArrow>
-              <img src={calendarImg} alt="img" className={'calendarIcon'}/>
-              <div className="number">
-                <div className={''}>{activeWeek.c.day}</div>
-                <div>-</div>
-                <div className={''}>{<div>{lastWeekDay.c.day}</div>}</div>
-              </div>
-              {changeMonthName}, {year}
-              <button className={'back'} onClick={() => handleWeekChange('back')}><img src={arrow} alt="icon"/></button>
-              <button className={'forward'} onClick={() => handleWeekChange('forward')}><img src={arrow} alt="icon"/>
-              </button>
-            </CalendarArrow>
+           <div className="calendar_caption">
+             <CalendarArrow>
+               {/*<img src={calendarImg} alt="img" className={'calendarIcon'}/>*/}
+               <div className="number">
+                 <div className={''}>{activeWeek.c.day}</div>
+                 <div>-</div>
+                 <div className={''}>{<div>{lastWeekDay.c.day}</div>}</div>
+               </div>
+               {changeMonthName}, {year}
+               <button className={'back'} onClick={() => handleWeekChange('back')}><img src={arrow} alt="icon"/></button>
+               <button className={'forward'} onClick={() => handleWeekChange('forward')}><img src={arrow} alt="icon"/>
+               </button>
+             </CalendarArrow>
+             <div className="fakeBlock" />
+           </div>
 
             <CalendarTable>
               <thead>

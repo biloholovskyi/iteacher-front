@@ -2,6 +2,21 @@ import styled from "styled-components";
 
 const CalendarWrapp = styled.div`
   padding-bottom: 40px;
+  .calendar_caption {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    transform: translateY(-36px);
+  }
+  .fakeBlock {
+    min-width: 327px;
+    max-width: 327px;
+    width: 100%;
+    height: 2px;
+    z-index: -1;
+    position: relative;
+  }
+  
 `
 
 const CalendarArrow = styled.div`
@@ -16,8 +31,9 @@ const CalendarArrow = styled.div`
   line-height: 22px;
   letter-spacing: -0.01em;
   color: #111111;
-  transform: translateY(-57px);
-
+  //transform: translateY(-57px);
+  min-width: fit-content;
+  margin-right: 24px;
   .calendarIcon {
     width: 24px;
     height: 24px;
@@ -76,9 +92,13 @@ const CalendarArrow = styled.div`
     margin: 0 5px;
   }
 
-  @media(max-width: 767px) {
-    transform: translateY(-30px);
+  @media (max-width: 990px) {
+    margin-bottom: 24px;
   }
+
+  //@media(max-width: 767px) {
+  //  transform: translateY(-30px);
+  //}
   
 `
 

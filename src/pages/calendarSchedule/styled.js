@@ -9,7 +9,7 @@ const CalendarWrap = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 24px;
+    //margin-bottom: 24px;
 
     h1 {
       font-style: normal;
@@ -24,6 +24,13 @@ const CalendarWrap = styled.div`
         line-height: 32px;
       }
       
+    }
+    
+    .btn_section {
+      display: flex;
+      align-items: center;
+      position: relative;
+      z-index: 1;
     }
     
     @media(max-width: 575px) {
@@ -285,6 +292,24 @@ const FilterBtn = styled.button`
 
 `
 
+const SelectTodayBtn = styled.button`
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 20px;
+  text-align: center;
+  color: #4F7FFF;
+  padding: 14px 20px;
+  border: 1px solid #DDE1E6;
+  border-radius: 6px;
+  background-color: transparent;
+  margin-right: 24px;
+  cursor: pointer;
+  @media (max-width: 767px) {
+    display: none;
+  }
+`
+
 export {
   CalendarWrap,
   AddEventBtn,
@@ -294,5 +319,6 @@ export {
   InputItem,
   TextModalOverlay,
   TextModalBody,
-  FilterBtn
+  FilterBtn,
+  SelectTodayBtn
 }
