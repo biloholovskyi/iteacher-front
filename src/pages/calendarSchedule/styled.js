@@ -265,6 +265,11 @@ const TextModalBody = styled.form`
   .double {
     display: flex;
     width: 100%;
+    
+    .date-wrapper {
+      position: relative;
+      min-width: 50%;
+    }
 
     div:first-child {
       margin-right: 24px;
@@ -272,6 +277,23 @@ const TextModalBody = styled.form`
 
   }
 
+`
+
+const Line = styled.div`
+  width: 100%;
+  height: 1px;
+  background-color: #DDE1E6;
+  margin-bottom: 24px;
+`
+
+const SmallTitle = styled.div`
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 26px;
+  letter-spacing: -0.01em;
+  color: #111111;
+  width: 100%;
+  margin-bottom: 16px;
 `
 
 const FilterBtn = styled.button`
@@ -320,5 +342,7 @@ export {
   TextModalOverlay,
   TextModalBody,
   FilterBtn,
-  SelectTodayBtn
+  SelectTodayBtn,
+  Line,
+  SmallTitle
 }

@@ -33,7 +33,7 @@ const Wrapper = styled.div`
       top: 15px;
       font-size: 12px;
       line-height: 18px;
-      color: #4F7FFF;
+      color: ${props => props.grey ? '#697077' : '#4F7FFF'};
       opacity: 0.8;
     }
   }

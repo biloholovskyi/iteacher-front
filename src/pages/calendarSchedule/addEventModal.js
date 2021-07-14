@@ -4,8 +4,9 @@ import axios from "axios";
 import MainInput from "../../components/inputs/mainInput/mainInput";
 import MainDropList from "../../components/inputs/mainDropList/mainDropList";
 import MainButton from "../../components/buttons/mainButton/mainButton";
+import Calendar from "../courseTemplate/calendarModal/calendar";
 
-import {TextModalBody, TextModalOverlay} from "./styled";
+import {TextModalBody, TextModalOverlay, Line, SmallTitle} from "./styled";
 
 import closed from "../../assets/media/icon/close.svg";
 import ServerSettings from "../../service/serverSettings";
@@ -24,6 +25,8 @@ const AddEventModal = ({close, courses, user, studentsList, update, updateData})
 
   // проверяем модалка на редактирование или на создание
   const [data, setData] = useState(false);
+
+  const [calendarModal, setCalendarModal] = useState(false);
 
   useEffect(() => {
     if(updateData) {
@@ -169,51 +172,11 @@ const AddEventModal = ({close, courses, user, studentsList, update, updateData})
       >
         <img onClick={close} className={'closed'} src={closed} alt="icon"/>
         <h2 className={'title'}>{data ? 'Редактировать событие' : 'Добавить событие'}</h2>
-        <div className="double">
-
-          {
-            data ? (
-              <MainInput
-                label={'Дата'}
-                name={'date'}
-                type={'text'}
-                required={false}
-                defaultValue={data.date}
-              />
-            ) : (
-              <MainInput
-                label={'Дата'}
-                name={'date'}
-                type={'text'}
-                required={false}
-              />
-            )
-          }
-
-          {
-            data ? (
-              <MainInput
-                label={'Время'}
-                name={'time'}
-                type={'text'}
-                required={false}
-                defaultValue={data.time}
-              />
-            ) : (
-              <MainInput
-                label={'Время'}
-                name={'time'}
-                type={'text'}
-                required={false}
-              />
-            )
-          }
-
-        </div>
 
         {
           data ? (
             <MainDropList
+              gray
               label={'Выберите студента'}
               name={'student'}
               required={true}
@@ -223,6 +186,7 @@ const AddEventModal = ({close, courses, user, studentsList, update, updateData})
             />
           ) : (
             <MainDropList
+              gray
               label={'Выберите студента'}
               name={'student'}
               required={true}
@@ -232,45 +196,109 @@ const AddEventModal = ({close, courses, user, studentsList, update, updateData})
           )
         }
 
-        {
-          data ? (
-            <MainDropList
-              label={'Выберите курс'}
-              name={'course'}
-              required={true}
-              options={coursesList}
-              onChange={onChangeCourseHandler}
-              defaultValue={data.course}
-            />
-          ) : (
-            <MainDropList
-              label={'Выберите курс'}
-              name={'course'}
-              required={true}
-              options={coursesList}
-              onChange={onChangeCourseHandler}
-            />
-          )
-        }
+        <div className="double">
 
-        {
-          data ? (
-            <MainDropList
-              label={'Выберите урок'}
-              name={'lesson'}
-              type={'text'}
-              options={lessons}
-              defaultValue={data.lesson}
-            />
-          ) : (
-            <MainDropList
-              label={'Выберите урок'}
-              name={'lesson'}
-              type={'text'}
-              options={lessons}
-            />
-          )
-        }
+          {
+            data ? (
+              <MainDropList
+                label={'Выберите курс'}
+                name={'course'}
+                required={true}
+                options={coursesList}
+                onChange={onChangeCourseHandler}
+                defaultValue={data.course}
+              />
+            ) : (
+              <MainDropList
+                label={'Выберите курс'}
+                name={'course'}
+                required={true}
+                options={coursesList}
+                onChange={onChangeCourseHandler}
+              />
+            )
+          }
+
+          {
+            data ? (
+              <MainDropList
+                label={'Выберите урок'}
+                name={'lesson'}
+                type={'text'}
+                options={lessons}
+                defaultValue={data.lesson}
+              />
+            ) : (
+              <MainDropList
+                label={'Выберите урок'}
+                name={'lesson'}
+                type={'text'}
+                options={lessons}
+              />
+            )
+          }
+
+        </div>
+
+        <Line/>
+
+        <SmallTitle>Дата / Время</SmallTitle>
+
+        <div className="double">
+
+          <div className="date-wrapper">
+            {
+              data ? (
+                <MainInput
+                  label={'Дата'}
+                  name={'date'}
+                  type={'text'}
+                  required={false}
+                  defaultValue={data.date}
+                  readOnly={false}
+                  grey
+                  onClick={() => setCalendarModal(true)}
+                />
+              ) : (
+                <MainInput
+                  label={'Дата'}
+                  name={'date'}
+                  type={'text'}
+                  required={false}
+                  readOnly={false}
+                  grey
+                  onClick={() => setCalendarModal(true)}
+                />
+              )
+            }
+
+            {
+              // calendarModal && <Calendar/>
+            }
+          </div>
+
+          {
+            data ? (
+              <MainInput
+                label={'Время'}
+                name={'time'}
+                type={'text'}
+                required={false}
+                defaultValue={data.time}
+                grey
+              />
+            ) : (
+              <MainInput
+                label={'Время'}
+                name={'time'}
+                type={'text'}
+                required={false}
+                grey
+              />
+            )
+          }
+
+        </div>
 
         <MainButton
           text={'Добавить'}

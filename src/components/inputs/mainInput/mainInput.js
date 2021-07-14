@@ -2,7 +2,21 @@ import React, {useState, useEffect} from "react";
 
 import {Wrapper} from "./styled";
 
-const MainInput = ({label, name, type, required, errorText, validation, defaultValue, updateData = () => null}) => {
+const MainInput = (
+  {
+    label,
+    name,
+    type,
+    required,
+    errorText,
+    validation,
+    defaultValue,
+    updateData = () => null,
+    readOnly,
+    grey,
+    onClick = () => null
+  }
+) => {
   // состояния инпута
   const [active, setActive] = useState(false)
 
@@ -19,14 +33,24 @@ const MainInput = ({label, name, type, required, errorText, validation, defaultV
   }
 
   return (
-    <Wrapper className={` ${validation && 'valid'}`}>
+    <Wrapper className={` ${validation && 'valid'}`} grey={grey}>
       <label className={`label ${active && 'active'}`}>{label}</label>
-      <input className={'input'} name={name} required={required}  type={type}  onChange={(e) => onChange(e)} defaultValue={defaultValue} />
+      <input
+        className={'input'}
+        name={name}
+        required={required}
+        type={type}
+        onChange={(e) => onChange(e)} defaultValue={defaultValue}
+        readOnly={readOnly}
+        onClick={onClick}
+      />
+
       {
         validation
           ?  <div className={'errorText'}>{errorText}</div>
           : null
       }
+
     </Wrapper>
   )
 }
