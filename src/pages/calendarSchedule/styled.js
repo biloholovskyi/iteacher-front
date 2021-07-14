@@ -240,6 +240,14 @@ const TextModalBody = styled.form`
   position: relative;
   padding: 24px;
   max-height: 745px;
+  margin-top: ${props => props.calendar ? '-300px' : '0'};
+  
+  .wrapper {
+    overflow: auto;
+    width: 100%;
+    position: relative;
+  }
+  
 
   .closed {
     width: 24px;
@@ -276,7 +284,6 @@ const TextModalBody = styled.form`
     }
 
   }
-
 `
 
 const Line = styled.div`

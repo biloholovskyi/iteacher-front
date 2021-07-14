@@ -64,7 +64,7 @@ export default class Calendar extends Component {
     const monthData = calendar.getMonthData(this.year, this.month);
 
     return (
-      <CalendarWrap className={'calendar'}>
+      <CalendarWrap className={'calendar'} new={this.props.new}>
         <header>
           <div>
             {monthNames[date.getMonth()]},

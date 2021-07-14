@@ -3,7 +3,7 @@ import {Link, Redirect} from "react-router-dom";
 import {connect} from "react-redux";
 import axios from "axios";
 
-import {loginUser, setActivateCourse, getAllTemplates} from "../../actions";
+import {loginUser, setActivateCourse, getAllTemplates, setStudentToCourse} from "../../actions";
 
 import ProgramItem from "./programItem/programItem";
 import ProgramModal from "../../components/programModal/programModal";
@@ -202,6 +202,8 @@ class SingleCourse extends Component {
         this.props.loginUser(newUser);
         // передаем в стор данные выбраного шаблона
         this.props.setActivateCourse(this.state.template);
+        // удаялем из редакса выбраного студента
+        this.props.setStudentToCourse(false)
         this.setState({redirect: res.data.id, creating: false});
       })
       .catch(error => console.error(error));
@@ -307,7 +309,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
   loginUser,
   setActivateCourse,
-  getAllTemplates
+  getAllTemplates,
+  setStudentToCourse
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SingleCourse);
