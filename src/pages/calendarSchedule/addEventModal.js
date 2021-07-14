@@ -11,6 +11,8 @@ import {TextModalBody, TextModalOverlay, Line, SmallTitle} from "./styled";
 import closed from "../../assets/media/icon/close.svg";
 import ServerSettings from "../../service/serverSettings";
 
+const monthNames = ['Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря'];
+
 const AddEventModal = ({close, courses, user, studentsList, update, updateData}) => {
   // список студентов
   const [students, setStudents] = useState([]);
@@ -27,6 +29,10 @@ const AddEventModal = ({close, courses, user, studentsList, update, updateData})
   const [data, setData] = useState(false);
 
   const [calendarModal, setCalendarModal] = useState(false);
+
+  const [calendarDate, setCalendarDate] = useState(null);
+
+  const [hiddenDate, setHiddenDate] = useState(false)
 
   useEffect(() => {
     if(updateData) {
@@ -158,6 +164,17 @@ const AddEventModal = ({close, courses, user, studentsList, update, updateData})
       .catch(error => console.error(error));
   }
 
+  const  handleDateChange = data => {
+    setCalendarModal(false);
+
+    const date = data.toLocaleDateString().split('.');
+
+    const string = `${date[0]} ${monthNames[parseInt(date[1]) - 1]}, ${date[2]}`
+
+    setCalendarDate(string)
+    setHiddenDate(data.toLocaleDateString());
+  };
+
   return (
     <TextModalOverlay>
       <TextModalBody
@@ -169,6 +186,7 @@ const AddEventModal = ({close, courses, user, studentsList, update, updateData})
           }
         }}
         className={'EventModalBody'}
+        calendar={calendarModal}
       >
         <img onClick={close} className={'closed'} src={closed} alt="icon"/>
         <h2 className={'title'}>{data ? 'Редактировать событие' : 'Добавить событие'}</h2>
@@ -246,36 +264,33 @@ const AddEventModal = ({close, courses, user, studentsList, update, updateData})
 
         <div className="double">
 
-          <div className="date-wrapper">
-            {
-              data ? (
-                <MainInput
-                  label={'Дата'}
-                  name={'date'}
-                  type={'text'}
-                  required={false}
-                  defaultValue={data.date}
-                  readOnly={false}
-                  grey
-                  onClick={() => setCalendarModal(true)}
-                />
-              ) : (
-                <MainInput
-                  label={'Дата'}
-                  name={'date'}
-                  type={'text'}
-                  required={false}
-                  readOnly={false}
-                  grey
-                  onClick={() => setCalendarModal(true)}
-                />
-              )
-            }
+          {
+            data && !hiddenDate ? (
+              <MainInput
+                label={'Дата'}
+                name={'date_string'}
+                type={'text'}
+                required={false}
+                defaultValue={`${data.date.split('.')[0]} ${monthNames[parseInt(data.date.split('.')[1]) - 1]}, ${data.date.split('.')[2]}`}
+                readOnly
+                grey
+                onClick={() => setCalendarModal(true)}
+              />
+            ) : (
+              <MainInput
+                label={'Дата'}
+                name={'date_string'}
+                type={'text'}
+                required={false}
+                readOnly
+                grey
+                onClick={() => setCalendarModal(true)}
+                defaultValue={calendarDate}
+              />
+            )
+          }
 
-            {
-              // calendarModal && <Calendar/>
-            }
-          </div>
+          <input type="hidden" name={'date'} value={hiddenDate}/>
 
           {
             data ? (
@@ -300,10 +315,17 @@ const AddEventModal = ({close, courses, user, studentsList, update, updateData})
 
         </div>
 
+        {
+          calendarModal && <Calendar new onChange={handleDateChange}/>
+        }
+
         <MainButton
           text={'Добавить'}
           type={'submit'}
         />
+
+        <div className="fake-calendar"/>
+
       </TextModalBody>
 
     </TextModalOverlay>

@@ -7,6 +7,7 @@ const Wrapper = styled.div`
   background-color: #DDE1E6;
   border-radius: 8px;
   height: 56px;
+  min-height: 56px;
   position: relative;
   margin-bottom: 23px;
   
