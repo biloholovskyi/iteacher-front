@@ -54,7 +54,10 @@ const initialState = {
   },
 
   // alert message
-  topAlert: false
+  topAlert: false,
+
+  // создания курса со страницы студента
+  studentToCourse: false
 }
 
 const reducer = (state = initialState, action) => {
@@ -173,6 +176,12 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         topAlert: action.text
+      }
+
+    case 'STUDENT_TO_COURSE':
+      return {
+        ...state,
+        studentToCourse: action.student
       }
 
     default:

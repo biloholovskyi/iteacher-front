@@ -122,6 +122,11 @@ const setTopAlertText = (text) => {
   return {type: 'SHOW_TOP_ALERT', text}
 }
 
+// задаем студента для создания курса с ним
+const setStudentToCourse = (student) => {
+  return {type: 'STUDENT_TO_COURSE', student}
+}
+
 export {
   getAllUsers,
   getAllCourses,
@@ -138,5 +143,6 @@ export {
   getCoursesList,
   setTopAlertText,
   setCRactiveWord,
-  setCRactiveEmpty
+  setCRactiveEmpty,
+  setStudentToCourse
 }

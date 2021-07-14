@@ -1,4 +1,8 @@
 import React, {useState, useEffect} from 'react'
+import {connect} from "react-redux";
+import {useHistory} from "react-router";
+
+import {setStudentToCourse} from "../../../../actions";
 
 import CourseCover from "../../../../components/courseCover/courseCover";
 
@@ -9,7 +13,9 @@ import plus from "../../../../assets/media/icon/plus-blue.svg";
 import CoursesServices from "../../../../service/courses";
 const coursesService = new CoursesServices();
 
-const TabCourses = ({id}) => {
+const TabCourses = ({id, setStudentToCourse}) => {
+  const history = useHistory();
+
   // список курсов студентов
   const [courses, setCourses] = useState([])
 
@@ -21,11 +27,17 @@ const TabCourses = ({id}) => {
     })
   }, [id])
 
+  // переходим на покупку курса с студентом
+  const toBuyCourse = () => {
+    setStudentToCourse(id);
+    history.push('/courses-library')
+  }
+
   return (
     // all courses wrapper
     <Style.CourseWrapper>
       {/*add course block*/}
-      <Style.AddCourse>
+      <Style.AddCourse onClick={toBuyCourse}>
         <div className="addSquare">
           <img src={plus} alt="plus"/>
         </div>
@@ -53,4 +65,14 @@ const TabCourses = ({id}) => {
   )
 }
 
-export default TabCourses
+const mapStateToProps = (state) => {
+  return {
+
+  }
+}
+
+const mapDispatchToProps = {
+  setStudentToCourse
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(TabCourses);

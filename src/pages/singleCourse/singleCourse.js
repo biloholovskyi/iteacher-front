@@ -176,6 +176,12 @@ class SingleCourse extends Component {
     data.set('background_image', this.state.template.background_image);
     data.set('bg_type', this.state.template.bg_type);
 
+    // проверяем есть ли выбран студента
+    if(this.props.studentToCourse) {
+      newCourse.student = parseInt(this.props.studentToCourse);
+      data.set('student', parseInt(this.props.studentToCourse));
+    }
+
     // удаляем не нужные свойства
     delete newCourse.price;
     delete newCourse.id;
@@ -293,7 +299,8 @@ class SingleCourse extends Component {
 const mapStateToProps = (state) => {
   return {
     templates: state.templates,
-    user: state.user
+    user: state.user,
+    studentToCourse: state.studentToCourse
   }
 };
 
