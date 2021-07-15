@@ -78,6 +78,9 @@ const App = ({loginUser, user, topAlert}) => {
                 setLoading(false)
               })
               .catch(error => console.error(error))
+          } else {
+            loginUser(res.data);
+            setLoading(false)
           }
         }).catch(error => {
           console.error(error)
