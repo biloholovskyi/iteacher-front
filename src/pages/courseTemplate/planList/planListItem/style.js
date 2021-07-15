@@ -9,10 +9,11 @@ const PlanListItemWrap = styled.div`
   border-bottom: 1px solid #DDE1E6;
   text-decoration: none;
   cursor: pointer;
-  
+
   .nameBlock {
     flex-direction: column;
     width: 100%;
+
     .top {
       display: flex;
 
@@ -42,6 +43,16 @@ const PlanListItemWrap = styled.div`
       background-color: transparent;
       border: none;
       cursor: pointer;
+    }
+    
+    .time {
+      font-family: Inter, sans-serif;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 14px;
+      line-height: 20px;
+      letter-spacing: -0.01em;
+      color: #697077;
     }
   }
 `

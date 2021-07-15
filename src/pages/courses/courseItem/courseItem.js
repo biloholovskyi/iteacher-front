@@ -10,10 +10,13 @@ import ava from "../../../assets/media/icon/avatar.svg";
 
 import ServerSettings from "../../../service/serverSettings";
 
-const CourseItem = ({course}) => {
+const CourseItem = ({course, user}) => {
   const [photo, setPhoto] = useState('');
   // близжайший урок
   const [event, setEvent] = useState(null)
+
+  console.log(user)
+  console.log(course)
 
   // задаем близжайший урок
   useEffect(() => {
@@ -58,8 +61,10 @@ const CourseItem = ({course}) => {
     axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
     axios.defaults.xsrfCookieName = 'csrftoken';
 
+    const id = user.type === 'student' ? course.teacher : course.student;
+
     const server = new ServerSettings();
-    await axios.get(`${server.getApi()}api/users/${course.student}/`)
+    await axios.get(`${server.getApi()}api/users/${id}/`)
       .then(res => {
         setPhoto(`${server.getApi()}${res.data.photo.slice(1)}`);
       })

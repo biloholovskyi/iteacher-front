@@ -15,13 +15,13 @@ const CaptionBlock = ({course}) => {
 
         <div className="nameBlock">
           <div className={'name'}>{course.name}</div>
-          <div className={'desc'}>{course.small_desc}</div>
+          {/*<div className={'desc'}>{course.small_desc}</div>*/}
         </div>
 
       </div>
-      <button className={'settings'}>
-        <img src={settings} alt="icon"/>
-      </button>
+      {/*<button className={'settings'}>*/}
+      {/*  <img src={settings} alt="icon"/>*/}
+      {/*</button>*/}
     </CaptionBlockWrap>
   )
 }

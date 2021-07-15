@@ -1,28 +1,41 @@
-import React, {Component} from "react";
+import React from "react";
+import {connect} from "react-redux";
 
 import Indicator from "./indicator/indicator";
 
 import {PlanListItemWrap} from "./style";
 
-class PlansListItem extends Component{
-  render(){
-    const {lesson, number, open} = this.props;
-    return(
-      <PlanListItemWrap
-        onClick={() => open(lesson)}>
+const PlansListItem = ({lesson, number, open, time, user}) => {
+  return(
+    <PlanListItemWrap
+      onClick={() => open(lesson)}>
 
-        <Indicator />
+      <Indicator />
 
-        <div className="nameBlock">
-          <div className='top'>
-            <div className="number">#{number + 1}</div>
-            <div className="name">{lesson.name}</div>
-          </div>
-          <button type={'button'} className='bottom'>Назначить урок</button>
+      <div className="nameBlock">
+        <div className='top'>
+          <div className="number">#{number + 1}</div>
+          <div className="name">{lesson.name}</div>
         </div>
-      </PlanListItemWrap>
-    )
+
+        {
+          user.type === 'teacher'
+            ? <button type={'button'} className='bottom'>Назначить урок</button>
+            : <div className={'time'}>{time}</div>
+        }
+      </div>
+    </PlanListItemWrap>
+  )
+}
+
+const mapStateToProps = (state) => {
+  return {
+    user: state.user
   }
 }
 
-export default PlansListItem;
+const mapDispatchToProps = {
+
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(PlansListItem);

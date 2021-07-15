@@ -15,10 +15,7 @@ const LeftSidebar = ({course, data}) => {
           <p className='name'>Длительность курса</p>
           <p className='desc'>{countLesson} {countLessonString}</p>
         </div>
-        <div className='infoItem'>
-          <p className='name'>Длительность курса</p>
-          <p className='desc'>{course.average_lessons_time} минут</p>
-        </div>
+
         <div className='infoItem'>
           <p className='name'>Уровень</p>
           <p className='desc'>{course.level}</p>

@@ -61,9 +61,6 @@ const Plan = ({
     const serverSettings = new ServerSettings();
 
     await axios.delete(`${serverSettings.getApi()}api/lesson/${id}/delete/`)
-      .then(res => {
-        console.log(res);
-      })
       .catch(error => console.error(error));
   }
 
@@ -122,9 +119,6 @@ const Plan = ({
     const serverSettings = new ServerSettings();
 
     await axios.delete(`${serverSettings.getApi()}api/tasks/${id}/delete/`)
-      .then(res => {
-        console.log(res);
-      })
       .catch(error => console.error(error));
   }
 

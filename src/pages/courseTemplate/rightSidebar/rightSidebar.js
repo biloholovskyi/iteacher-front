@@ -1,17 +1,24 @@
 import React from "react";
+import {connect} from "react-redux";
 
 import Student from "./student/student";
 import NextLesson from "./nextLesson/nextLesson";
 
 import {ActiveSidebarWrap, SidebarItem} from "../styled";
 
-const RightSidebar = ({course, showAddStudent, showAddEvent}) => {
+const RightSidebar = ({course, showAddStudent, showAddEvent, user}) => {
   return (
     <ActiveSidebarWrap>
-      {/*ученик*/}
-      <Student studentID={course.student} show={showAddStudent}/>
+      {/*ученик или преподаватель*/}
+      <Student course={course} show={showAddStudent}/>
       {/*следующие занятие*/}
-      <NextLesson data={course.schedules} show={showAddEvent}/>
+
+      {/*нужно проверить назначино ли следующие задание*/}
+      {
+        user.type === 'student'
+          ? course.schedules && course.schedules.length > 0 && <NextLesson data={course.schedules} show={showAddEvent}/>
+          : <NextLesson data={course.schedules} show={showAddEvent}/>
+      }
       {/*домашнее задание*/}
       <SidebarItem>
         <div className="title">Домашние задания</div>
@@ -23,4 +30,14 @@ const RightSidebar = ({course, showAddStudent, showAddEvent}) => {
   )
 }
 
-export default RightSidebar;
+const mapStateToProps = (state) => {
+  return {
+    user: state.user
+  }
+}
+
+const mapDispatchToProps = {
+
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(RightSidebar);

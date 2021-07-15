@@ -104,7 +104,7 @@ class CourseTemplate extends Component {
     }
 
     // вывод alert top
-    if (course.status !== 'active') {
+    if (course.status !== 'active' && this.props.user.type === 'teacher') {
       this.props.setTopAlertText('Курс не активен! Добавьте ученика и назначьте первый урок что бы активировать курс')
     } else {
       this.props.setTopAlertText(false)
@@ -334,6 +334,7 @@ class CourseTemplate extends Component {
               <div className='title'>План занятий</div>
               <Style.Plans>
                 <PlanList
+                  course={course}
                   plans={data}
                   openModal={this.ProgramModal}
                 />

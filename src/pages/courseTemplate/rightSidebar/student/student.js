@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from "react";
 import axios from "axios";
+import {connect} from "react-redux";
 
 import AddButton from "../../../../components/buttons/addButton/addButton";
 
@@ -11,18 +12,18 @@ import ServerSettings from "../../../../service/serverSettings";
 
 const server = new ServerSettings();
 
-const Student = ({studentID, show}) => {
-  // данные студента
-  const [student, setStudent] = useState(null)
+const Student = ({show, course, user}) => {
+  // данные студента/преподавателя
+  const [data, setData] = useState(null)
 
   const setDataStudent = async () => {
-    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
-    axios.defaults.xsrfCookieName = 'csrftoken';
+    // проверяем преподаватель или студент залогинен
+    const id = user.type === 'teacher' ? course.student : course.teacher;
 
-    await axios.get(`${server.getApi()}api/users/${studentID}/`)
+    await axios.get(`${server.getApi()}api/users/${id}/`)
       .then(res => {
         if(typeof res.data === "object") {
-          setStudent(res.data)
+          setData(res.data)
         }
       })
       .catch(error => console.error(error))
@@ -30,21 +31,20 @@ const Student = ({studentID, show}) => {
 
   useEffect(() => {
     setDataStudent().catch(e => console.error(e));
-  }, [studentID])
+  }, [course])
 
   return (
     <SidebarItem>
-      <div className="title">Ученик</div>
+      <div className="title">{user.type === 'teacher' ? 'Ученик' : 'Преподователь'}</div>
       <div className="info">
         {
-          student ? (
+          data ? (
             <>
-              <div className={student.photo ? 'photo' : 'no-photo'}>
-                <img src={student.photo ? server.getApi() + student.photo.slice(1) : ava} alt="icon"/>
+              <div className={data.photo ? 'photo' : 'no-photo'}>
+                <img src={data.photo ? server.getApi() + data.photo.slice(1) : ava} alt="icon"/>
               </div>
               <div className="name">
-                {/*<p className={'student'}>{student.name}</p>*/}
-                <p className={'email'}>{student.email}</p>
+                <p className={'email'}>{data ? data.name ? data.name : data.email : null}</p>
               </div>
             </>
           ) : <AddButton text={'Добавить ученика'} func={show}/>
@@ -54,4 +54,14 @@ const Student = ({studentID, show}) => {
   )
 }
 
-export default Student;
+const mapStateToProps = (state) => {
+  return {
+    user: state.user
+  }
+}
+
+const mapDispatchToProps = {
+
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Student);

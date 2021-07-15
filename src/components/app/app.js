@@ -64,8 +64,21 @@ const App = ({loginUser, user, topAlert}) => {
 
       await axios.get(`${server.getApi()}api/users/${statusToken}/`)
         .then(res => {
-          loginUser(res.data);
-          setLoading(false)
+          // если это студент получаем его курсы отдельно
+          if(res.data.type === 'student') {
+            const api = new ServerSettings();
+            const studentData = res.data;
+
+            axios.get(`${api.getApi()}api/courses/student/${res.data.id}/`)
+              .then(res => {
+                studentData.courses = res.data;
+              })
+              .then(() => {
+                loginUser(studentData);
+                setLoading(false)
+              })
+              .catch(error => console.error(error))
+          }
         }).catch(error => {
           console.error(error)
           localStorage.removeItem('iteacher_login');

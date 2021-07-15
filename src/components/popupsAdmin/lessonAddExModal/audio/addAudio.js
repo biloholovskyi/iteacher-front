@@ -192,11 +192,7 @@ export default class AddAudioModal extends Component {
 
   render() {
     function uploadImage(file) {
-
-      console.log(`Загружено изображение ${file.name}:`, file);
-      // TODO UPLOAD TO SERVER, get URL, and:
       this.props.close();
-
     }
 
     const {back, close} = this.props;

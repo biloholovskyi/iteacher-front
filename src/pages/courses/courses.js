@@ -17,15 +17,16 @@ import plus from '../../assets/media/icon/plus-blue.svg';
 
 const Courses = ({user, setTopAlertText}) => {
   const [courses, setCourses] = useState([])
+  const [userData, setUserData] = useState(null)
 
   // обновляем список курсов
   useEffect(() => {
     setTopAlertText(false);
     if (user) {
       setCourses(user.courses)
+      setUserData(user)
     }
   }, [user]);
-
 
   // check if there are any courses . If there are no courses render EMPTY course page
   if (!courses || courses.length === 0) return <NoneCourses/>
@@ -35,16 +36,24 @@ const Courses = ({user, setTopAlertText}) => {
       <div className='container'>
         <Style.Caption>
           <Style.Title>Курсы</Style.Title>
-          <Style.AddCourse>
-            <Link to='/courses-library'>Библиотека курсов
-              <img src={library} alt="icon"/>
-            </Link>
-          </Style.AddCourse>
-          <Style.AddCourseMobile>
-            <Link to='/courses-library'>
-              <img src={plus} alt="icon"/>
-            </Link>
-          </Style.AddCourseMobile>
+
+          {/*покупать курсы может только учитель*/}
+          {
+            user && user.type === 'teacher' && (
+              <>
+                <Style.AddCourse>
+                  <Link to='/courses-library'>Библиотека курсов
+                    <img src={library} alt="icon"/>
+                  </Link>
+                </Style.AddCourse>
+                <Style.AddCourseMobile>
+                  <Link to='/courses-library'>
+                    <img src={plus} alt="icon"/>
+                  </Link>
+                </Style.AddCourseMobile>
+              </>
+            )
+          }
         </Style.Caption>
         <Style.CaptionInput>
           <Style.SearchBlock>
@@ -64,8 +73,7 @@ const Courses = ({user, setTopAlertText}) => {
 
         <Style.CoursesList>
           {courses.map(course => {
-            // const needStudent = this.props.students.find(student => student.courses[0].toString() === course.id.toString());
-            return <CourseItem key={course.id} course={course}/>
+            return <CourseItem key={course.id} course={course} user={userData}/>
           })}
           {/*<CoursesItemsV2/>*/}
         </Style.CoursesList>

@@ -241,7 +241,6 @@ export default class Header extends Component {
     const nav = this.props.user.type === 'teacher' ? (
       <>
         <NavLink to='/schedule'>Расписание</NavLink>
-        {/*<NavLink to='/schedule-old'>Расписание старое</NavLink>*/}
         <NavLink to='/students'>Ученики</NavLink>
         <NavLink to='/courses' >Курсы</NavLink>
         <NavLink to='/resources'>Полезное</NavLink>
@@ -250,6 +249,7 @@ export default class Header extends Component {
       <>
         <NavLink to='/schedule'>Мое расписание</NavLink>
         <NavLink to='/homework'>Домашние задания</NavLink>
+        <NavLink to='/courses'>Мои Курсы</NavLink>
         <NavLink to='/dictionary'>Мой словарь</NavLink>
         <NavLink to='/resources'>Полезное</NavLink>
       </>

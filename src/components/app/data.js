@@ -63,7 +63,7 @@ const routingData = [
     components: {
       teacher: mainPagesTypeUser.teacher.component,
       admin: mainPagesTypeUser.admin.redirect,
-      student: mainPagesTypeUser.student.redirect
+      student: <Courses/>
     }
   },
   {
@@ -75,7 +75,10 @@ const routingData = [
         return <CourseTemplate courseId={id}/>
       },
       admin: mainPagesTypeUser.admin.redirect,
-      student: mainPagesTypeUser.student.redirect
+      student: ({match}) => {
+        const {id} = match.params
+        return <CourseTemplate courseId={id}/>
+      }
     }
   },
   {
