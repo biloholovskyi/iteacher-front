@@ -12,6 +12,7 @@ import ServerSettings from "../../../../service/serverSettings";
 const server = new ServerSettings();
 
 const MainInfo = ({data}) => {
+
   return (
     <Style.Wrapper>
       <Style.AvatarBlock bg={data.photo ? `${server.getApi()}${data.photo.slice(1)}` : ava}>

@@ -27,12 +27,10 @@ const StudentCart = ({id}) => {
 
   useEffect(() => {
     updateTableData().catch();
-  }, [studentData]);
+  }, [studentData, id, showStudentModal]);
 
   // обновляем данные студента для таблицы
   const updateTableData = async () => {
-    await getDataUser().catch(error => {console.error(error)});
-
     if(!studentData) {return}
 
     const dataArray = [];
@@ -99,7 +97,7 @@ const StudentCart = ({id}) => {
       </div>
 
       {
-        showStudentModal && <StudentModal data={studentData} close={() => setShowStudentModal(false)}/>
+        showStudentModal && <StudentModal update={getDataUser} data={studentData} close={() => setShowStudentModal(false)}/>
       }
     </Style.Wrapper>
   )
