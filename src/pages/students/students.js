@@ -187,22 +187,22 @@ class Students extends Component {
             </FilterBtn>
           </Caption>
           <Caption>
-            <SearchBlock>
-              <Input>
-                <img src={search} alt="icon"/>
-                <input type="text" placeholder="Поиск"/>
-              </Input>
-              <DropDown>
-                <p>Курс</p>
-                <img src={arrow} alt="icon"/>
-              </DropDown>
-            </SearchBlock>
-            <SortBlock>
-              <img src={sort} alt="icon"/>
-              <p>Сортировать по</p>
-              <p><b>алфавиту</b></p>
-              <img src={arrow} alt="icon"/>
-            </SortBlock>
+            {/*<SearchBlock>*/}
+            {/*  <Input>*/}
+            {/*    <img src={search} alt="icon"/>*/}
+            {/*    <input type="text" placeholder="Поиск"/>*/}
+            {/*  </Input>*/}
+            {/*  <DropDown>*/}
+            {/*    <p>Курс</p>*/}
+            {/*    <img src={arrow} alt="icon"/>*/}
+            {/*  </DropDown>*/}
+            {/*</SearchBlock>*/}
+            {/*<SortBlock>*/}
+            {/*  <img src={sort} alt="icon"/>*/}
+            {/*  <p>Сортировать по</p>*/}
+            {/*  <p><b>алфавиту</b></p>*/}
+            {/*  <img src={arrow} alt="icon"/>*/}
+            {/*</SortBlock>*/}
           </Caption>
           {/*ADD students LIST*/}
           <CoursesList>

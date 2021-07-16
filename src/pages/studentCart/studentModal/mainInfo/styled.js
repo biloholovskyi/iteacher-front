@@ -3,7 +3,9 @@ import styled from "styled-components";
 import icon from './media/icon.svg'
 
 const Wrapper = styled.div`
-  
+  input {
+    min-width: 612px;
+  }
 `
 
 const AvatarBlock = styled.div`
@@ -25,19 +27,19 @@ const AvatarBlock = styled.div`
     position: relative;
     cursor: pointer;
     
-    &::after {
-      content: '';
-      width: 32px;
-      height: 32px;
-      position: absolute;
-      bottom: 0;
-      right: 0;
-      border-radius: 50%;
-      background-position: center;
-      background-size: contain;
-      background-repeat: no-repeat;
-      background-image: url(${icon});
-    }
+    // &::after {
+    //   content: '';
+    //   width: 32px;
+    //   height: 32px;
+    //   position: absolute;
+    //   bottom: 0;
+    //   right: 0;
+    //   border-radius: 50%;
+    //   background-position: center;
+    //   background-size: contain;
+    //   background-repeat: no-repeat;
+    //   background-image: url(${icon});
+    // }
   }
   
   .name {

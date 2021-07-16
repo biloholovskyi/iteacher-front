@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 const Wrapper = styled.div`
-  padding-top: 29px;
+  padding: 29px 0;
   
   h3 {
     margin-bottom: 24px;

@@ -1,7 +1,7 @@
 import React from "react";
 
 import MainInput from "../../../../components/inputs/mainInput/mainInput";
-import MainDropList from "../../../../components/inputs/mainDropList/mainDropList";
+import MainButton from "../../../../components/buttons/mainButton/mainButton";
 
 import * as Style from './styled'
 
@@ -17,27 +17,31 @@ const MainInfo = ({data}) => {
       <Style.AvatarBlock bg={data.photo ? `${server.getApi()}${data.photo.slice(1)}` : ava}>
         <div className={'photo'}/>
         <div className="name">{data.name || data.email.split('@')[0]}</div>
-        <div className="subs">Some text</div>
+        {/*<div className="subs">Some text</div>*/}
       </Style.AvatarBlock>
 
-      <MainDropList
-        options={[
-          {value: 'Ивано-Франковск', name: 'Ивано-Франковск'},
-          {value: 'Москва', name: 'Москва'},
-          {value: 'Казань', name: 'Казань'}
-        ]}
-        width={612}
+      <MainInput
+        type={'text'}
+        label={'Город'}
+        grey
+        name={'city'}
+        defaultValue={data.city}
       />
 
       <MainInput
         type={'text'}
         label={'Телефон'}
+        grey
+        name={'phone'}
+        defaultValue={data.phone}
       />
 
       <MainInput
         type={'email'}
         label={'Почта'}
         defaultValue={data.email}
+        grey
+        name={'email'}
       />
 
       <Style.Line/>

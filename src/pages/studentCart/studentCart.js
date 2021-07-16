@@ -15,16 +15,35 @@ import ServerSettings from "../../service/serverSettings";
 const server = new ServerSettings();
 
 const StudentCart = ({id}) => {
-  const [studentData, setStudentData] = useState({
-      email: '',
-      name: ''
-  })
+  const [studentData, setStudentData] = useState(null)
+
+  const [tableData, setTableData] = useState([])
 
   const [showStudentModal, setShowStudentModal] = useState(false)
 
   useEffect(() => {
     getDataUser().catch(error => {console.error(error)});
   }, [id])
+
+  useEffect(() => {
+    updateTableData().catch();
+  }, [studentData]);
+
+  // обновляем данные студента для таблицы
+  const updateTableData = async () => {
+    await getDataUser().catch(error => {console.error(error)});
+
+    if(!studentData) {return}
+
+    const dataArray = [];
+
+    if(studentData.city) {dataArray.push({name: 'Город', value: studentData.city})}
+    if(studentData.phone) {dataArray.push({name: 'Телефон', value: studentData.phone})}
+    if(studentData.email) {dataArray.push({name: 'Почта', value: studentData.email})}
+
+    setTableData(dataArray)
+  }
+
 
   const getDataUser = async () => {
     axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
@@ -47,20 +66,7 @@ const StudentCart = ({id}) => {
             type: 'table',
             margin: 24,
             icon: pan,
-            table_content: [
-              {
-                name: 'Город',
-                value: 'Простоквашино'
-              },
-              {
-                name: 'Телефон',
-                value: '+38(066)474-22-81'
-              },
-              {
-                name: 'Почта',
-                value: studentData.email
-              }
-            ],
+            table_content: tableData,
             button: {
               text: 'Показать больше информации',
               func: () => setShowStudentModal(true)
