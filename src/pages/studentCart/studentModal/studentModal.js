@@ -21,10 +21,17 @@ const StudentModal = ({data, close, update}) => {
 
     let count = 0;
     const socials = [];
-    socialTypes.forEach(social => {
-      socials.push({type: social.value, link: socialLinks[count].value})
-      count++;
-    })
+
+    try {
+      socialTypes.forEach(social => {
+        socials.push({type: social.value, link: socialLinks[count].value})
+        count++;
+      })
+    } catch (e) {
+      if(socialTypes) {
+        socials.push({type: socialTypes.value, link: socialLinks.value});
+      }
+    }
 
 
 
@@ -45,7 +52,7 @@ const StudentModal = ({data, close, update}) => {
       })
       .catch(error => console.error(error));
   }
-  console.log(data)
+
   return (
     <Style.Wrapper>
       <Style.Body onSubmit={(e) => updateData(e)}>
