@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const Wrapper = styled.div`
+const Wrapper = styled.form`
   padding-top: 24px;
 `
 const NoteList = styled.div`

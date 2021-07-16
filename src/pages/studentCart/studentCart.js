@@ -92,8 +92,9 @@ const StudentCart = ({id}) => {
           }}
         />
       </div>
+
       <div className="right">
-        <Tabs id={id}/>
+        <Tabs id={id} data={studentData}/>
       </div>
 
       {
