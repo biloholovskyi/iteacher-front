@@ -47,8 +47,24 @@ const Login = ({loginUser}) => {
             // значит пользователь найден
             // проверяем пароль
             if (res.data.password === e.target.password.value) {
-              loginUser(res.data);
-              createToken(res.data);
+              // если это студент получаем его курсы отдельно
+              if(res.data.type === 'student') {
+                const studentData = res.data;
+
+                axios.get(`${server.getApi()}api/courses/student/${res.data.id}/`)
+                  .then(res => {
+                    studentData.courses = res.data;
+                  })
+                  .then(() => {
+                    loginUser(studentData);
+                    createToken(res.data);
+                  })
+                  .catch(error => console.error(error))
+              } else {
+                loginUser(res.data);
+                createToken(res.data);
+              }
+
             } else {
               setValidation(true)
             }
