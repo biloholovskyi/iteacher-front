@@ -17,6 +17,7 @@ const CourseWrapper = styled.div`
   .course-wrapper {
     margin-right: 24px;
     margin-bottom: 24px;
+    text-decoration: none;
     
     .course-title {
       font-family: Inter, sans-serif;

@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import {connect} from "react-redux";
 import {useHistory} from "react-router";
+import {NavLink} from "react-router-dom";
 
 import {setStudentToCourse} from "../../../../actions";
 
@@ -49,7 +50,7 @@ const TabCourses = ({id, setStudentToCourse}) => {
       {/*выводим все курсы*/}
       {courses.map(course => {
         return (
-          <div className='course-wrapper'>
+          <NavLink to={'/course/' + course.id} className='course-wrapper'>
             <CourseCover
               key={course.id}
               type={'student-courses'}
@@ -58,7 +59,7 @@ const TabCourses = ({id, setStudentToCourse}) => {
 
             <h4 className="course-title">{course.name}</h4>
             <div className="course-next-lesson">Ближайший урок: <br/> 1 ноября, 16:45</div>
-          </div>
+          </NavLink>
         )
       })}
     </Style.CourseWrapper>
