@@ -35,7 +35,7 @@ const Student = ({show, course, user}) => {
 
   return (
     <SidebarItem>
-      <div className="title">{user.type === 'teacher' ? 'Ученик' : 'Преподователь'}</div>
+      <div className="title">{user.type === 'teacher' ? 'Ученик' : 'Преподаватель'}</div>
       <div className="info">
         {
           data ? (

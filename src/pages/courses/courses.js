@@ -55,20 +55,22 @@ const Courses = ({user, setTopAlertText}) => {
             )
           }
         </Style.Caption>
-        <Style.CaptionInput>
-          <Style.SearchBlock>
-            <Style.Input>
-              <img src={search} alt="icon"/>
-              <input type="text" placeholder="Поиск"/>
-            </Style.Input>
-          </Style.SearchBlock>
-          <Style.SortBlock>
-            <img src={sort} alt="icon"/>
-            <p>Сортировать по</p>
-            <p><b>алфавиту</b></p>
-            <img src={arrow} alt="icon"/>
-          </Style.SortBlock>
-        </Style.CaptionInput>
+
+        {/*<Style.CaptionInput>*/}
+        {/*  <Style.SearchBlock>*/}
+        {/*    <Style.Input>*/}
+        {/*      <img src={search} alt="icon"/>*/}
+        {/*      <input type="text" placeholder="Поиск"/>*/}
+        {/*    </Style.Input>*/}
+        {/*  </Style.SearchBlock>*/}
+        {/*  <Style.SortBlock>*/}
+        {/*    <img src={sort} alt="icon"/>*/}
+        {/*    <p>Сортировать по</p>*/}
+        {/*    <p><b>алфавиту</b></p>*/}
+        {/*    <img src={arrow} alt="icon"/>*/}
+        {/*  </Style.SortBlock>*/}
+        {/*</Style.CaptionInput>*/}
+
         {/*ADD COURSES LIST*/}
 
         <Style.CoursesList>

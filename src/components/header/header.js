@@ -249,7 +249,7 @@ export default class Header extends Component {
       <>
         <NavLink to='/schedule'>Мое расписание</NavLink>
         <NavLink to='/homework'>Домашние задания</NavLink>
-        <NavLink to='/courses'>Мои Курсы</NavLink>
+        <NavLink to='/courses'>Мои курсы</NavLink>
         <NavLink to='/dictionary'>Мой словарь</NavLink>
         <NavLink to='/resources'>Полезное</NavLink>
       </>
