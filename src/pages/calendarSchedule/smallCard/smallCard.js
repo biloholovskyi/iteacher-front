@@ -82,25 +82,20 @@ const SmallCard = ({events, course, update}) => {
 
   return (
     <>
-      {
-        events.status !== 'completed' &&
-        (
-          <SmallCardWrap
-            titleW={titleW}
-            id={events.id}
-            ref={selectListEl}
-            onClick={() => setModalCard(true)}
-          >
-            {/*<div className="indicator"/>*/}
-            <img src={studentData && studentData.photo ? `${api.getApi()}${studentData.photo.slice(1)}` : ava}
-                 alt="photo" className="photo"/>
-            <div className="title">{studentData ? studentData.name ? studentData.name : studentData.email : ''}</div>
-          </SmallCardWrap>
-        )
-      }
+      <SmallCardWrap
+        titleW={titleW}
+        id={events.id}
+        ref={selectListEl}
+        onClick={() => setModalCard(true)}
+      >
+        {/*<div className="indicator"/>*/}
+        <img src={studentData && studentData.photo ? `${api.getApi()}${studentData.photo.slice(1)}` : ava}
+             alt="photo" className="photo"/>
+        <div className="title">{studentData ? studentData.name ? studentData.name : studentData.email : ''}</div>
+      </SmallCardWrap>
 
       {
-        modalCard && (
+        modalCard && events.status !== 'completed' && (
           <ModalCard
             update={update}
             studentData={studentData}
