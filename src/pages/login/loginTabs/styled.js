@@ -18,7 +18,7 @@ const Form = styled.form`
     color: ${props => props.disabledBtn.length <= 0 ? '#A2A9B0' : props.disabledBtn === true ? '#A2A9B0' : '#fff'};
     border: none;
     cursor: pointer;
-    margin-bottom: 45px;
+    margin-bottom: 0;
   }
 
   .forget {

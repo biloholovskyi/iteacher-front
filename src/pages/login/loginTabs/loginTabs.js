@@ -35,11 +35,12 @@ const LoginTabs = ({validation, onLogin}) => {
           disabled={disabled.length <= 0 ? true : disabled === true}
         />
       </Style.Form>
-      <Style.SocialBLock>
-        <a><img src={google} alt="icon"/></a>
-        <a><img src={vk} alt="icon"/></a>
-        <a><img src={facebook} alt="icon"/></a>
-      </Style.SocialBLock>
+
+      {/*<Style.SocialBLock>*/}
+      {/*  <a><img src={google} alt="icon"/></a>*/}
+      {/*  <a><img src={vk} alt="icon"/></a>*/}
+      {/*  <a><img src={facebook} alt="icon"/></a>*/}
+      {/*</Style.SocialBLock>*/}
     </>
   )
 }
