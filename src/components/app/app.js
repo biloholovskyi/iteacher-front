@@ -48,7 +48,7 @@ const App = ({loginUser, user, topAlert}) => {
 
     if (token) {
       // если токен есть надо проверить правильный ли он
-      const statusToken = JSON.parse(token).email;
+      const statusToken = JSON.parse(token).email.toLowerCase();
       // если токен не верный
       if (!statusToken) {
         // удаляем не верный токен

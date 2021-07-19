@@ -25,7 +25,7 @@ const RgisterTab = ({loginUser}) => {
     axios.defaults.xsrfCookieName = 'csrftoken';
 
     const server = new ServerSettings();
-    const email = e.target.name.value;
+    const email = e.target.name.value.toLowerCase();
     // проверяем не занят ли емейл
     await axios.get(`${server.getApi()}api/users/${email}/`)
       .then(res => {
@@ -40,7 +40,7 @@ const RgisterTab = ({loginUser}) => {
           // если совпадает
           // данные для сервера
           const data = new FormData();
-          data.set('email', e.target.name.value);
+          data.set('email', e.target.name.value.toLowerCase());
           data.set('password', e.target.password.value);
           data.set('type', 'teacher')
 

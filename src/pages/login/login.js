@@ -28,7 +28,7 @@ const Login = ({loginUser}) => {
   const onLogin = async (e) => {
     e.preventDefault();
     // получаем с сервера пользователя
-    const login = e.target.login.value; // email пользователя
+    const login = e.target.login.value.toLowerCase(); // email пользователя
     const server = new ServerSettings();
 
     await axios.get(`${server.getApi()}api/users/${login}/`, {
@@ -37,7 +37,6 @@ const Login = ({loginUser}) => {
       },
     })
       .then(res => {
-        console.log(res);
         // проверяем найденный ли пользователь
         if (res.data.toString().includes('DoesNotExist')) {
           setValidation(true)
