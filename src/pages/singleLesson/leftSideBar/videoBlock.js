@@ -14,10 +14,9 @@ const VideoBlock = ({ user, classRoom }) => {
   const [stream, setStream] = useState();
   const userVideo = useRef();
   const socketRef = useRef();
-  const connectionRef = useRef();
+  const peerRef = useRef();
   const [message, setMessage] = useState(null);
 
-  const [streamIsReady, setStreamIsReady] = useState(false);
   const [streamIsStarted, setStreamIsStarted] = useState(false);
 
   const [isVideoMuted, setVideoMute] = useState(false);
@@ -28,23 +27,28 @@ const VideoBlock = ({ user, classRoom }) => {
       .getUserMedia({ video: true, audio: true })
       .then((stream) => {
         setStream(stream);
-        setStreamIsReady(true);
       });
 
     return () => {
-      socketRef.current.close();
-      connectionRef.current.destroy();
+      if (socketRef.current) {
+        socketRef.current.close();
+        peerRef.current.destroy();
+      }
     };
   }, []);
 
   useEffect(() => {
-    if (!stream) return;
+    const connect = () => {
+      if (!stream) return;
 
-    if (streamIsReady) {
       let endPoint = `${video_ws_url}${classRoom}/`;
       socketRef.current = new WebSocket(endPoint);
 
       socketRef.current.onopen = (event) => {
+
+        if (peerRef.current)
+          return;
+
         const peer_caller = new Peer({
           initiator: true,
           trickle: false,
@@ -71,9 +75,28 @@ const VideoBlock = ({ user, classRoom }) => {
 
         peer_caller.on("close", () => {
           setStreamIsStarted(false);
+          peerRef.current = null;
         });
 
-        connectionRef.current = peer_caller;
+        peerRef.current = peer_caller;
+      };
+
+      socketRef.current.onclose = (event) => {
+        let randSec = Math.floor(Math.random() * 10000) + 1000;
+        console.log(
+          `Socket is closed. Reconnect will be attempted in ${randSec / 1000} second.`,
+          event.reason
+        );
+        setTimeout(() => { connect() }, randSec);
+      };
+
+      socketRef.current.onerror = (event) => {
+        console.error(
+          "Socket encountered error: ",
+          event.message,
+          "Closing socket"
+        );
+        socketRef.current.close();
       };
 
       socketRef.current.onmessage = (event) => {
@@ -85,7 +108,9 @@ const VideoBlock = ({ user, classRoom }) => {
         }
         setMessage(parsed_message);
       };
-    }
+    };
+
+    connect();
 
     return () => {
       if (stream)
@@ -93,7 +118,7 @@ const VideoBlock = ({ user, classRoom }) => {
           track.stop();
         });
     };
-  }, [streamIsReady]);
+  }, [stream]);
 
   useEffect(() => {
     if (!message) return;
@@ -101,7 +126,7 @@ const VideoBlock = ({ user, classRoom }) => {
     const action = message["action"];
 
     if (action == "answer") {
-      connectionRef.current.signal(message["message"]);
+      peerRef.current.signal(message["message"]);
       console.log("2. peer_caller recived answer:", message["message"]);
     }
     if (action == "offer") {
@@ -130,12 +155,13 @@ const VideoBlock = ({ user, classRoom }) => {
 
       peer_answerer.on("close", () => {
         setStreamIsStarted(false);
+        peerRef.current = null;
       });
 
       peer_answerer.signal(message["message"]);
       console.log("1. peer_answerer received offer:", message["message"]);
 
-      connectionRef.current = peer_answerer;
+      peerRef.current = peer_answerer;
     }
   }, [message]);
 
