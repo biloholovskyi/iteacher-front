@@ -145,7 +145,7 @@ class CourseTemplate extends Component {
     axios.defaults.xsrfCookieName = 'csrftoken';
 
     const server = new ServerSettings();
-    await axios.get(`${server.getApi()}api/users/${email}/`)
+    await axios.get(`${server.getApi()}api/users/${email.toLowerCase()}/`)
       .then(res => {
         // если есть проверяем тип пользователя
         if (res.data.type === 'student') {
@@ -200,7 +200,7 @@ class CourseTemplate extends Component {
 
         const data = new FormData();
         data.set('name', '');
-        data.set('email', email);
+        data.set('email', email.toLowerCase());
         data.set('password', password);
         data.set('type', 'student')
 

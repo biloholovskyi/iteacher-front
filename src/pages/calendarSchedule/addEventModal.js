@@ -66,6 +66,7 @@ const AddEventModal = ({close, courses, user, studentsList, update, updateData})
 
   // получаем список курсов выбраного студента
   useEffect(() => {
+    if(!needStudent) {return}
     // получаем курсы выбраного ученика
     const needCourses = courses.filter(course => parseInt(course.student) === parseInt(needStudent.value))
       .map(c => {

@@ -25,11 +25,7 @@ const MainDropList = ({
 
   // выводим options
   const optionsList = options.map((item, key) => {
-    if(defaultValue && defaultValue === item.value) {
-      return <option hidden key={key} value={item.value}>{item.name}</option>
-    } else {
-      return <option hidden key={key} value={item.value}>{item.name}</option>
-    }
+    return <option hidden key={key} value={item.value}>{item.name}</option>
   })
 
 
