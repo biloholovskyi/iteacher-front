@@ -18,8 +18,8 @@ const ListLesson = ({data, activeSection}) => {
     setList(sectionsList);
   }, [data, activeSection]);
 
-  const sections = list.map(section => {
-    return <ListLessonDone key={section.id} data={section}/>
+  const sections = list.map((section, key)=> {
+    return <ListLessonDone key={key} data={section}/>
   })
 
   return (

@@ -11,8 +11,11 @@ import MainContent from './mainContent/mainContent';
 import {ChatSection} from './chatSection/ChatSection';
 import LeftSideBar from './leftSideBar/leftSideBar';
 import WaitStudentModal from './waitStudentModal';
+import DictionarySearchModal from '../dictionary/dictionaryModals/searchModals'
 
-import {LessonHeader, LessonBody, LessonWrap} from './singleLessonStyled';
+import {LessonHeader, LessonNav, LessonBody, LessonWrap} from './singleLessonStyled';
+
+import IconDictionary from '../../assets/media/icon/document.svg';
 
 import ClassRoom from "./services";
 import ServerSettings from "../../service/serverSettings";
@@ -25,6 +28,7 @@ class SingleLesson extends Component {
     super(props);
     this.state = {
       waitStudentModal: false,
+      dictionaryModal: false,
       loading: true,
       redirect: false,
       data: null,
@@ -34,6 +38,7 @@ class SingleLesson extends Component {
     this.ClassRoomService = new ClassRoom()
     this.chatSocket = null;
     this.interval = null;
+    this.showDictionaryModal = this.showDictionaryModal.bind(this);
   }
 
   componentDidMount() {
@@ -331,6 +336,12 @@ class SingleLesson extends Component {
     this.setState({chatData: data})
   }
 
+  showDictionaryModal() {
+    this.setState(prevState => ({
+      dictionaryModal: !prevState.dictionaryModal
+    }));
+  }
+
   // завершение урока
   endClassRoom = async () => {
     // меняем статус урока на сервере
@@ -391,14 +402,28 @@ class SingleLesson extends Component {
             <>
               <LessonHeader>
                 <div className="titleBlock">{data.name}</div>
-
-                <MainButton
-                  text={'Закончить задание'}
-                  type={'button'}
-                  width={197}
-                  func={this.endClassRoom}
-                />
+                <LessonNav>
+                  <button 
+                    type="button" 
+                    className={'dictionary'} 
+                    onClick={this.showDictionaryModal}
+                  >
+                    <img src={IconDictionary} alt="icon"/>
+                    Словарь
+                  </button>
+                  <MainButton
+                    text={'Закончить задание'}
+                    type={'button'}
+                    width={197}
+                    func={this.endClassRoom}
+                  />
+                </LessonNav>
               </LessonHeader>
+
+
+              {this.state.dictionaryModal && (
+                <DictionarySearchModal close={this.showDictionaryModal}/>
+              )}
 
               <LessonWrap>
                 <div className="container">

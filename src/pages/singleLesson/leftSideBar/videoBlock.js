@@ -54,8 +54,6 @@ const VideoBlock = ({ user, classRoom }) => {
         });
 
         peer_caller.on("signal", (data) => {
-          console.log("1. peer_caller send offer:", data);
-
           socketRef.current.send(
             JSON.stringify({
               action: "offer",
@@ -66,7 +64,6 @@ const VideoBlock = ({ user, classRoom }) => {
         });
 
         peer_caller.on("stream", (stream) => {
-          console.log("3. peer_caller start stream");
           setStreamIsStarted(true);
           userVideo.current.srcObject = stream;
         });
@@ -82,7 +79,7 @@ const VideoBlock = ({ user, classRoom }) => {
         const parsed_message = JSON.parse(event.data);
         const from = parsed_message["from"];
 
-        if (user.id == from) {
+        if (user.id === from) {
           return;
         }
         setMessage(parsed_message);
@@ -102,11 +99,10 @@ const VideoBlock = ({ user, classRoom }) => {
 
     const action = message["action"];
 
-    if (action == "answer") {
+    if (action === "answer") {
       connectionRef.current.signal(message["message"]);
-      console.log("2. peer_caller recived answer:", message["message"]);
     }
-    if (action == "offer") {
+    if (action === "offer") {
       const peer_answerer = new Peer({
         initiator: false,
         trickle: false,
@@ -114,7 +110,6 @@ const VideoBlock = ({ user, classRoom }) => {
       });
 
       peer_answerer.on("signal", (data) => {
-        console.log("3. peer_answerer send answer:", data);
         socketRef.current.send(
           JSON.stringify({
             action: "answer",
@@ -125,7 +120,6 @@ const VideoBlock = ({ user, classRoom }) => {
       });
 
       peer_answerer.on("stream", (stream) => {
-        console.log("2. peer_answerer start stream");
         setStreamIsStarted(true);
         userVideo.current.srcObject = stream;
       });
@@ -135,7 +129,6 @@ const VideoBlock = ({ user, classRoom }) => {
       });
 
       peer_answerer.signal(message["message"]);
-      console.log("1. peer_answerer received offer:", message["message"]);
 
       connectionRef.current = peer_answerer;
     }
@@ -156,7 +149,7 @@ const VideoBlock = ({ user, classRoom }) => {
       <div>
         <img
           src={avatar}
-          alt="image"
+          alt=""
           style={{ display: streamIsStarted ? "none" : "inline-block" }}
         />
         <video

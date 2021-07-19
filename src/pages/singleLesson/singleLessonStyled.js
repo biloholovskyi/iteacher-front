@@ -27,6 +27,33 @@ const LessonHeader = styled.div`
 
 `
 
+const LessonNav = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 22px;
+  letter-spacing: -0.01em;
+  color: #111111;
+  min-width: fit-content;
+  .dictionary {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 24px;
+    img {
+      width: 24px;
+      height: 24px;
+      object-fit: contain;
+    }
+  }
+`
+
 const LessonBody = styled.div`
   display: flex;
   align-items: flex-start;
@@ -744,6 +771,7 @@ const ItemSection = styled.div`
 export {
   InputWrap,
   LessonHeader,
+  LessonNav,
   LessonBody,
   BlockWrap,
   TabHead,
