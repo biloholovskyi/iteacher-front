@@ -208,6 +208,8 @@ class Students extends Component {
           <CoursesList>
             {
               students.map(student => {
+                // получаем ближайшее события студента
+
                 return (
                   <StudentItem
                     key={student.id}
