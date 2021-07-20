@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react'
 import {connect} from "react-redux";
 import {useHistory} from "react-router";
 import {NavLink} from "react-router-dom";
+import axios from "axios";
 
 import {setStudentToCourse} from "../../../../actions";
 
@@ -12,13 +13,17 @@ import * as Style from './styled.js'
 import plus from "../../../../assets/media/icon/plus-blue.svg";
 
 import CoursesServices from "../../../../service/courses";
+import ServerSettings from "../../../../service/serverSettings";
+
+const server = new ServerSettings();
 const coursesService = new CoursesServices();
 
-const TabCourses = ({id, setStudentToCourse}) => {
+const TabCourses = ({id, setStudentToCourse, user}) => {
   const history = useHistory();
 
   // список курсов студентов
   const [courses, setCourses] = useState([])
+  const [nextLesson, setNextLesson] = useState(null)
 
   useEffect(() => {
     coursesService.getAllCourses().then(res => {
@@ -26,6 +31,33 @@ const TabCourses = ({id, setStudentToCourse}) => {
       const coursesStudent = res.data.filter(course => parseInt(course.student) === parseInt(id))
       setCourses(coursesStudent)
     })
+  }, [id])
+
+  // получаем ближайший урок
+  const getNextLesson = async () => {
+    await axios.get(`${server.getApi()}api/schedules/${user.id}/${id}/`)
+      .then(res => {
+        // меняем формат даты для сортировки и отбираем только события текущего курса
+        const sortList = res.data.map(event => {
+          const date = event.date.split('.')
+          const newDate = `${date[2]}-${date[1]}-${date[0]} ${event.time}:00`;
+          return {...event, sortTime: newDate};
+        })
+
+        // соритруем по дате
+        sortList.sort((a, b) => {
+          const dateA = new Date(a.sortTime).getTime();
+          const dateB = new Date(b.sortTime).getTime();
+          return dateA - dateB
+        })
+
+        setNextLesson(sortList);
+      })
+      .catch(error => console.error(error))
+  }
+
+  useEffect(() => {
+    getNextLesson().catch(error => console.error(error))
   }, [id])
 
   // переходим на покупку курса с студентом
@@ -48,27 +80,35 @@ const TabCourses = ({id, setStudentToCourse}) => {
       </Style.AddCourse>
 
       {/*выводим все курсы*/}
-      {courses.map(course => {
-        return (
-          <NavLink to={'/course/' + course.id} className='course-wrapper'>
-            <CourseCover
-              key={course.id}
-              type={'student-courses'}
-              course={course}
-            />
+      {
+        courses.map(course => {
+          // получаем список событий этого курса
+          const schedule = nextLesson && nextLesson.filter(sch => parseInt(sch.course) === parseInt(course.id))[0];
 
-            <h4 className="course-title">{course.name}</h4>
-            <div className="course-next-lesson">Ближайший урок: <br/> 1 ноября, 16:45</div>
-          </NavLink>
-        )
-      })}
+          return (
+            <NavLink to={'/course/' + course.id} className='course-wrapper'>
+              <CourseCover
+                key={course.id}
+                type={'student-courses'}
+                course={course}
+              />
+
+              <h4 className="course-title">{course.name}</h4>
+              <div className="course-next-lesson">
+                <p>{schedule && 'Ближайший урок:'}</p>
+                <p>{schedule && `${schedule.date}, ${schedule.time}`}</p>
+              </div>
+            </NavLink>
+          )
+        })
+      }
     </Style.CourseWrapper>
   )
 }
 
 const mapStateToProps = (state) => {
   return {
-
+    user: state.user
   }
 }
 

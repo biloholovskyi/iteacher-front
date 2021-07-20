@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from "react";
 import axios from "axios";
+import {connect} from "react-redux";
 
 import UserAvatar from "./userAvatar/userAvatar";
 import InfoBlock from "../../components/infoBlock/infoBlock";
@@ -14,7 +15,8 @@ import ServerSettings from "../../service/serverSettings";
 
 const server = new ServerSettings();
 
-const StudentCart = ({id}) => {
+const StudentCart = ({id, user}) => {
+  const [nextLesson, setNextLesson] = useState(null)
   const [studentData, setStudentData] = useState(null)
 
   const [tableData, setTableData] = useState([])
@@ -53,6 +55,49 @@ const StudentCart = ({id}) => {
       }).catch(error => {console.error(error)});
   }
 
+  // получаем ближайший урок
+  const getNextLesson = async () => {
+    let sortList;
+    await axios.get(`${server.getApi()}api/schedules/${user.id}/${id}/`)
+      .then(res => {
+        // меняем формат даты для сортировки
+        sortList = res.data.map(event => {
+          const date = event.date.split('.')
+          const newDate = `${date[2]}-${date[1]}-${date[0]} ${event.time}:00`;
+          return {...event, sortTime: newDate};
+        })
+      })
+      .then(() => {
+        // соритруем по дате
+        sortList.sort((a, b) => {
+          const dateA = new Date(a.sortTime).getTime();
+          const dateB = new Date(b.sortTime).getTime();
+          return dateA - dateB
+        })
+
+        // получаем данные курса события
+        axios.get(`${server.getApi()}api/courses/${sortList[0].course}/`)
+          .then(res => {
+            const lessons = JSON.parse(res.data.lessons);
+            const lessonIndex = lessons.findIndex(l => parseInt(l.id) === parseInt(sortList[0].lesson))
+
+            const nextLessonData = {
+              ...sortList[0],
+              lessonData: lessons[lessonIndex],
+              lessonIndex: lessonIndex + 1
+            };
+
+            setNextLesson(nextLessonData);
+          })
+          .catch(error => console.error(error));
+      })
+      .catch(error => console.error(error))
+  }
+
+  useEffect(() => {
+    getNextLesson().catch(error => console.error(error))
+  }, [id]);
+
   return (
     <Style.Wrapper className={'container'}>
       <div className="left">
@@ -78,8 +123,8 @@ const StudentCart = ({id}) => {
             type: 'double-text',
             margin: 24,
             double_text: {
-              top: '#2 Finance',
-              bot: '12 октября, 09:00 - 10:00'
+              top: nextLesson && `#${nextLesson.lessonIndex} ${nextLesson.lessonData.name}`,
+              bot: nextLesson && `${nextLesson.date}, ${nextLesson.time}`
             }
           }}
         />
@@ -104,4 +149,14 @@ const StudentCart = ({id}) => {
   )
 }
 
-export default StudentCart
+const mapStateToProps = (state) => {
+  return {
+    user: state.user
+  }
+}
+
+const mapDispatchToProps = {
+
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(StudentCart);
