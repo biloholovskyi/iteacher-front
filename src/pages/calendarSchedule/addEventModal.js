@@ -34,6 +34,8 @@ const AddEventModal = ({close, courses, user, studentsList, update, updateData})
 
   const [hiddenDate, setHiddenDate] = useState(false)
 
+  const [dateValidation, setDateValidation] = useState(false)
+
   useEffect(() => {
     if(updateData) {
       setData(updateData)
@@ -110,6 +112,23 @@ const AddEventModal = ({close, courses, user, studentsList, update, updateData})
     setNeedCourse(courseObject);
   }
 
+  // проверяем занято ли время или нет
+  const checkTime = async (date, time) => {
+    const api = new ServerSettings();
+    // получаем все события
+    return await axios.get(`${api.getApi()}api/schedules/`)
+      .then(result => {return result; })
+      .then(res => {
+        const schThisDate = res.data
+          .filter(sch => parseInt(sch.user) === parseInt(user.id))
+          .filter(sch => sch.date === date);
+
+        // проверяем совпадает ли время начала урока
+        return schThisDate.find(sch => sch.time === time)
+      })
+      .catch(error => console.error(error))
+  }
+
   // создане нового события
   const createNewEvent = async (e) => {
     e.preventDefault()
@@ -127,13 +146,21 @@ const AddEventModal = ({close, courses, user, studentsList, update, updateData})
       student: e.target.student.value
     }
 
-    const serverSettings = new ServerSettings();
-    await axios.post(`${serverSettings.getApi()}api/schedules/`, data)
+    await checkTime(e.target.date.value, e.target.time.value)
       .then(res => {
-        update(res.data);
-        close()
+        // если время занято
+        if(res) {
+          setDateValidation(true);
+        } else {
+          const serverSettings = new ServerSettings();
+          axios.post(`${serverSettings.getApi()}api/schedules/`, data)
+            .then(res => {
+              update(res.data);
+              close()
+            })
+            .catch(error => console.error(error));
+        }
       })
-      .catch(error => console.error(error));
   }
 
   // обновление события
@@ -153,16 +180,23 @@ const AddEventModal = ({close, courses, user, studentsList, update, updateData})
       student: parseInt(e.target.student.value)
     }
 
-
-    const serverSettings = new ServerSettings();
-    await axios.put(`${serverSettings.getApi()}api/schedules/${data.id}/update/`, dataServer)
+    await checkTime(e.target.date.value, e.target.time.value)
       .then(res => {
-        update({...data, ...dataServer});
-        close()
-        // eslint-disable-next-line no-restricted-globals
-        location.reload()
+        // если время занято
+        if(res && parseInt(res.id) !== parseInt(data.id)) {
+          setDateValidation(true);
+        } else {
+          const serverSettings = new ServerSettings();
+          axios.put(`${serverSettings.getApi()}api/schedules/${data.id}/update/`, dataServer)
+            .then(() => {
+              update({...data, ...dataServer});
+              close()
+              // eslint-disable-next-line no-restricted-globals
+              location.reload()
+            })
+            .catch(error => console.error(error));
+        }
       })
-      .catch(error => console.error(error));
   }
 
   const  handleDateChange = data => {
@@ -302,6 +336,7 @@ const AddEventModal = ({close, courses, user, studentsList, update, updateData})
                 required={false}
                 defaultValue={data.time}
                 grey
+                validation={dateValidation}
               />
             ) : (
               <MainInput
@@ -310,6 +345,7 @@ const AddEventModal = ({close, courses, user, studentsList, update, updateData})
                 type={'text'}
                 required={false}
                 grey
+                validation={dateValidation}
               />
             )
           }
