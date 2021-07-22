@@ -10,6 +10,7 @@ import store from './store';
 
 // подключаем общие стили
 import css from './index.css'
+import './style.css'
 
 ReactDOM.render(
   <Provider store={store}>

@@ -47,9 +47,10 @@ const LessonNav = styled.div`
     justify-content: center;
     margin-right: 24px;
     img {
-      width: 24px;
-      height: 24px;
+      width: 22px;
+      height: 17px;
       object-fit: contain;
+      margin-right: 10px;
     }
   }
 `

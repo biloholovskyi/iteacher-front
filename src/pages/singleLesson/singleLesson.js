@@ -15,7 +15,7 @@ import DictionarySearchModal from '../dictionary/dictionaryModals/searchModals'
 
 import {LessonHeader, LessonNav, LessonBody, LessonWrap} from './singleLessonStyled';
 
-import IconDictionary from '../../assets/media/icon/document.svg';
+import IconDictionary from '../../assets/media/icon/dictionary.svg';
 
 import ClassRoom from "./services";
 import ServerSettings from "../../service/serverSettings";
