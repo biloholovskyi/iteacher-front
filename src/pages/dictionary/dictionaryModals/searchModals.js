@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-
-import { Modal, ModalContent, ModalClose, SearchBlock, Input, ListResult } from "./styled";
-import search from "../../../assets/media/icon/search.svg";
+import { ListResult } from "./styled";
 
 const apiUrl = `https://dictionary.yandex.net/api/v1/dicservice.json/lookup?key=${process.env.REACT_APP_YANDEX_DICTIONARY_KEY}`;
 
@@ -14,7 +12,7 @@ const DictionarySearchModal = (props) => {
   useEffect(() => {
     const timeOutId = setTimeout(() => {
       let output = []
-      
+
       if (!query) {
         setDisplayMessage(output);
         return;
@@ -41,21 +39,20 @@ const DictionarySearchModal = (props) => {
   }, [query]);
 
   return (
-    <Modal>
-      <ModalContent>
-        <ModalClose onClick={props.close} />
-        <h2>Найти слово</h2>
-        <SearchBlock>
-          <Input>
-            <img src={search} alt="icon" />
+    <div className="modal">
+      <div className="modal-content">
+        <div className="modal-header">
+          <div className="modal-close" onClick={props.close}></div>
+          <h2>Найти слово</h2>
+        </div>
+        <div className="search-input">
             <input
               type="text"
               placeholder="Введите слово на русском или английском"
               value={query}
               onChange={(event) => setQuery(event.target.value)}
             />
-          </Input>
-        </SearchBlock>
+        </div>
         <ListResult>
           <div className="lr-wrap">
             {displayMessage && displayMessage.map((data, key) => {
@@ -69,8 +66,8 @@ const DictionarySearchModal = (props) => {
             }
           </div>
         </ListResult>
-      </ModalContent>
-    </Modal>
+      </div>
+    </div>
   );
 };
 
