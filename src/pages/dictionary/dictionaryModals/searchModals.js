@@ -4,38 +4,48 @@ import axios from "axios";
 import { Modal, ModalContent, ModalClose, SearchBlock, Input, ListResult } from "./styled";
 import search from "../../../assets/media/icon/search.svg";
 
-const apiUrl = `https://dictionary.yandex.net/api/v1/dicservice.json/lookup?key=${process.env.REACT_APP_YANDEX_DICTIONARY_KEY}`;
+const yandexApiUrl = `https://dictionary.yandex.net/api/v1/dicservice.json/lookup?key=${process.env.REACT_APP_YANDEX_DICTIONARY_KEY}`;
+const apiUrl = `${process.env.REACT_APP_API_URL}api/translate/detect/`;
+const languages = ["en", "ru"];
 
 const DictionarySearchModal = (props) => {
   const [query, setQuery] = useState("");
   const [displayMessage, setDisplayMessage] = useState();
 
-
   useEffect(() => {
     const timeOutId = setTimeout(() => {
       let output = []
-      
-      if (!query) {
-        setDisplayMessage(output);
+      setDisplayMessage(output);
+      if (!query)
         return;
-      }
+
 
       axios
-        .get(apiUrl + "&lang=en-ru&text=" + query)
+        .post(apiUrl, { text: query })
         .then((result) => {
-          Object.entries(result.data.def).forEach(([key1, value]) => {
-            Object.entries(value.tr).forEach(([key2, tr]) => {
-              output.push({
-                text: value.text,
-                translate: tr.text
-              });
+
+          const languageCode = result.data.languageCode;
+          if (languages.indexOf(languageCode) < 0)
+            return;
+
+          let lang = `${languageCode}-${languageCode === "ru" ? "en" : "ru"}`;
+          axios
+            .get(`${yandexApiUrl}&lang=${lang}&text=${query}`)
+            .then((result) => {
+              Object.entries(result.data.def).forEach(([key1, value]) => {
+                Object.entries(value.tr).forEach(([key2, tr]) => {
+                  output.push({
+                    text: value.text,
+                    translate: tr.text
+                  });
+                })
+              })
+              setDisplayMessage(output.slice(0, 4));
             })
-          })
-          setDisplayMessage(output.slice(0, 4));
+            .catch((err) => {
+              console.error(err);
+            });
         })
-        .catch((err) => {
-          console.error(err);
-        });
     }, 500);
     return () => clearTimeout(timeOutId);
   }, [query]);
@@ -59,13 +69,13 @@ const DictionarySearchModal = (props) => {
         <ListResult>
           <div className="lr-wrap">
             {displayMessage && displayMessage.map((data, key) => {
-                return (
-                    <div className="lr-item" key={key}>
-                      {data.text}
-                      <span>{data.translate}</span>
-                    </div>
-                )
-              })
+              return (
+                <div className="lr-item" key={key}>
+                  {data.text}
+                  <span>{data.translate}</span>
+                </div>
+              )
+            })
             }
           </div>
         </ListResult>
