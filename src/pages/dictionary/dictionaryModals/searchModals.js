@@ -6,7 +6,10 @@ import search from "../../../assets/media/icon/search.svg";
 
 const yandexApiUrl = `https://dictionary.yandex.net/api/v1/dicservice.json/lookup?key=${process.env.REACT_APP_YANDEX_DICTIONARY_KEY}`;
 const apiUrl = `${process.env.REACT_APP_API_URL}api/translate/detect/`;
-const languages = ["en", "ru"];
+const languages = {
+  "en": "en-ru",
+  "ru": "ru-en"
+}
 
 const DictionarySearchModal = (props) => {
   const [query, setQuery] = useState("");
@@ -19,21 +22,18 @@ const DictionarySearchModal = (props) => {
       if (!query)
         return;
 
-
       axios
         .post(apiUrl, { text: query })
         .then((result) => {
-
-          const languageCode = result.data.languageCode;
-          if (languages.indexOf(languageCode) < 0)
+          const lang = languages[result.data.languageCode];
+          if (!lang)
             return;
-
-          let lang = `${languageCode}-${languageCode === "ru" ? "en" : "ru"}`;
+          
           axios
             .get(`${yandexApiUrl}&lang=${lang}&text=${query}`)
             .then((result) => {
-              Object.entries(result.data.def).forEach(([key1, value]) => {
-                Object.entries(value.tr).forEach(([key2, tr]) => {
+              Object.entries(result.data.def).forEach(([, value]) => {
+                Object.entries(value.tr).forEach(([, tr]) => {
                   output.push({
                     text: value.text,
                     translate: tr.text
