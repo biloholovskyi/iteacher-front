@@ -46,7 +46,8 @@ const ListResult = styled.div`
     box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.18), 0px 3px 5.5px rgba(0, 0, 0, 0.1), 0px 1px 2px rgba(0, 0, 0, 0.08);
     border-radius: 8px;
   }
-  .lr-item {
+  li {
+    list-style: none;
     color: #111;
     cursor: pointer;
     padding: 10px 0;

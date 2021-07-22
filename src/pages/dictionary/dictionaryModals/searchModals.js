@@ -8,7 +8,7 @@ const languages = ["en", "ru"];
 
 const DictionarySearchModal = (props) => {
   const [query, setQuery] = useState("");
-  const [displayMessage, setDisplayMessage] = useState();
+  const [displayMessage, setDisplayMessage] = useState([]);
 
   useEffect(() => {
     const timeOutId = setTimeout(() => {
@@ -48,6 +48,15 @@ const DictionarySearchModal = (props) => {
     return () => clearTimeout(timeOutId);
   }, [query]);
 
+  const listResult = displayMessage.map((data, key) => {
+    return (
+      <li key={key}>
+        {data.text}
+        <span>{data.translate}</span>
+      </li>
+    )
+  })
+
   return (
     <div className="modal">
       <div className="modal-content">
@@ -62,18 +71,11 @@ const DictionarySearchModal = (props) => {
               value={query}
               onChange={(event) => setQuery(event.target.value)}
             />
+            <i className="si-canсel" onClick={() => setQuery("")}></i>
         </div>
         <ListResult>
           <div className="lr-wrap">
-            {displayMessage && displayMessage.map((data, key) => {
-              return (
-                <div className="lr-item" key={key}>
-                  {data.text}
-                  <span>{data.translate}</span>
-                </div>
-              )
-            })
-            }
+            <ul>{listResult}</ul>
           </div>
         </ListResult>
       </div>
