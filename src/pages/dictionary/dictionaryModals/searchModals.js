@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-import { Modal, ModalContent, ModalClose, SearchBlock, Input } from "./styled";
+import { Modal, ModalContent, ModalClose, SearchBlock, Input, ListResult } from "./styled";
 import search from "../../../assets/media/icon/search.svg";
 
 const apiUrl = `https://dictionary.yandex.net/api/v1/dicservice.json/lookup?key=${process.env.REACT_APP_YANDEX_DICTIONARY_KEY}`;
@@ -13,24 +13,25 @@ const DictionarySearchModal = (props) => {
 
   useEffect(() => {
     const timeOutId = setTimeout(() => {
-
-      if (!query)
+      let output = []
+      
+      if (!query) {
+        setDisplayMessage(output);
         return;
+      }
 
       axios
         .get(apiUrl + "&lang=en-ru&text=" + query)
         .then((result) => {
-
-          let output = []
-
-          Object.entries(result.data.def).map(([key1, value]) => {
-            Object.entries(value.tr).map(([key2, tr]) => {
-              let pair = {};
-              pair[value.text] = tr.text;
-              output.push(pair);
+          Object.entries(result.data.def).forEach(([key1, value]) => {
+            Object.entries(value.tr).forEach(([key2, tr]) => {
+              output.push({
+                text: value.text,
+                translate: tr.text
+              });
             })
           })
-          setDisplayMessage(output);
+          setDisplayMessage(output.slice(0, 4));
         })
         .catch((err) => {
           console.error(err);
@@ -55,10 +56,19 @@ const DictionarySearchModal = (props) => {
             />
           </Input>
         </SearchBlock>
-        <div>
-          <br />
-          {JSON.stringify(displayMessage)}
-        </div>
+        <ListResult>
+          <div className="lr-wrap">
+            {displayMessage && displayMessage.map((data, key) => {
+                return (
+                    <div className="lr-item" key={key}>
+                      {data.text}
+                      <span>{data.translate}</span>
+                    </div>
+                )
+              })
+            }
+          </div>
+        </ListResult>
       </ModalContent>
     </Modal>
   );
