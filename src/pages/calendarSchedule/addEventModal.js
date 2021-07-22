@@ -10,6 +10,7 @@ import {TextModalBody, TextModalOverlay, Line, SmallTitle} from "./styled";
 
 import closed from "../../assets/media/icon/close.svg";
 import ServerSettings from "../../service/serverSettings";
+import TimeModal from "./timeModal/timeModal";
 
 const monthNames = ['Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря'];
 
@@ -35,6 +36,9 @@ const AddEventModal = ({close, courses, user, studentsList, update, updateData})
   const [hiddenDate, setHiddenDate] = useState(false)
 
   const [dateValidation, setDateValidation] = useState(false)
+
+  const [timeModal , setTimeModal] = useState(false)
+  const [timeData, setTimeData] = useState(null)
 
   useEffect(() => {
     if(updateData) {
@@ -210,6 +214,21 @@ const AddEventModal = ({close, courses, user, studentsList, update, updateData})
     setHiddenDate(data.toLocaleDateString());
   };
 
+  const selectTime = (value) => {
+    setTimeData(value)
+    setTimeModal(false)
+  }
+
+  const openTimeModal = () => {
+    setTimeModal(!timeModal)
+    setCalendarModal(false)
+  }
+
+  const openCalendarModal = () => {
+    setTimeModal(false)
+    setCalendarModal(!calendarModal)
+  }
+
   return (
     <TextModalOverlay>
       <TextModalBody
@@ -230,7 +249,7 @@ const AddEventModal = ({close, courses, user, studentsList, update, updateData})
           data ? (
             <MainDropList
               gray
-              label={'Выберите студента'}
+              label={'Ученик'}
               name={'student'}
               required={true}
               options={students}
@@ -240,7 +259,7 @@ const AddEventModal = ({close, courses, user, studentsList, update, updateData})
           ) : (
             <MainDropList
               gray
-              label={'Выберите студента'}
+              label={'Ученик'}
               name={'student'}
               required={true}
               options={students}
@@ -254,7 +273,7 @@ const AddEventModal = ({close, courses, user, studentsList, update, updateData})
           {
             data ? (
               <MainDropList
-                label={'Выберите курс'}
+                label={'Курс'}
                 name={'course'}
                 required={true}
                 options={coursesList}
@@ -263,7 +282,7 @@ const AddEventModal = ({close, courses, user, studentsList, update, updateData})
               />
             ) : (
               <MainDropList
-                label={'Выберите курс'}
+                label={'Курс'}
                 name={'course'}
                 required={true}
                 options={coursesList}
@@ -275,7 +294,7 @@ const AddEventModal = ({close, courses, user, studentsList, update, updateData})
           {
             data ? (
               <MainDropList
-                label={'Выберите урок'}
+                label={'Занятие'}
                 name={'lesson'}
                 type={'text'}
                 options={lessons}
@@ -283,7 +302,7 @@ const AddEventModal = ({close, courses, user, studentsList, update, updateData})
               />
             ) : (
               <MainDropList
-                label={'Выберите урок'}
+                label={'Занятие'}
                 name={'lesson'}
                 type={'text'}
                 options={lessons}
@@ -309,7 +328,9 @@ const AddEventModal = ({close, courses, user, studentsList, update, updateData})
                 defaultValue={`${data.date.split('.')[0]} ${monthNames[parseInt(data.date.split('.')[1]) - 1]}, ${data.date.split('.')[2]}`}
                 readOnly
                 grey
-                onClick={() => setCalendarModal(true)}
+                onClick={openCalendarModal}
+                arrow={!calendarModal}
+                showArrow
               />
             ) : (
               <MainInput
@@ -319,8 +340,10 @@ const AddEventModal = ({close, courses, user, studentsList, update, updateData})
                 required={false}
                 readOnly
                 grey
-                onClick={() => setCalendarModal(true)}
+                onClick={openCalendarModal}
                 defaultValue={calendarDate}
+                arrow={!calendarModal}
+                showArrow
               />
             )
           }
@@ -336,7 +359,11 @@ const AddEventModal = ({close, courses, user, studentsList, update, updateData})
                 required={false}
                 defaultValue={data.time}
                 grey
+                readOnly
                 validation={dateValidation}
+                onClick={openTimeModal}
+                arrow={!timeModal}
+                showArrow
               />
             ) : (
               <MainInput
@@ -345,7 +372,12 @@ const AddEventModal = ({close, courses, user, studentsList, update, updateData})
                 type={'text'}
                 required={false}
                 grey
+                readOnly
                 validation={dateValidation}
+                onClick={openTimeModal}
+                defaultValue={timeData}
+                arrow={!timeModal}
+                showArrow
               />
             )
           }
@@ -354,6 +386,9 @@ const AddEventModal = ({close, courses, user, studentsList, update, updateData})
 
         {
           calendarModal && <Calendar new onChange={handleDateChange}/>
+        }
+        {
+          timeModal &&  <TimeModal selectTime={selectTime}/>
         }
 
         <MainButton

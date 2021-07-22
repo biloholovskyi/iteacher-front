@@ -10,7 +10,7 @@ const Wrapper = styled.div`
   min-height: 56px;
   position: relative;
   margin-bottom: 23px;
-  
+  cursor: pointer;
   &.wrapper-textarea {
     min-height: 224px;
   }
@@ -78,6 +78,7 @@ const Wrapper = styled.div`
     letter-spacing: -0.01em;
     color: #111111;
     opacity: 0.8;
+    padding-top: ${props => props.label ? '20px' : '20px'};
   }
   
   .select {
@@ -124,7 +125,29 @@ const Wrapper = styled.div`
     margin-top: -12px;
     margin-right: 0 !important;
     right: 12px;
-    transform: rotate( ${props => props.fakeBg ? '180deg' : '0deg'};);
+    transform: rotate(0deg);
+    
+  }
+  .arrow {
+    position: absolute;
+    background-image: url(${dd});
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 24px;
+    height: 24px;
+    top: 50%;
+    margin-top: -12px;
+    margin-right: 0 !important;
+    right: 12px;
+    transform: rotate(180deg);
+    transition: .3s;
+    &.active {
+      transform: rotate(0deg);
+    }
+    @media(max-width: 500px) {
+      display: none;
+    }
   }
 
   &.valid {
@@ -193,4 +216,31 @@ const DropLIstItems = styled.ul`
   
 `
 
-export {Wrapper, DropLIstItems}
+const Label = styled.div`
+  font-style: normal;
+  font-weight: normal!important;
+  font-size: 16px;
+  line-height: 20px;
+  letter-spacing: -0.01em;
+  color: #697077;
+  width: fit-content;
+  background-color: transparent;
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  &.active {
+    font-size: 12px;
+    line-height: 18px;
+    position: absolute;
+    left: 16px;
+    top: 8px;
+    transform: none;
+  }
+`
+
+export {
+  Wrapper,
+  DropLIstItems,
+  Label
+}

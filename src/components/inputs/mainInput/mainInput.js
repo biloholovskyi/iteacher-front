@@ -14,7 +14,10 @@ const MainInput = (
     updateData = () => null,
     readOnly,
     grey,
-    onClick = () => null
+    onClick = () => null,
+    arrow = false,
+    showArrow = false
+
   }
 ) => {
   // состояния инпута
@@ -33,18 +36,22 @@ const MainInput = (
   }
 
   return (
-    <Wrapper className={` ${validation && 'valid'}`} grey={grey}>
+    <Wrapper className={` ${validation && 'valid'}`} grey={grey} arrow={arrow}>
       <label className={`label ${active && 'active'}`}>{label}</label>
       <input
         className={'input'}
         name={name}
         required={required}
         type={type}
-        onChange={(e) => onChange(e)} defaultValue={defaultValue}
+        onChange={(e) => onChange(e)}
+        defaultValue={defaultValue}
         readOnly={readOnly}
         onClick={onClick}
       />
+      {
+        showArrow && <div className={`arrow ${arrow && 'active'}`} />
 
+      }
       {
         validation
           ?  <div className={'errorText'}>{errorText}</div>

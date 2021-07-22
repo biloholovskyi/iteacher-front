@@ -1,6 +1,6 @@
 import React, {useState, useRef, useEffect} from "react";
 
-import {DropLIstItems, Wrapper} from "../mainInput/styled";
+import {DropLIstItems, Wrapper, Label} from "../mainInput/styled";
 
 const MainDropList = ({
                         name,
@@ -11,7 +11,8 @@ const MainDropList = ({
                         options = [{value: '', name: ''}],
                         onChange = () => null,
                         classes,
-                        defaultValue
+                        defaultValue,
+                        label = false
                       }) => {
 
   const [showStatus, setShowStatus] = useState(false)
@@ -83,7 +84,13 @@ const MainDropList = ({
       className={` ${validation && 'valid'} open ${classes}`}
       width={width}
       fakeBg={showStatus}
+      label={label}
     >
+      {
+        label && (
+          <Label className={` ${defaultValue !== '' && 'active'}`}>{label}</Label>
+        )
+      }
       <div className="select-arrow"/>
 
       {

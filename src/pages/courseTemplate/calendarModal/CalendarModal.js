@@ -11,19 +11,23 @@ import closed from '../../../assets/media/icon/close.svg';
 import arrow from '../../../assets/media/icon/arrow.svg';
 
 import ServerSettings from "../../../service/serverSettings";
+import TimeModal from "../timeModal/timeModal";
 
 export default class CalendarModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
       data: null,
-      showCalendar: false
+      showCalendar: false,
+      timeModal: false,
+      timeData: null
     }
   }
 
   // show calendarSchedule
   showCalendar() {
     this.setState({showCalendar: !this.state.showCalendar})
+    this.setState({timeModal: false})
   }
 
   handleDateChange = data => {
@@ -60,6 +64,16 @@ export default class CalendarModal extends Component {
         .catch(error => console.error(error));
   }
 
+  selectTime = (value) =>  {
+    this.setState({timeData: value})
+    this.setState({timeModal: false})
+  }
+
+  openTimeModal() {
+    this.setState({timeModal: !this.state.timeModal})
+    this.setState({showCalendar: false})
+  }
+
   render() {
     const {close} = this.props;
     const {data, showCalendar} = this.state;
@@ -70,7 +84,7 @@ export default class CalendarModal extends Component {
             close(e)
           }}/>
           <h3>Назначьте первое занятие</h3>
-          <InfoInput>
+          <InfoInput arrow={this.state.showCalendar}>
             <p className={'openCalendar'} onClick={() => this.showCalendar()}>Дата</p>
 
             <div
@@ -81,6 +95,8 @@ export default class CalendarModal extends Component {
             {
               showCalendar
                 ? <Calendar
+                  new
+                  templateCalendarStyle
                   onChange={this.handleDateChange}
                 />
                 : null
@@ -91,7 +107,15 @@ export default class CalendarModal extends Component {
             label={'Время'}
             name={'time'}
             required={true}
+            readOnly
+            onClick={() => this.openTimeModal()}
+            defaultValue={this.state.timeData}
+            arrow={!this.state.timeModal}
+            showArrow
           />
+          {
+            this.state.timeModal &&  <TimeModal templateTimeModal selectTime={this.selectTime}/>
+          }
           <button
             type={'submit'}
             className={'addLesson'}
