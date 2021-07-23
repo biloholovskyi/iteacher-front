@@ -34,6 +34,8 @@ export default class CalendarModal extends Component {
   createNewSchedule = async (e) => {
     e.preventDefault();
 
+    const lesson = typeof this.props.data === 'object' ? this.props.data.id : JSON.parse(this.props.course.lessons)[0].id;
+
     // формирум объект для отправки на сервер
     const object = {
       date: e.target.date.value,
@@ -41,7 +43,7 @@ export default class CalendarModal extends Component {
       user: this.props.course.teacher,
       student: this.props.course.student,
       course: this.props.course.id,
-      lesson: JSON.parse(this.props.course.lessons)[0].id,
+      lesson: lesson,
       status: 'active'
     }
 
@@ -69,7 +71,7 @@ export default class CalendarModal extends Component {
           <img className={'close'} src={closed} alt="icon" onClick={(e) => {
             close(e)
           }}/>
-          <h3>Назначьте первое занятие</h3>
+          <h3>{typeof this.props.data === 'object' ? 'Назначить занятие' : 'Назначьте первое занятие'}</h3>
           <InfoInput>
             <p className={'openCalendar'} onClick={() => this.showCalendar()}>Дата</p>
 

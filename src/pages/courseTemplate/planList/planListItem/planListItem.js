@@ -5,22 +5,24 @@ import Indicator from "./indicator/indicator";
 
 import {PlanListItemWrap} from "./style";
 
-const PlansListItem = ({lesson, number, open, time, user}) => {
-  return(
-    <PlanListItemWrap
-      onClick={() => open(lesson)}>
+const PlansListItem = ({lesson, number, open, time, user, openCalendar}) => {
 
-      <Indicator />
+  return (
+    <PlanListItemWrap>
+
+      <Indicator/>
 
       <div className="nameBlock">
-        <div className='top'>
+        <div className='top' onClick={() => open(lesson)}>
           <div className="number">#{number + 1}</div>
           <div className="name">{lesson.name}</div>
         </div>
 
         {
           user.type === 'teacher'
-            ? <button type={'button'} className='bottom'>Назначить урок</button>
+            ? time
+            ? <div className={'time'}>{time}</div>
+            : <button type={'button'} className='bottom' onClick={() => openCalendar(lesson)}>Назначить урок</button>
             : <div className={'time'}>{time}</div>
         }
       </div>
@@ -34,8 +36,6 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapDispatchToProps = {
-
-}
+const mapDispatchToProps = {}
 
 export default connect(mapStateToProps, mapDispatchToProps)(PlansListItem);

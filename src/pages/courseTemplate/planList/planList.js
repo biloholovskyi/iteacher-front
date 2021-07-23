@@ -4,7 +4,7 @@ import PlansListItem from "./planListItem/planListItem";
 
 import {monthNames} from "../../../service/monthes";
 
-const PlanList = ({plans, openModal, course}) => {
+const PlanList = ({plans, openModal, course, openCalendar}) => {
   const elements = plans.map((lesson, key) => {
     let timeString;
     if(course.schedules) {
@@ -21,6 +21,7 @@ const PlanList = ({plans, openModal, course}) => {
 
     return (
       <PlansListItem
+        openCalendar={openCalendar}
         time={timeString}
         open={openModal}
         key={lesson.id}

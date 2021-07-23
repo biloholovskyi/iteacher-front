@@ -306,6 +306,12 @@ class CourseTemplate extends Component {
     this.setState({calendar: true})
   }
 
+  // Открываем модалку создания занятия на все уроки
+  openCalendarAll = (data) => {
+    console.log(data)
+    this.setState({calendar: data})
+  }
+
   //  show program item modal
   ProgramModal = (lesson) => {
     this.setState({
@@ -334,6 +340,7 @@ class CourseTemplate extends Component {
               <div className='title'>План занятий</div>
               <Style.Plans>
                 <PlanList
+                  openCalendar={this.openCalendarAll}
                   course={course}
                   plans={data}
                   openModal={this.ProgramModal}
@@ -358,6 +365,7 @@ class CourseTemplate extends Component {
             this.state.calendar
             && (
               <CalendarModal
+                data={this.state.calendar}
                 course={this.state.course}
                 close={this.closeModal}
                 finish={this.finish}
