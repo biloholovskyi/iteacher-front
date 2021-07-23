@@ -23,8 +23,12 @@ const StudentCart = ({id, user}) => {
 
   const [showStudentModal, setShowStudentModal] = useState(false)
 
+  const [more, setMore] = useState(false)
+
   useEffect(() => {
-    getDataUser().catch(error => {console.error(error)});
+    getDataUser().catch(error => {
+      console.error(error)
+    });
   }, [id])
 
   useEffect(() => {
@@ -33,13 +37,21 @@ const StudentCart = ({id, user}) => {
 
   // обновляем данные студента для таблицы
   const updateTableData = async () => {
-    if(!studentData) {return}
+    if (!studentData) {
+      return
+    }
 
     const dataArray = [];
 
-    if(studentData.city) {dataArray.push({name: 'Город', value: studentData.city})}
-    if(studentData.phone) {dataArray.push({name: 'Телефон', value: studentData.phone})}
-    if(studentData.email) {dataArray.push({name: 'Почта', value: studentData.email})}
+    if (studentData.city) {
+      dataArray.push({name: 'Город', value: studentData.city})
+    }
+    if (studentData.phone) {
+      dataArray.push({name: 'Телефон', value: studentData.phone})
+    }
+    if (studentData.email) {
+      dataArray.push({name: 'Почта', value: studentData.email})
+    }
 
     setTableData(dataArray)
   }
@@ -52,7 +64,9 @@ const StudentCart = ({id, user}) => {
     await axios.get(`${server.getApi()}api/users/${id}/`)
       .then(res => {
         setStudentData(res.data)
-      }).catch(error => {console.error(error)});
+      }).catch(error => {
+        console.error(error)
+      });
   }
 
   // получаем ближайший урок
@@ -98,6 +112,36 @@ const StudentCart = ({id, user}) => {
     getNextLesson().catch(error => console.error(error))
   }, [id]);
 
+  // показать больше информации
+  const showMoreInformation = () => {
+    if(more) {
+      const dataArray = [];
+
+      if (studentData.city) {
+        dataArray.push({name: 'Город', value: studentData.city})
+      }
+      if (studentData.phone) {
+        dataArray.push({name: 'Телефон', value: studentData.phone})
+      }
+      if (studentData.email) {
+        dataArray.push({name: 'Почта', value: studentData.email})
+      }
+
+      setTableData(dataArray)
+      setMore(false)
+    } else {
+      const socials = JSON.parse(studentData.socials).map(social => {
+        return {value: social.type, name: social.link}
+      });
+
+      setTableData([
+        ...tableData,
+        ...socials
+      ])
+      setMore(true)
+    }
+  }
+
   return (
     <Style.Wrapper className={'container'}>
       <div className="left">
@@ -109,11 +153,14 @@ const StudentCart = ({id, user}) => {
             type: 'table',
             margin: 24,
             icon: pan,
+            iconFunc: () => setShowStudentModal(true),
             table_content: tableData,
             button: {
-              text: 'Показать больше информации',
-              func: () => setShowStudentModal(true)
-            }
+              text: more ? 'Показать меньше информации' : 'Показать больше информации',
+              func: showMoreInformation
+            },
+            // нужно для того что бы переворачивать иконку
+            more: more
           }}
         />
 
@@ -143,7 +190,8 @@ const StudentCart = ({id, user}) => {
       </div>
 
       {
-        showStudentModal && <StudentModal update={getDataUser} data={studentData} close={() => setShowStudentModal(false)}/>
+        showStudentModal &&
+        <StudentModal update={getDataUser} data={studentData} close={() => setShowStudentModal(false)}/>
       }
     </Style.Wrapper>
   )
@@ -155,8 +203,6 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapDispatchToProps = {
-
-}
+const mapDispatchToProps = {}
 
 export default connect(mapStateToProps, mapDispatchToProps)(StudentCart);

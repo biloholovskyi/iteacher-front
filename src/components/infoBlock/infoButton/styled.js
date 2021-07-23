@@ -22,6 +22,8 @@ const Wrapper = styled.div`
     object-fit: contain;
     object-position: center;
     margin-left: 8px;
+    transition: all .3s;
+    transform: ${props => props.more ? 'rotate(180deg)' : 'rotate(0)'}
   }
 `
 

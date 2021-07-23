@@ -11,7 +11,7 @@ const InfoBlock = ({data}) => {
       <Style.Title>
         {data.title}
         {
-          data.icon && <Style.Icon bg={data.icon}/>
+          data.icon && <Style.Icon bg={data.icon} onClick={data.iconFunc || console.log('...')}/>
         }
       </Style.Title>
       {
@@ -35,7 +35,7 @@ const InfoBlock = ({data}) => {
 
       {/*кнопка дополнительных функций*/}
       {
-        data.button && <InfoButton button={data.button}/>
+        data.button && <InfoButton button={data.button} more={data.more}/>
       }
     </Style.Wrapper>
   )
