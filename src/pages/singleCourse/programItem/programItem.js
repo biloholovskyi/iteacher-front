@@ -11,7 +11,6 @@ const ProgramItem = ({ lastElement, open, lesson, number }) => {
       className={'itemBody'}
       last={lastElement} >
       <div className="text">{`#${number + 1} ${lesson.name}`}</div>
-      <img src={info} alt="icon"/>
     </ProgramItemWrap>
   )
 }

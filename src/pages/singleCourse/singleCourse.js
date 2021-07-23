@@ -7,6 +7,7 @@ import {loginUser, setActivateCourse, getAllTemplates, setStudentToCourse} from 
 
 import ProgramItem from "./programItem/programItem";
 import ProgramModal from "../../components/programModal/programModal";
+import CourseCover from "../../components/courseCover/courseCover";
 
 import {
   SingleCoursesWrap,
@@ -224,44 +225,29 @@ class SingleCourse extends Component {
     return (
       <WithOutHeaderContainer>
         {this.state.redirect ? <Redirect to={`/course/${this.state.redirect}`}/> : null}
-        <Link to='/new-course' className='close'>
-          <img src={close} alt="icon"/>
-        </Link>
         <div className='container'>
           <SingleCoursesWrap>
-            <Link to='/new-course'>
-              <img src={arrow} alt="icon"/>
-              <h4>Назад</h4>
+
+            <Link to='/new-course' className='closeButton'>
+              <img src={close} alt="icon"/>
             </Link>
-            <div className='title'>{template.name}</div>
-            <div className='desc'>{template.small_desc}</div>
-            <Banner bg={template.background} bgType={template.bg_type} bgImage={template.background_image}>
-              <div className="firstLeter">{template.name.substr(0, 1)}</div>
-              <h2>{template.name}</h2>
-            </Banner>
-            <MobileBlock>
-              <div className='title'>{template.name}</div>
-              <div className='desc'>{template.small_desc}</div>
-            </MobileBlock>
+
+            <div className="course-banner">
+              <CourseCover course={template} medium={true}/>
+              <div className="nameBlock">
+                <div className={'name'}>{template.name}</div>
+              </div>
+            </div>
+
             <InfoBlock>
               <div className="infoItem">
                 <div className="top">
                   <h4>{countLesson}</h4>
                   <p>{countLessonString}</p>
                 </div>
-                <div className="bottom">Количество<br/>
-                  уроков
-                </div>
+                <div className="bottom">Количество уроков</div>
               </div>
-              <div className="infoItem">
-                <div className="top">
-                  <h4>60</h4>
-                  <p>минут</p>
-                </div>
-                <div className="bottom">Длительность
-                  урока
-                </div>
-              </div>
+
               <div className="infoItem">
                 <div className="top">
                   <h4>{template.level}</h4>

@@ -8,6 +8,44 @@ const SingleCoursesWrap = styled.div`
   max-width: 888px;
   margin: 0 auto;
   padding-top: 58px;
+  position: relative;
+  
+  .course-banner {
+    display: flex;
+    align-items: center;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 28px;
+    line-height: 36px;
+    letter-spacing: -0.01em;
+    color: #000000;
+    margin-bottom: 32px;
+  }
+  
+  .closeButton {
+    position: absolute;
+    right: 0;
+    top: 65px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #DDE1E6;
+
+    img {
+      background-color: transparent;
+      width: 24px;
+      height: 24px;
+      object-fit: contain;
+      margin: 0;
+    }
+
+    @media (max-width: 575px) {
+      display: none;
+    }
+  }
 
   a {
     display: flex;
@@ -185,14 +223,17 @@ const Banner = styled.div`
 const InfoBlock = styled.div`
   display: flex;
   align-items: flex-start;
-  margin-bottom: 24px;
+  margin-bottom: 32px;
   justify-content: space-between;
   width: 100%;
-  padding-bottom: 28px;
-  border-bottom: 1px solid #DDE1E6;
+  padding: 24px 0;
+  background: rgba(79, 127, 255, 0.1);
+  border: 1px solid rgba(79, 127, 255, 0.1);
+  box-sizing: border-box;
+  border-radius: 8px;
 
   .infoItem {
-    min-height: 88px;
+    min-height: 68px;
     flex: 1;
     text-align: center;
     border-right: 1px solid #DDE1E6;
