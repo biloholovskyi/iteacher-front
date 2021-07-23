@@ -7,22 +7,11 @@ const languages = {
     "ru": "ru-en"
 }
 
-export const lookup = (text) => {
-    return axios
-        .post(apiUrl, { text: text })
-        .then((response) => {
-            const lang = languages[response.data.languageCode];
-            if (!lang)
-                return;
-
-            return axios
-                .get(`${yandexApiUrl}&lang=${lang}&text=${text}`)
-                .then((response) => {
-                    return response.data;
-                })
-                .catch((err) => {
-                    console.error(err);
-                });
-        })
-
+export const lookup = async (text) => {
+    const response = await axios.post(apiUrl, { text: text });
+    const lang = languages[response.data.languageCode];
+    if (!lang)
+        return null;
+    const yandex_response = await axios.get(`${yandexApiUrl}&lang=${lang}&text=${text}`);
+    return yandex_response.data;
 }

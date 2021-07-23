@@ -15,6 +15,8 @@ const DictionarySearchModal = (props) => {
         return;
 
       lookup(query).then((data) => {
+        if (!data)
+          return;
         Object.entries(data.def).forEach(([, value]) => {
           Object.entries(value.tr).forEach(([, tr]) => {
             output.push({
