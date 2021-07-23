@@ -82,28 +82,34 @@ const SmallCard = ({events, course, update}) => {
 
   return (
     <>
-      <SmallCardWrap
-        titleW={titleW}
-        id={events.id}
-        ref={selectListEl}
-        onClick={() => setModalCard(true)}
-      >
-        {/*<div className="indicator"/>*/}
-        <img src={studentData && studentData.photo ? `${api.getApi()}${studentData.photo.slice(1)}` : ava}
-             alt="photo" className="photo"/>
-        <div className="title">{studentData ? studentData.name ? studentData.name : studentData.email : ''}</div>
-      </SmallCardWrap>
-
       {
-        modalCard && events.status !== 'completed' && (
-          <ModalCard
-            update={update}
-            studentData={studentData}
-            event={events}
-            course={course}
-            lesson={lessonData}
-            close={closeCardModal}
-          />
+        events.status !== 'deleted' && (
+          <>
+            <SmallCardWrap
+              titleW={titleW}
+              id={events.id}
+              ref={selectListEl}
+              onClick={() => setModalCard(true)}
+            >
+              {/*<div className="indicator"/>*/}
+              <img src={studentData && studentData.photo ? `${api.getApi()}${studentData.photo.slice(1)}` : ava}
+                   alt="photo" className="photo"/>
+              <div className="title">{studentData ? studentData.name ? studentData.name : studentData.email : ''}</div>
+            </SmallCardWrap>
+
+            {
+              modalCard && events.status !== 'completed' && (
+                <ModalCard
+                  update={update}
+                  studentData={studentData}
+                  event={events}
+                  course={course}
+                  lesson={lessonData}
+                  close={closeCardModal}
+                />
+              )
+            }
+          </>
         )
       }
 

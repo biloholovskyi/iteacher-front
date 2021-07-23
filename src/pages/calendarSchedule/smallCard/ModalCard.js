@@ -81,6 +81,21 @@ const ModalCard = ({close, event, course, lesson, studentData, update}) => {
       .catch(error => console.error(error));
   }
 
+  // удаление урока
+  const deleteLesson = async () => {
+    const data = {
+      ...event,
+      status: 'deleted'
+    }
+    const serverSettings = new ServerSettings();
+    await axios.put(`${serverSettings.getApi()}api/schedules/${data.id}/update/`, data)
+      .then(() => {
+        // eslint-disable-next-line no-restricted-globals
+        location.reload()
+      })
+      .catch(error => console.error(error));
+  }
+
   const [time, setTime] = useState(null);
   // добавляем 0
   const addZero = (number) => {
@@ -153,7 +168,7 @@ const ModalCard = ({close, event, course, lesson, studentData, update}) => {
 
         {/*модалка "редактировать/удалить"*/}
         {
-          buttonsModal && <ModalButtons update={update} event={event}/>
+          buttonsModal && <ModalButtons update={update} event={event} onDelete={deleteLesson}/>
         }
 
         <Caption>
