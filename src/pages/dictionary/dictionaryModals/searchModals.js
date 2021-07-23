@@ -1,15 +1,9 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import {lookup} from "../../../service/yandexApi";
 
 import { Modal, ModalContent, ModalClose, SearchBlock, Input, ListResult } from "./styled";
 import search from "../../../assets/media/icon/search.svg";
 
-const yandexApiUrl = `https://dictionary.yandex.net/api/v1/dicservice.json/lookup?key=${process.env.REACT_APP_YANDEX_DICTIONARY_KEY}`;
-const apiUrl = `${process.env.REACT_APP_API_URL}api/translate/detect/`;
-const languages = {
-  "en": "en-ru",
-  "ru": "ru-en"
-}
 
 const DictionarySearchModal = (props) => {
   const [query, setQuery] = useState("");
@@ -22,30 +16,18 @@ const DictionarySearchModal = (props) => {
       if (!query)
         return;
 
-      axios
-        .post(apiUrl, { text: query })
-        .then((result) => {
-          const lang = languages[result.data.languageCode];
-          if (!lang)
-            return;
-          
-          axios
-            .get(`${yandexApiUrl}&lang=${lang}&text=${query}`)
-            .then((result) => {
-              Object.entries(result.data.def).forEach(([, value]) => {
-                Object.entries(value.tr).forEach(([, tr]) => {
-                  output.push({
-                    text: value.text,
-                    translate: tr.text
-                  });
-                })
-              })
-              setDisplayMessage(output.slice(0, 4));
-            })
-            .catch((err) => {
-              console.error(err);
+      lookup(query).then((data) => {
+        Object.entries(data.def).forEach(([, value]) => {
+          Object.entries(value.tr).forEach(([, tr]) => {
+            output.push({
+              text: value.text,
+              translate: tr.text
             });
+          })
         })
+        setDisplayMessage(output.slice(0, 4));
+      })
+
     }, 500);
     return () => clearTimeout(timeOutId);
   }, [query]);
