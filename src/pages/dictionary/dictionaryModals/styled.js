@@ -1,39 +1,5 @@
 import styled from "styled-components";
 
-const SearchBlock = styled.div`
-  width: 100%;
-`
-
-const Input = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  background-color: #DDE1E6;
-  opacity: 0.8;
-  border-radius: 8px;
-  width: 100%;
-  min-height: 48px;
-  padding: 0 16px;
-  margin-right: 20px;
-  img {
-    background-color: transparent;
-    width: 24px;
-    height: 24px;
-    object-fit: contain;
-    object-position: center;
-    margin-right: 12px;
-  }
-  input {
-    background-color: transparent;
-    border: none;
-    width: 100%;
-    height: 100%;
-    padding: 12px 0px;
-    border-radius: 8px;
-  }
-`
-
 const ListResult = styled.div`
   position: relative;
   .lr-wrap {
@@ -67,7 +33,5 @@ const ListResult = styled.div`
 `
 
 export {
-  SearchBlock,
-  Input,
   ListResult
 }

@@ -11,7 +11,7 @@ import MainContent from './mainContent/mainContent';
 import {ChatSection} from './chatSection/ChatSection';
 import LeftSideBar from './leftSideBar/leftSideBar';
 import WaitStudentModal from './waitStudentModal';
-import DictionarySearchModal from '../dictionary/dictionaryModals/searchModals'
+import DictionarySearchModal from '../dictionary/dictionaryModals/searchModal'
 
 import {LessonHeader, LessonNav, LessonBody, LessonWrap} from './singleLessonStyled';
 
