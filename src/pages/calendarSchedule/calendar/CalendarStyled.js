@@ -103,7 +103,7 @@ const CalendarArrow = styled.div`
 `
 
 const CalendarTable = styled.table`
-  
+  position: relative;
   width: 100%;
 
   td {
@@ -250,6 +250,11 @@ const CalendarTable = styled.table`
   }
 
   thead {
+    position: sticky;
+    top: 95px;
+    background-color: #F8F9FB;
+    z-index: 10;
+    
     & tr th:first-child {
       border: none;
       max-width: 60px;
