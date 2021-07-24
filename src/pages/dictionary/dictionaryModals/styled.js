@@ -32,6 +32,67 @@ const ListResult = styled.div`
   }
 `
 
+const DetailResult = styled.div`
+  h4 {
+    margin-bottom: 8px;
+  }
+  .dr-main {
+    display: flex;
+    flex-direction: row;
+    border: 1px solid #DDE1E6;
+    border-left: none;
+    border-right: none;
+    padding: 24px 0;
+    margin-bottom: 24px;
+    .dr-col {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      width: 50%;
+      padding: 8px 24px;
+      &:first-child {
+        border-right: 1px solid #DDE1E6;
+      }
+    }
+    strong {
+      font-size: 22px;
+      font-weight: normal;
+      line-height: 30px;
+      display: block;
+    }
+  }
+  .dr-other {
+    padding-bottom: 24px;
+    margin-bottom: 24px;
+    border-bottom: 1px solid #DDE1E6;
+    li {
+      display: flex;
+      flex-direction: row;
+      list-style: none;
+      padding: 8px 0;
+      span {
+        font-size: 14px;
+        line-height: 20px;
+        width: 50%;
+      }
+    }
+  }
+  .dr-example {
+    li {
+      display: flex;
+      flex-direction: column;
+      list-style: none;
+      padding: 8px 0;
+      span {
+        font-size: 14px;
+        line-height: 20px;
+      }
+    }
+  }
+`
+
 export {
-  ListResult
+  ListResult,
+  DetailResult
 }

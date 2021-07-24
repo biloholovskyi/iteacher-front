@@ -61,28 +61,30 @@ const DictionarySearchModal = (props) => {
 
   return (
     <>
-      <div className="modal">
+      <div className={"modal " + (resultDetail ? 'd-none' : '')}>
         <div className="modal-content">
           <div className="modal-header">
-            <div className="modal-close" onClick={props.close}></div>
+            <i className="modal-close" onClick={props.close}></i>
             <h2>Найти слово</h2>
           </div>
-          <div className="search-input">
-              <input
-                type="text"
-                placeholder="Введите слово на русском или английском"
-                value={query}
-                onChange={(event) => setQuery(event.target.value)}
-              />
-              {cancel && 
-                <i className="si-canсel" onClick={() => searchCancel()}></i>
-              }
-          </div>
-          <ListResult>
-            <div className="lr-wrap">
-              <ul>{listResult}</ul>
+          <div className="modal-body">
+            <div className="search-input">
+                <input
+                  type="text"
+                  placeholder="Введите слово на русском или английском"
+                  value={query}
+                  onChange={(event) => setQuery(event.target.value)}
+                />
+                {cancel && 
+                  <i className="si-canсel" onClick={() => searchCancel()}></i>
+                }
             </div>
-          </ListResult>
+            <ListResult>
+              <div className="lr-wrap">
+                <ul>{listResult}</ul>
+              </div>
+            </ListResult>
+          </div>
         </div>
       </div>
       {resultDetail && (
