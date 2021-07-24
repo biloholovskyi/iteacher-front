@@ -15,7 +15,6 @@
   flex-direction: column;
   position: relative;
   width: 100%;
-  padding: 24px;
   max-width: 540px;
   max-height: 745px;
   border-radius: 8px;
@@ -23,41 +22,46 @@
   box-shadow: 0px 0px 16px rgba(105, 112, 119, 0.12), 0px 8px 16px rgba(105, 112, 119, 0.16);
 }
 .modal-header {
-  margin-bottom: 24px;
-  padding-right: 24px;
-  min-height: 30px;
+  padding: 24px;
+  padding-right: 48px;
+  min-height: 26px;
 }
 .modal-header h2 {
-  font-style: normal;
-  font-weight: bold;
+  font-weight: 700;
   font-size: 22px;
-  line-height: 30px;
+  line-height: 24px;
+}
+.modal-body {
+  padding: 24px;
+  padding-top: 0;
+}
+.modal-body h4 {
+  color: #111;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 22px;
 }
 .modal-close {
+  display: block;
   background-image: url(../src/assets/media/icon/close.svg);
   background-position: center;
-  background-size: contain;
   background-repeat: no-repeat;
   position: absolute;
   width: 24px;
   height: 24px;
-  top: 26px;
+  top: 24px;
   right: 24px;
   cursor: pointer;
 }
 .modal-back {
+  display: block;
   background-image: url(../src/assets/media/icon/arrow-left.svg);
   background-position: center;
-  background-size: contain;
   background-repeat: no-repeat;
-  position: absolute;
   width: 24px;
   height: 24px;
-  top: 26px;
-  left: 24px;
   cursor: pointer;
 }
-
 
 .btn {
   padding: 12px 20px;
@@ -155,7 +159,6 @@ fieldset:disabled a.btn {
 .search-input .si-canсel {
   background-image: url(../src/assets/media/icon/cancel.svg);
   background-position: center;
-  background-size: contain;
   background-repeat: no-repeat;
   width: 20px;
   height: 20px;
@@ -165,3 +168,17 @@ fieldset:disabled a.btn {
   top: 14px;
   right: 14px;
 }
+
+.icon-sound {
+  display: inline-block;
+  background-image: url(../src/assets/media/icon/sound.svg);
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.text-muted{color: #697077}
+.d-none{display:none!important}
