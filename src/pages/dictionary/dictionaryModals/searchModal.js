@@ -7,6 +7,8 @@ import DictionaryResultModal from './resultModal'
 const DictionarySearchModal = (props) => {
   const [query, setQuery] = useState("");
   const [displayMessage, setDisplayMessage] = useState([]);
+  const [dictionary, setDictionary] = useState(null);
+  const [selectedWord, setSelectedWord] = useState(null);
   const [cancel, setCancel] = useState(false);
   const [resultDetail, setResultDetail] = useState(false);
 
@@ -29,11 +31,13 @@ const DictionarySearchModal = (props) => {
           Object.entries(value.tr).forEach(([, tr]) => {
             output.push({
               text: value.text,
-              translate: tr.text
+              translate: tr.text,
+              tr:tr
             });
           })
         })
         setDisplayMessage(output.slice(0, 4));
+        setDictionary(data);
       })
 
     }, 500);
@@ -52,7 +56,10 @@ const DictionarySearchModal = (props) => {
   
   const listResult = displayMessage.map((data, key) => {
     return (
-      <li key={key} onClick={() => searchResultToggle()}>
+      <li key={key} onClick={() => {
+          setResultDetail(true);
+          setSelectedWord(data.tr);
+        }}>
         {data.text}
         <span>{data.translate}</span>
       </li>
@@ -86,7 +93,7 @@ const DictionarySearchModal = (props) => {
         </div>
       </div>
       {resultDetail && (
-        <DictionaryResultModal close={props.close} back={() => searchResultToggle()}/>
+        <DictionaryResultModal dictionary={dictionary} selectedWord={selectedWord} close={props.close} back={() => searchResultToggle()}/>
       )}
     </>
   );

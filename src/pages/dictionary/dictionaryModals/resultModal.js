@@ -11,13 +11,9 @@ const DictionaryResultModal = (props) => {
           <div className="modal-back" onClick={props.back}></div>
         </div>
         <div>
-          Lorem ipsum dolor sit amet
-          Lorem ipsum dolor sit amet
-          Lorem ipsum dolor sit amet
-          Lorem ipsum dolor sit amet
-          Lorem ipsum dolor sit amet
-          Lorem ipsum dolor sit amet
-          Lorem ipsum dolor sit amet
+        {JSON.stringify(props.selectedWord)}<br/><br/><br/>
+        {JSON.stringify(props.dictionary)}
+          
         </div>
       </div>
     </div>
