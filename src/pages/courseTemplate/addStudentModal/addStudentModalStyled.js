@@ -16,7 +16,6 @@ const StudentModalWrap = styled.div`
   @media (max-width: 767px) {
     padding: 0 16px;
   }
-  
 `
 const StudentModal = styled.div`
   background-color: #fff;

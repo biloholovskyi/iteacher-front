@@ -2,9 +2,13 @@ import React, {Component} from 'react';
 import {connect} from "react-redux";
 import axios from "axios";
 
+import {loginUser} from "../../actions";
+
 import StudentItem from "./studentItem/studentItem";
 import Note from "./note/Note";
 import StudentEmpty from "./studentEmpty/studentEmpy";
+import MainButton from "../../components/buttons/mainButton/mainButton";
+import AddNewStudent from "./addNewStudent/addNewStudent";
 
 import {
   Caption,
@@ -35,6 +39,7 @@ class Students extends Component {
       activeLink: null,
       idStudent: null,
       data: [], // notations
+      modalAddStudent: false
     };
     //document.body.addEventListener('click', (e) => this.closeBody(e));
   }
@@ -65,36 +70,36 @@ class Students extends Component {
 
   // получаем список студентов
   getListStudents = async () => {
-    if (!this.props.user || this.props.user.courses.length < 1) {
+    if (!this.props.user) {
       return
     }
+    //
+    // // получаем список курсов
+    // const courses = this.props.user.courses;
+    // // перебираем курсы и выделяем уникальные id
+    // let students = [];
+    // for (let course of courses) {
+    //   if (!students.includes(course.student) && course.student) {
+    //     students.push(course.student)
+    //   }
+    // }
+    //
+    // // получаем данные студентов
+    // let studentsData = []
+    //
+    // for (const id of students) {
+    //   axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
+    //   axios.defaults.xsrfCookieName = 'csrftoken';
+    //
+    //   const server = new ServerSettings();
+    //   await axios.get(`${server.getApi()}api/users/${id}/`)
+    //     .then(res => {
+    //       studentsData.push(res.data);
+    //     })
+    //     .catch(error => console.error(error))
+    // }
 
-    // получаем список курсов
-    const courses = this.props.user.courses;
-    // перебираем курсы и выделяем уникальные id
-    let students = [];
-    for (let course of courses) {
-      if(!students.includes(course.student) && course.student) {
-        students.push(course.student)
-      }
-    }
-
-    // получаем данные студентов
-    let studentsData = []
-
-    for (const id of students) {
-      axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
-      axios.defaults.xsrfCookieName = 'csrftoken';
-
-      const server = new ServerSettings();
-      await axios.get(`${server.getApi()}api/users/${id}/`)
-        .then(res => {
-          studentsData.push(res.data);
-        })
-        .catch(error => console.error(error))
-    }
-
-    this.setState({students: studentsData});
+    this.setState({students: JSON.parse(this.props.user.studentList)});
   }
 
   setNotationsToState = (id) => {
@@ -169,22 +174,175 @@ class Students extends Component {
   //   }
   // }
 
+  // создание учениника
+  createNewStudent = async (e) => {
+    e.preventDefault();
+
+    const email = e.target.email.value;
+    // проверяем есть ли пользователеь с таким емейлом уже
+    const server = new ServerSettings();
+    await axios.get(`${server.getApi()}api/users/${email.toLowerCase()}/`)
+      .then(res => {
+        // если есть проверяем тип пользователя
+        if (res.data.type === 'student') {
+          // если это ученик подключаем его к преподу
+          const studentListParse = this.props.user.studentList && JSON.parse(this.props.user.studentList);
+          console.log(studentListParse);
+          console.log(res.data);
+          if (studentListParse && studentListParse.find(st => parseInt(st.id) === parseInt(res.data.id))) {
+            this.setState({modalAddStudent: false})
+          } else {
+            if (!studentListParse) {
+              const newData = new FormData();
+              newData.set("name", this.props.user.name);
+              newData.set("email", this.props.user.email);
+              newData.set("studentList", JSON.stringify([res.data]));
+
+              axios.put(`${server.getApi()}api/users/${this.props.user.id}/update/`, newData)
+                .then((res) => {
+                  // обновляем данные пользователя в сторе
+                  axios.get(`${server.getApi()}api/users/${this.props.user.id}/`, {
+                    validateStatus: (status) => {
+                      return true; // I'm always returning true, you may want to do it depending on the status received
+                    },
+                  })
+                    .then(res => {
+                      this.props.loginUser(res.data);
+                      this.setState({modalAddStudent: false})
+                    }).catch(error => {
+                    console.error(error);
+                  });
+                })
+                .catch(error => console.error(error))
+            } else {
+              const newData = new FormData();
+              newData.set("name", this.props.user.name);
+              newData.set("email", this.props.user.email);
+              newData.set("studentList", JSON.stringify([...JSON.parse(this.props.user.studentList), res.data]));
+
+              axios.put(`${server.getApi()}api/users/${this.props.user.id}/update/`, newData)
+                .then((res) => {
+                  // обновляем данные пользователя в сторе
+                  axios.get(`${server.getApi()}api/users/${this.props.user.id}/`, {
+                    validateStatus: (status) => {
+                      return true; // I'm always returning true, you may want to do it depending on the status received
+                    },
+                  })
+                    .then(res => {
+                      this.props.loginUser(res.data);
+                      this.setState({modalAddStudent: false})
+                    }).catch(error => {
+                    console.error(error);
+                  });
+                })
+                .catch(error => console.error(error))
+            }
+          }
+        } else {
+          // если это не ученик
+          alert('Этот пользователь не ученик')
+        }
+      })
+      .catch(error => {
+        console.error(error)
+        // если нету пользователя создаем нового
+        // создаем пароль
+        const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        let password = "";
+        for (let i = 0, n = charset.length; i < 8; ++i) {
+          password += charset.charAt(Math.floor(Math.random() * n));
+        }
+
+        const data = new FormData();
+        data.set('name', '');
+        data.set('email', email.toLowerCase());
+        data.set('password', password);
+        data.set('type', 'student')
+
+        axios.post(`${server.getApi()}api/users/`, data)
+          .then(res => {
+            // отправляем письмо
+            axios.get(`${server.getApi()}api/user/email/${res.data.id}/`)
+              .catch(error => {
+                console.error(error);
+              });
+
+            // если это ученик подключаем его к преподу
+            const studentListParse = this.props.user.studentList && JSON.parse(this.props.user.studentList);
+
+            if (studentListParse && studentListParse.find(st => parseInt(st.id) === parseInt(res.data.id))) {
+              this.setState({modalAddStudent: false})
+            } else {
+              if(!studentListParse) {
+                const newData = new FormData();
+                newData.set("name", this.props.user.name);
+                newData.set("email", this.props.user.email);
+                newData.set("studentList", JSON.stringify([res.data]));
+
+                axios.put(`${server.getApi()}api/users/${this.props.user.id}/update/`, newData)
+                  .then((res) => {
+                    // обновляем данные пользователя в сторе
+                    axios.get(`${server.getApi()}api/users/${this.props.user.id}/`, {
+                      validateStatus: (status) => {
+                        return true; // I'm always returning true, you may want to do it depending on the status received
+                      },
+                    })
+                      .then(res => {
+                        this.props.loginUser(res.data);
+                        this.setState({modalAddStudent: false})
+                      }).catch(error => {
+                      console.error(error);
+                    });
+                  })
+              } else {
+                const newData = new FormData();
+                newData.set("name", this.props.user.name);
+                newData.set("email", this.props.user.email);
+                newData.set("studentList", JSON.stringify([...JSON.parse(this.props.user.studentList), res.data]));
+
+                axios.put(`${server.getApi()}api/users/${this.props.user.id}/update/`, newData)
+                  .then((res) => {
+                    // обновляем данные пользователя в сторе
+                    axios.get(`${server.getApi()}api/users/${this.props.user.id}/`, {
+                      validateStatus: (status) => {
+                        return true; // I'm always returning true, you may want to do it depending on the status received
+                      },
+                    })
+                      .then(res => {
+                        this.props.loginUser(res.data);
+                        this.setState({modalAddStudent: false})
+                      }).catch(error => {
+                      console.error(error);
+                    });
+                  })
+              }
+            }
+          }).catch(error => console.error(error));
+      })
+  }
 
   render() {
     const {students, courses} = this.state;
+    console.log(students)
 
     // check if there are any courses . If there are no courses render EMPTY course page
-    if (!students || students.length === 0) return <StudentEmpty courses={courses}/>
+    // if (!students || students.length === 0) return <StudentEmpty courses={courses}/>
 
-    console.log(students);
     return (
       <StudentsWrap>
+        {
+          this.state.modalAddStudent &&
+          <AddNewStudent add={this.createNewStudent} close={() => this.setState({modalAddStudent: false})}/>
+        }
+
         <div className='container'>
           <Caption>
             <Title>Ученики</Title>
-            <FilterBtn>
-              <img src={filter} alt="icon"/>
-            </FilterBtn>
+
+            <MainButton text={'Добавить ученика'} func={() => this.setState({modalAddStudent: true})}/>
+            {/*<FilterBtn>*/}
+            {/*  <img src={filter} alt="icon"/>*/}
+            {/*</FilterBtn>*/}
           </Caption>
           <Caption>
             {/*<SearchBlock>*/}
@@ -207,7 +365,7 @@ class Students extends Component {
           {/*ADD students LIST*/}
           <CoursesList>
             {
-              students.map(student => {
+              students && students.map(student => {
                 // получаем ближайшее события студента
 
                 return (
@@ -244,6 +402,8 @@ const mapStateToProps = (state) => {
   }
 };
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  loginUser
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Students);
