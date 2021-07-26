@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { lookup } from "../../../service/yandexApi";
+import YandexApi from "../../../service/yandexApi";
 import { ListResult } from "./styled";
 import DictionaryResultModal from './resultModal'
 
@@ -17,8 +17,9 @@ const DictionarySearchModal = (props) => {
       setShowClearQuery(query);
       if (!query)
         return;
-
-      lookup(query).then((result) => {
+      
+      const api = new YandexApi();
+      api.lookup(query).then((result) => {
         setLookupResult(result);
       })
     }, 500);

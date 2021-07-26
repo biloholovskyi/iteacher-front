@@ -1,10 +1,11 @@
 import React from "react";
 import { DetailResult } from "./styled";
-import { synthesize } from "../../../service/yandexApi";
+import YandexApi from "../../../service/yandexApi";
 
 const DictionaryResultModal = (props) => {
   const play = (text, language) => {
-    synthesize(text, language).then((result) => {
+    const api = new YandexApi();
+    api.synthesize(text, language).then((result) => {
       const audio = new Audio(result);
       audio.play();
     });
