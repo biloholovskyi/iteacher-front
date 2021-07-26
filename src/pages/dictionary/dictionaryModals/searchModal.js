@@ -33,7 +33,6 @@ const DictionarySearchModal = (props) => {
     setShowClearQuery(false);
   }
 
-
   return (
     <>
       <div className={"modal " + (resultDetail ? 'd-none' : '')}>
@@ -45,6 +44,7 @@ const DictionarySearchModal = (props) => {
           <div className="modal-body">
             <div className="search-input">
               <input
+                autoFocus
                 type="text"
                 placeholder="Введите слово на русском или английском"
                 value={query}

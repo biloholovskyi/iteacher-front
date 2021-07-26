@@ -33,8 +33,19 @@ const ListResult = styled.div`
 `
 
 const DetailResult = styled.div`
+  .modal-body {
+    overflow-y: auto;
+    max-height: 540px;
+  }
   h4 {
     margin-bottom: 8px;
+  }
+  .dr-link {
+    color: #4F7FFF;
+    font-size: 14px;
+    cursor: pointer;
+    padding-top: 8px;
+    display: inline-block;
   }
   .dr-main {
     display: flex;
@@ -63,9 +74,6 @@ const DetailResult = styled.div`
     }
   }
   .dr-other {
-    padding-bottom: 24px;
-    margin-bottom: 24px;
-    border-bottom: 1px solid #DDE1E6;
     li {
       display: flex;
       flex-direction: row;
@@ -79,6 +87,9 @@ const DetailResult = styled.div`
     }
   }
   .dr-example {
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid #DDE1E6;
     li {
       display: flex;
       flex-direction: column;
