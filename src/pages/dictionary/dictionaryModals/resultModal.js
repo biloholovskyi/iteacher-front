@@ -32,7 +32,7 @@ const DictionaryResultModal = (props) => {
                   onClick={() =>
                     play(
                       props.selectedWord.input.text,
-                      props.selectedWord.input.lang
+                      props.lookupResult.input_lang
                     )
                   }
                 ></i>
@@ -47,7 +47,7 @@ const DictionaryResultModal = (props) => {
                   onClick={() =>
                     play(
                       props.selectedWord.translate.text,
-                      props.selectedWord.translate.lang
+                      props.lookupResult.translate_lang
                     )
                   }
                 ></i>
@@ -57,7 +57,7 @@ const DictionaryResultModal = (props) => {
               <div className="dr-other">
                 <h4>Другие варианты перевода</h4>
                 <ul>
-                  {props.translateOptions.slice(0, 3).map((data, key) => {
+                  {props.lookupResult.translateOptions.slice(0, 3).map((data, key) => {
                     return (
                       <li key={key}>
                         <span>{data.translate}</span>
@@ -70,7 +70,7 @@ const DictionaryResultModal = (props) => {
               <div className="dr-example">
                 <h4>Примеры использования</h4>
                 <ul>
-                  {props.examples.slice(0, 2).map((data, key) => {
+                  {props.lookupResult.examples.slice(0, 2).map((data, key) => {
                     return (
                       <li key={key}>
                         <span>{data.input}</span>

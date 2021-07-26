@@ -14,11 +14,8 @@ export const lookup = async (text) => {
     if (!lang)
         return null;
     const yandex_response = await axios.get(`${yandexApiUrl}&lang=${lang}&text=${text}`);
-    return { 
-        input_lang: lang.substring(0,2),
-        translate_lang: lang.substring(3,5),
-        data: yandex_response.data
-    };
+
+    return parse_lookup(yandex_response.data, lang.substring(0, 2), lang.substring(3, 5))
 }
 
 
@@ -27,7 +24,60 @@ export const synthesize = async (text, language) => {
         { text: text, language: language },
         { responseType: 'blob' }
     );
-    
+
     const blob = new Blob([response.data], { type: 'audio/ogg' })
     return URL.createObjectURL(blob);
+}
+
+
+const parse_lookup = async (data, input_lang, translate_lang) => {
+    let result = {
+        input_lang: input_lang,
+        translate_lang: translate_lang,
+        words: [],
+        translateOptions: [],
+        examples: []
+    }
+
+    Object.entries(data.def).forEach(([, value]) => {
+        Object.entries(value.tr).forEach(([, tr]) => {
+            result.words.push({
+                input: {
+                    text: value.text,
+                    ts: value.ts //Yandex не возвращает транскрипцию русского
+                },
+
+                translate: {
+                    text: tr.text,
+                    ts: value.ts //Yandex не возвращает транскрипцию перевода
+                }
+            });
+
+            let means = "";
+            if (tr.mean)
+                Object.entries(tr.mean).forEach(([, mean]) => {
+                    means += mean.text + ", ";
+                })
+
+            let syns = "";
+            if (tr.syn)
+                Object.entries(tr.syn).forEach(([, syn]) => {
+                    syns += syn.text + ", ";
+                })
+
+            syns = syns.slice(0, -2)
+            if (!syns)
+                syns = tr.text;
+
+            if (means)
+                result.translateOptions.push({ input: means.slice(0, -2), translate: syns });
+
+
+            if (tr.ex)
+                Object.entries(tr.ex).forEach(([, ex]) => {
+                    result.examples.push({ input: ex.text, translate: ex.tr[0].text });
+                })
+        })
+    })
+    return result;
 }
