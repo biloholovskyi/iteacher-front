@@ -54,7 +54,7 @@ const WordList = styled.div`
         border-bottom: 1px solid #dde1e6;
         background: rgba(221, 225, 230, 0.2);
         position: absolute;
-        width: 100%;
+        width: 100vh;
         height: 100%;
         bottom: 0;
         top: -1px;
