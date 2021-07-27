@@ -30,17 +30,16 @@ const Dictionary = ({ user }) => {
 
     axios.get(url).then((res) => {
       if (concat && dictionaryList != null) {
-        let results = dictionaryList.results;
-        results = results.concat(res.data.results);
-        res.data.results = results;
+        res.data.results = dictionaryList.results.concat(res.data.results);
         setDictionaryList(res.data);
-      } else setDictionaryList(res.data);
+      } else {
+        setDictionaryList(res.data);
+      }
     });
   };
 
   const handleScroll = (e) => {
-    const bottom =
-      e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
+    const bottom = e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
     if (bottom && dictionaryList.next) {
       getDictionary(dictionaryList.next, true);
     }
@@ -51,7 +50,6 @@ const Dictionary = ({ user }) => {
       <div
         className="container"
         onScroll={handleScroll}
-        style={{ height: 300, overflowY: "scroll" }}
       >
         <h1>Словарь</h1>
         <NavBar>

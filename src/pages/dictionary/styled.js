@@ -3,6 +3,11 @@ import styled from "styled-components";
 const DictionaryWrap = styled.div`
   padding-top: 122px;
   overflow-x: hidden;
+  .container {
+    height: calc(100vh - 122px);
+    overflow-y: scroll;
+    overflow-x: hidden;
+  }
   h1 {
     font-size: 28px;
     font-weight: 700;
@@ -22,6 +27,7 @@ const NavBar = styled.div`
 `;
 
 const WordList = styled.div`
+  padding-bottom: 16px;
   table {
     width: 100%;
     color: #697077;
