@@ -1,8 +1,11 @@
-import React from "react";
+import React, {useState} from "react";
 import { DetailResult } from "./styled";
 import YandexApi from "../../../service/yandexApi";
 
 const DictionaryResultModal = (props) => {
+  const [showMoreTranslateOptions, setShowMoreTranslateOptions] = useState(false);
+  const [showMoreExamples, setShowMoreExamples] = useState(false);
+
   const play = (text, language) => {
     const api = new YandexApi();
     api.synthesize(text, language).then((result) => {
@@ -10,6 +13,16 @@ const DictionaryResultModal = (props) => {
       audio.play();
     });
   };
+  
+  const getTranslateOptions = () => {
+    setShowMoreTranslateOptions(!showMoreTranslateOptions)
+  }
+  const numberOfTranslateOptions = showMoreTranslateOptions ? props.lookupResult.translateOptions.length : 3
+
+  const getExamples = () => {
+    setShowMoreExamples(!showMoreExamples)
+  }
+  const numberOfExamples = showMoreExamples ? props.lookupResult.examples.length : 1
 
   return (
     <div className="modal">
@@ -58,7 +71,7 @@ const DictionaryResultModal = (props) => {
               <div className="dr-other">
                 <h4>Другие варианты перевода</h4>
                 <ul>
-                  {props.lookupResult.translateOptions.slice(0, 3).map((data, key) => {
+                  {props.lookupResult.translateOptions.slice(0, numberOfTranslateOptions).map((data, key) => {
                     return (
                       <li key={key}>
                         <span>{data.translate}</span>
@@ -67,20 +80,30 @@ const DictionaryResultModal = (props) => {
                     );
                   })}
                 </ul>
+                {props.lookupResult.translateOptions.length > 3 &&
+                  <div className="dr-link" onClick={() => getTranslateOptions()}>
+                    {showMoreTranslateOptions ? "Свернуть" : "Показать больше вариантов"}
+                  </div>
+                }
               </div>
-              <div className="dr-example">
-                <h4>Примеры использования</h4>
-                <ul>
-                  {props.lookupResult.examples.slice(0, 2).map((data, key) => {
-                    return (
-                      <li key={key}>
-                        <span>{data.input}</span>
-                        <span className="text-muted">{data.translate}</span>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </div>
+              {props.lookupResult.examples.length > 0 &&
+                <div className="dr-example">
+                  <h4>Примеры использования</h4>
+                  <ul>
+                    {props.lookupResult.examples.slice(0, numberOfExamples).map((data, key) => {
+                      return (
+                        <li key={key}>
+                          <span>{data.input}</span>
+                          <span className="text-muted">{data.translate}</span>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                  <div className="dr-link" onClick={() => getExamples()}>
+                    {showMoreExamples ? "Свернуть" : "Показать больше вариантов"}
+                  </div>
+                </div>
+              }
             </div>
           </DetailResult>
         </div>
