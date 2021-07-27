@@ -44,18 +44,19 @@ const Dictionary = ({ user }) => {
             <input
               autoFocus
               type="text"
-              placeholder="Введите слово на русском или английском"
+              placeholder="Поиск"
               value={search}
               onChange={(event) => setSearch(event.target.value)}
             />
           </div>
           <div>
-            <div className="sortby">
-              <i className="icon-sort"></i>
+            <div className="sortby noselect">
+              <i 
+                className={`icon-sort ${order ? "isReverse" : ""}`}
+                onClick={() => {setOrder(order ? "" : "-" )}}
+              ></i>
               <span>Сортировать по</span>
               <select
-                name=""
-                id=""
                 value={sortBy}
                 onChange={(event) => setSortBy(event.target.value)}
               >

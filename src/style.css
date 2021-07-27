@@ -1,3 +1,43 @@
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+i[class*="icon-"] {
+  display: inline-block;
+  background-position: center;
+  background-repeat: no-repeat;
+  vertical-align: sub;
+}
+.icon-sound {
+  background-image: url(../src/assets/media/icon/sound.svg);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.icon-plus {
+  background-image: url(../src/assets/media/icon/plus.svg);
+  width: 18px;
+  height: 18px;
+}
+.icon-delete {
+  background-image: url(../src/assets/media/icon/trash_basket.svg);
+  width: 18px;
+  height: 18px;
+}
+.icon-sort {
+  background-image: url(../src/assets/media/icon/sort.svg);
+  width: 18px;
+  height: 18px;
+}
+.text-muted{color: #697077}
+.d-none{display:none!important}
+
 .modal {
   width: 100%;
   height: 100%;
@@ -176,40 +216,25 @@ fieldset:disabled a.btn {
 .sortby .icon-sort {
   margin-right: 11px;
   cursor: pointer;
+  position: relative;
+  top: -2px;
+}
+.sortby .icon-sort.isReverse {
+  transform: scaleY(-1);
 }
 .sortby span {
   color: #697077;
   margin-right: 8px;
 }
-
-i[class*="icon-"] {
-  display: inline-block;
-  background-position: center;
-  background-repeat: no-repeat;
-  vertical-align: sub;
-}
-.icon-sound {
-  background-image: url(../src/assets/media/icon/sound.svg);
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
+.sortby select {
+  width: auto;
   cursor: pointer;
-}
-.icon-plus {
-  background-image: url(../src/assets/media/icon/plus.svg);
-  width: 18px;
-  height: 18px;
-}
-.icon-delete {
-  background-image: url(../src/assets/media/icon/trash_basket.svg);
-  width: 18px;
-  height: 18px;
-}
-.icon-sort {
-  background-image: url(../src/assets/media/icon/sort.svg);
-  width: 18px;
-  height: 18px;
+  padding-right: 22px;
+  font-size: 16px;
+  border: 1px solid transparent;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: url(../src/assets/media/icon/arrow.svg) right no-repeat transparent;
 }
 
-.text-muted{color: #697077}
-.d-none{display:none!important}

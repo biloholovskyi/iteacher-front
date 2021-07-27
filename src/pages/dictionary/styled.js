@@ -37,6 +37,7 @@ const WordList = styled.div`
   }
   thead {
     th {
+      width: 30%;
       position: relative;
       border-top: 1px solid #dde1e6;
       border-bottom: 1px solid #dde1e6;
@@ -46,6 +47,9 @@ const WordList = styled.div`
       font-size: 12px;
       line-height: 18px;
       text-transform: uppercase;
+      &:last-of-type {
+        width: 10%;
+      }
       &:first-of-type:before,
       &:last-of-type:after {
         content: "";
