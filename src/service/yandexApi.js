@@ -4,85 +4,89 @@ const yandexApiUrl = `https://dictionary.yandex.net/api/v1/dicservice.json/looku
 const apiDetectUrl = `${process.env.REACT_APP_API_URL}api/translate/detect/`;
 const apiSynthesizeUrl = `${process.env.REACT_APP_API_URL}api/translate/synthesize/`;
 const languages = {
-    "en": "en-ru",
-    "ru": "ru-en"
-}
+  en: "en-ru",
+  ru: "ru-en",
+};
 
 class YandexApi {
-    lookup = async (text) => {
-        const response = await axios.post(apiDetectUrl, { text: text });
-        const lang = languages[response.data.languageCode];
-        if (!lang)
-            return null;
-        const yandex_response = await axios.get(`${yandexApiUrl}&lang=${lang}&text=${text}`);
+  lookup = async (text) => {
+    const response = await axios.post(apiDetectUrl, { text: text });
+    const lang = languages[response.data.languageCode];
+    if (!lang) return null;
+    const yandex_response = await axios.get(
+      `${yandexApiUrl}&lang=${lang}&text=${text}`
+    );
 
-        return this.parse_lookup(yandex_response.data, lang.substring(0, 2), lang.substring(3, 5))
-    }
+    return this.parse_lookup(
+      yandex_response.data,
+      lang.substring(0, 2),
+      lang.substring(3, 5)
+    );
+  };
 
+  synthesize = async (text, language) => {
+    const response = await axios.post(
+      apiSynthesizeUrl,
+      { text: text, language: language },
+      { responseType: "blob" }
+    );
 
-    synthesize = async (text, language) => {
-        const response = await axios.post(apiSynthesizeUrl,
-            { text: text, language: language },
-            { responseType: 'blob' }
-        );
+    const blob = new Blob([response.data], { type: "audio/ogg" });
+    return URL.createObjectURL(blob);
+  };
 
-        const blob = new Blob([response.data], { type: 'audio/ogg' })
-        return URL.createObjectURL(blob);
-    }
+  parse_lookup = async (data, input_lang, translate_lang) => {
+    let result = {
+      input_lang: input_lang, //язык слова
+      translate_lang: translate_lang, //язык перевода
+      words: [], //пары слово - первод
+      translateOptions: [], //варианты перевода
+      examples: [], //примеры использования
+    };
 
+    Object.entries(data.def).forEach(([, value]) => {
+      Object.entries(value.tr).forEach(([, tr]) => {
+        result.words.push({
+          input: {
+            text: value.text,
+            ts: value.ts, //Yandex не возвращает транскрипцию русского
+          },
 
-    parse_lookup = async (data, input_lang, translate_lang) => {
-        let result = {
-            input_lang: input_lang,
-            translate_lang: translate_lang,
-            words: [],
-            translateOptions: [],
-            examples: []
-        }
+          translate: {
+            text: tr.text,
+            ts: value.ts, //Yandex не возвращает транскрипцию перевода
+          },
+        });
 
-        Object.entries(data.def).forEach(([, value]) => {
-            Object.entries(value.tr).forEach(([, tr]) => {
-                result.words.push({
-                    input: {
-                        text: value.text,
-                        ts: value.ts //Yandex не возвращает транскрипцию русского
-                    },
+        let means = "";
+        if (tr.mean)
+          Object.entries(tr.mean).forEach(([, mean]) => {
+            means += mean.text + ", ";
+          });
 
-                    translate: {
-                        text: tr.text,
-                        ts: value.ts //Yandex не возвращает транскрипцию перевода
-                    }
-                });
+        let syns = "";
+        if (tr.syn)
+          Object.entries(tr.syn).forEach(([, syn]) => {
+            syns += syn.text + ", ";
+          });
 
-                let means = "";
-                if (tr.mean)
-                    Object.entries(tr.mean).forEach(([, mean]) => {
-                        means += mean.text + ", ";
-                    })
+        syns = syns.slice(0, -2);
+        if (!syns) syns = tr.text;
 
-                let syns = "";
-                if (tr.syn)
-                    Object.entries(tr.syn).forEach(([, syn]) => {
-                        syns += syn.text + ", ";
-                    })
+        if (means)
+          result.translateOptions.push({
+            input: means.slice(0, -2),
+            translate: syns,
+          });
 
-                syns = syns.slice(0, -2)
-                if (!syns)
-                    syns = tr.text;
-
-                if (means)
-                    result.translateOptions.push({ input: means.slice(0, -2), translate: syns });
-
-
-                if (tr.ex)
-                    Object.entries(tr.ex).forEach(([, ex]) => {
-                        result.examples.push({ input: ex.text, translate: ex.tr[0].text });
-                    })
-            })
-        })
-        return result;
-    }
-
+        if (tr.ex)
+          Object.entries(tr.ex).forEach(([, ex]) => {
+            result.examples.push({ input: ex.text, translate: ex.tr[0].text });
+          });
+      });
+    });
+    return result;
+  };
 }
 
 export default YandexApi;
