@@ -14,30 +14,45 @@ const Dictionary = ({ user }) => {
 
   useEffect(() => {
     const timeOutId = setTimeout(() => {
-      axios
-        .get(
-          `${apiUrl}api/translate/dictionary/user/${user.id}/?search=${search}&ordering=${order}${sortBy}`
-        )
-        .then((res) => {
-          setDictionaryList(res.data);
-        });
+      getDictionary();
     }, 500);
     return () => clearTimeout(timeOutId);
   }, [search]);
 
   useEffect(() => {
-    axios
-      .get(
-        `${apiUrl}api/translate/dictionary/user/${user.id}/?search=${search}&ordering=${order}${sortBy}`
-      )
-      .then((res) => {
-        setDictionaryList(res.data);
-      });
+    getDictionary();
   }, [sortBy, order]);
+
+  const getDictionary = (cursor = null, concat = false) => {
+    const url = cursor
+      ? cursor
+      : `${apiUrl}api/translate/dictionary/user/${user.id}/?search=${search}&ordering=${order}${sortBy}`;
+
+    axios.get(url).then((res) => {
+      if (concat && dictionaryList != null) {
+        let results = dictionaryList.results;
+        results = results.concat(res.data.results);
+        res.data.results = results;
+        setDictionaryList(res.data);
+      } else setDictionaryList(res.data);
+    });
+  };
+
+  const handleScroll = (e) => {
+    const bottom =
+      e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
+    if (bottom && dictionaryList.next) {
+      getDictionary(dictionaryList.next, true);
+    }
+  };
 
   return (
     <DictionaryWrap>
-      <div className="container">
+      <div
+        className="container"
+        onScroll={handleScroll}
+        style={{ height: 300, overflowY: "scroll" }}
+      >
         <h1>Словарь</h1>
         <NavBar>
           <div className="search-input">
@@ -51,9 +66,11 @@ const Dictionary = ({ user }) => {
           </div>
           <div>
             <div className="sortby noselect">
-              <i 
+              <i
                 className={`icon-sort ${order ? "isReverse" : ""}`}
-                onClick={() => {setOrder(order ? "" : "-" )}}
+                onClick={() => {
+                  setOrder(order ? "" : "-");
+                }}
               ></i>
               <span>Сортировать по</span>
               <select
