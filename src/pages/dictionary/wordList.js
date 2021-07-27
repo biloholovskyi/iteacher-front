@@ -19,7 +19,15 @@ const WordTable = (props) => {
               return (
                 <tr key={key}>
                   <td>
-                    <i className="icon-sound"></i>
+                    <i 
+                      className="icon-sound"
+                      onClick={() =>
+                        props.play(
+                          word.text,
+                          word.language
+                        )
+                      }
+                    ></i>
                     {word.text}
                   </td>
                   <td>{word.transcription}</td>

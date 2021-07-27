@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import axios from "axios";
 import WordTable from "./wordList";
 import { DictionaryWrap, NavBar } from "./styled";
+import YandexApi from "../../service/yandexApi";
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -11,6 +12,13 @@ const Dictionary = ({ user }) => {
   const [sortBy, setSortBy] = useState("text");
   const [order, setOrder] = useState("");
   const [dictionaryList, setDictionaryList] = useState(null);
+
+  const play = (text, language) => {
+    YandexApi.synthesize(text, language).then((result) => {
+      const audio = new Audio(result);
+      audio.play();
+    });
+  };
 
   useEffect(() => {
     const timeOutId = setTimeout(() => {
@@ -85,7 +93,7 @@ const Dictionary = ({ user }) => {
           </div>
         </NavBar>
         <main>
-          {dictionaryList && <WordTable dictionary={dictionaryList.results} />}
+          {dictionaryList && <WordTable dictionary={dictionaryList.results} play={play} />}
         </main>
       </div>
     </DictionaryWrap>
