@@ -64,7 +64,7 @@
 }
 
 .btn {
-  padding: 12px 20px;
+  padding: 13px 20px;
   border-radius: 6px;
   font-weight: 600;
   font-size: 16px;
@@ -169,15 +169,46 @@ fieldset:disabled a.btn {
   right: 14px;
 }
 
-.icon-sound {
+.sortby {
   display: inline-block;
-  background-image: url(../src/assets/media/icon/sound.svg);
+  margin-right: 30px;
+}
+.sortby .icon-sort {
+  margin-right: 11px;
+  cursor: pointer;
+}
+.sortby span {
+  color: #697077;
+  margin-right: 8px;
+}
+
+i[class*="icon-"] {
+  display: inline-block;
   background-position: center;
   background-repeat: no-repeat;
+  vertical-align: sub;
+}
+.icon-sound {
+  background-image: url(../src/assets/media/icon/sound.svg);
   width: 32px;
   height: 32px;
   border-radius: 50%;
   cursor: pointer;
+}
+.icon-plus {
+  background-image: url(../src/assets/media/icon/plus.svg);
+  width: 18px;
+  height: 18px;
+}
+.icon-delete {
+  background-image: url(../src/assets/media/icon/trash_basket.svg);
+  width: 18px;
+  height: 18px;
+}
+.icon-sort {
+  background-image: url(../src/assets/media/icon/sort.svg);
+  width: 18px;
+  height: 18px;
 }
 
 .text-muted{color: #697077}

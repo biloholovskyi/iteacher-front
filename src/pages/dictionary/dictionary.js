@@ -1,47 +1,48 @@
-import React from 'react';
-import Word from './word';
-import {
-  DictionaryWrap,
-  Caption,
-  Input,
-  SearchBlock,
-  SortBlock,
-  Title
-} from "./styled";
-
-import search from "../../assets/media/icon/search.svg";
-import arrow from "../../assets/media/icon/arrow.svg";
-import sort from "../../assets/media/icon/sort.svg";
-// import plus from "../../assets/media/icon/plus.svg";
+import React, {useState, useEffect} from "react";
+import axios from "axios";
+import WordTable from "./wordList";
+import { DictionaryWrap, NavBar } from "./styled";
 
 const Dictionary = () => {
-    return (
-      <DictionaryWrap>
-        <div className='container'>
-          <Caption>
-            <Title>Словарь</Title>
-          </Caption>
-          <Caption>
-            <SearchBlock>
-              <Input>
-                <img src={search} alt="icon"/>
-                <input type="text" placeholder="Поиск"/>
-              </Input>
-            </SearchBlock>
-            <SortBlock>
-              <img src={sort} alt="icon"/>
-              <p>Сортировать по</p>
-              <p><b>алфавиту</b></p>
-              <img src={arrow} alt="icon"/>
-            </SortBlock>
-            <button className="btn btn-primary">Добавить слово</button>
-          </Caption>
-          <div className="wordList">
-            <Word/>
+  const [dictionaryList, setDictionaryList] = useState(null);
+
+  useEffect(() => {
+    axios.get(`http://192.168.0.12:8000/api/translate/dictionary/user/1/`)
+      .then(res => {
+        setDictionaryList(res.data);
+      })
+  },[])
+
+  console.log(dictionaryList)
+
+  return (
+    <DictionaryWrap>
+      <div className="container">
+        <h1>Словарь</h1>
+        <NavBar>
+          <div className="search-input">
+            <input type="text" placeholder="Поиск" />
           </div>
-        </div>
-      </DictionaryWrap>
-    )
-}
+          <div>
+            <div className="sortby">
+              <i className="icon-sort"></i>
+              <span>Сортировать по</span>
+              <select name="" id="">
+                <option value="">алфавиту</option>
+                <option value="">порядку</option>
+              </select>
+            </div>
+            <button className="btn btn-primary">
+              <i className="icon-plus"></i> Добавить слово
+            </button>
+          </div>
+        </NavBar>
+        <main>
+          {dictionaryList && <WordTable dictionary={dictionaryList.results} />}
+        </main>
+      </div>
+    </DictionaryWrap>
+  );
+};
 
 export default Dictionary;
