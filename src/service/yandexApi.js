@@ -89,4 +89,4 @@ class YandexApi {
   };
 }
 
-export default YandexApi;
+export default new YandexApi();

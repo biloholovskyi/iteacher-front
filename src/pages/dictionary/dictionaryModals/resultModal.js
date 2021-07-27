@@ -7,8 +7,7 @@ const DictionaryResultModal = (props) => {
   const [showMoreExamples, setShowMoreExamples] = useState(false);
 
   const play = (text, language) => {
-    const api = new YandexApi();
-    api.synthesize(text, language).then((result) => {
+    YandexApi.synthesize(text, language).then((result) => {
       const audio = new Audio(result);
       audio.play();
     });

@@ -18,8 +18,7 @@ const DictionarySearchModal = (props) => {
       if (!query)
         return;
       
-      const api = new YandexApi();
-      api.lookup(query).then((result) => {
+      YandexApi.lookup(query).then((result) => {
         setLookupResult(result);
       })
     }, 500);
