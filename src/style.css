@@ -10,6 +10,7 @@
 }
 .text-muted{color: #697077}
 .d-none{display:none!important}
+.mr-1 {margin-right: 10px;}
 
 i[class*="icon-"] {
   display: inline-block;
@@ -177,9 +178,6 @@ fieldset:disabled a.btn {
 .btn-primary:not(:disabled):not(.disabled):active:focus, .btn-primary:not(:disabled):not(.disabled).active:focus,
 .show > .btn-primary.dropdown-toggle:focus {
   box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5);
-}
-.btn > i[class*="icon-"] {
-  margin-right: 10px;
 }
 
 .search-input {

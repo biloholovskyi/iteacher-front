@@ -32,7 +32,6 @@ const WordList = styled.div`
     border-spacing: 0 8px;
     margin-top: -8px;
     .icon-sound {
-      z-index: 10;
       background-color: #DDE1E6;
       vertical-align: middle;
       margin-right: 16px;
