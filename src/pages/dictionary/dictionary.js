@@ -9,7 +9,7 @@ const apiUrl = process.env.REACT_APP_API_URL;
 
 const Dictionary = ({ user }) => {
   const [search, setSearch] = useState("");
-  const [sortBy, setSortBy] = useState("");
+  const [sortBy, setSortBy] = useState("text");
   const [order, setOrder] = useState("");
   const [dictionaryList, setDictionaryList] = useState(null);
   const [dictionaryModal, setDictionaryModal] = useState(false);
