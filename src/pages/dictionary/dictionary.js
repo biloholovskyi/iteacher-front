@@ -79,8 +79,8 @@ const Dictionary = ({ user }) => {
   };
 
   return (
-    <DictionaryWrap>
-      <div className="container" onScroll={handleScroll}>
+    <DictionaryWrap onScroll={handleScroll}>
+      <div className="container">
         <h1>Словарь</h1>
         <NavBar>
           <div className="search-input">
@@ -110,7 +110,7 @@ const Dictionary = ({ user }) => {
               </select>
             </div>
             <button className="btn btn-primary" onClick={showDictionaryModal}>
-              <i className="icon-plus"></i>&nbsp;Добавить слово
+              <i className="icon-plus"></i>Добавить слово
             </button>
           </div>
         </NavBar>

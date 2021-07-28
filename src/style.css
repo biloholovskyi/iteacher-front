@@ -178,6 +178,9 @@ fieldset:disabled a.btn {
 .show > .btn-primary.dropdown-toggle:focus {
   box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5);
 }
+.btn > i[class*="icon-"] {
+  margin-right: 10px;
+}
 
 .search-input {
   background-color: #DDE1E6;
