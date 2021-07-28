@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
+import { connect } from "react-redux";
 import YandexApi from "../../../service/yandexApi";
-import { ListResult } from "./styled";
 import DictionaryResultModal from './resultModal'
+import { ListResult } from "./styled";
 
 
-const DictionarySearchModal = (props) => {
+const DictionarySearchModal = ({user, close}) => {
   const [query, setQuery] = useState("");
   const [lookupResult, setLookupResult] = useState(null);
   const [selectedWord, setSelectedWord] = useState(null);
@@ -37,7 +38,7 @@ const DictionarySearchModal = (props) => {
       <div className={"modal " + (resultDetail ? 'd-none' : '')}>
         <div className="modal-content">
           <div className="modal-header">
-            <i className="modal-close" onClick={props.close}></i>
+            <i className="modal-close" onClick={close}></i>
             <h2>Найти слово</h2>
           </div>
           <div className="modal-body">
@@ -78,11 +79,18 @@ const DictionarySearchModal = (props) => {
         <DictionaryResultModal
           lookupResult={lookupResult}
           selectedWord={selectedWord}
-          close={props.close}
+          close={close}
           back={() => setResultDetail(false)} />
       )}
     </>
   );
 };
 
-export default DictionarySearchModal;
+const mapStateToProps = (state) => {
+  return {
+    user: state.user,
+  };
+};
+
+
+export default connect(mapStateToProps, null)(DictionarySearchModal);

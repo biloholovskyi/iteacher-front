@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import axios from "axios";
-import WordTable from "./wordList";
-import { DictionaryWrap, NavBar } from "./styled";
 import YandexApi from "../../service/yandexApi";
+import WordTable from "./wordList";
+import DictionarySearchModal from '../dictionary/dictionaryModals/searchModal'
+import { DictionaryWrap, NavBar } from "./styled";
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -12,6 +13,7 @@ const Dictionary = ({ user }) => {
   const [sortBy, setSortBy] = useState("text");
   const [order, setOrder] = useState("");
   const [dictionaryList, setDictionaryList] = useState(null);
+  const [dictionaryModal, setDictionaryModal] = useState(false);
 
   const play = (text, language) => {
     YandexApi.synthesize(text, language).then((result) => {
@@ -53,6 +55,10 @@ const Dictionary = ({ user }) => {
     }
   };
 
+  const showDictionaryModal = () => {
+    setDictionaryModal(!dictionaryModal)
+  }
+
   return (
     <DictionaryWrap>
       <div
@@ -87,8 +93,8 @@ const Dictionary = ({ user }) => {
                 <option value="id">порядку</option>
               </select>
             </div>
-            <button className="btn btn-primary">
-              <i className="icon-plus"></i> Добавить слово
+            <button className="btn btn-primary" onClick={showDictionaryModal}>
+              <i className="icon-plus"></i>&nbsp;Добавить слово
             </button>
           </div>
         </NavBar>
@@ -96,6 +102,9 @@ const Dictionary = ({ user }) => {
           {dictionaryList && <WordTable dictionary={dictionaryList.results} play={play} />}
         </main>
       </div>
+      {dictionaryModal && (
+        <DictionarySearchModal close={showDictionaryModal}/>
+      )}
     </DictionaryWrap>
   );
 };

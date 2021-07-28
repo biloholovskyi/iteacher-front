@@ -27,7 +27,7 @@ const NavBar = styled.div`
 `;
 
 const WordList = styled.div`
-  padding-bottom: 16px;
+  padding-bottom: 24px;
   table {
     width: 100%;
     color: #697077;
@@ -38,7 +38,7 @@ const WordList = styled.div`
     .icon-sound {
       background-color: #DDE1E6;
       vertical-align: middle;
-    margin-right: 16px;
+      margin-right: 16px;
     }
   }
   thead {
@@ -78,6 +78,11 @@ const WordList = styled.div`
     }
   }
   tbody {
+    .tr-empty {
+      height: 7px;
+      &:after{display: none;}
+      td {padding: 0;}
+    }
     tr {
       position: relative;
       &:after {

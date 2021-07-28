@@ -2,7 +2,7 @@ import React from "react";
 
 import { WordList } from "./styled";
 
-const WordTable = (props) => {
+const WordTable = ({dictionary, play}) => {
   return (
     <WordList>
       <table>
@@ -15,14 +15,17 @@ const WordTable = (props) => {
           </tr>
         </thead>
         <tbody>
-          {props.dictionary.map((word, key) => {
+          <tr className="tr-empty">
+            <td colSpan="4"></td>
+          </tr>
+          {dictionary.map((word, key) => {
               return (
                 <tr key={key}>
                   <td>
                     <i 
                       className="icon-sound"
                       onClick={() =>
-                        props.play(
+                        play(
                           word.text,
                           word.language
                         )
