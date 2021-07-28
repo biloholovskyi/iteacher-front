@@ -2,12 +2,8 @@ import styled from "styled-components";
 
 const DictionaryWrap = styled.div`
   padding-top: 122px;
+  overflow-y: auto;
   overflow-x: hidden;
-  .container {
-    height: calc(100vh - 122px);
-    overflow-y: auto;
-    overflow-x: hidden;
-  }
   h1 {
     font-size: 28px;
     font-weight: 700;
