@@ -54,11 +54,11 @@ const WordTable = ({dictionary, deleteWord}) => {
                       setSelectedWord({
                         input: {
                           text: word.text,
-                          ts: word.transcription
+                          transcription: word.transcription
                         },
                         translate: {
                           text: word.translate,
-                          ts: word.translate_transcription
+                          transcription: word.translate_transcription
                         }
                       })
                       setLookupResult(word.data)
