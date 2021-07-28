@@ -4,6 +4,7 @@ const DictionaryWrap = styled.div`
   padding-top: 122px;
   overflow-y: auto;
   overflow-x: hidden;
+  height: 100vh;
   h1 {
     font-size: 28px;
     font-weight: 700;
@@ -31,10 +32,15 @@ const WordList = styled.div`
     border-collapse: separate;
     border-spacing: 0 8px;
     margin-top: -8px;
+    position: relative;
+    z-index: 1;
     .icon-sound {
       background-color: #DDE1E6;
       vertical-align: middle;
       margin-right: 16px;
+    }
+    .icon-delete {
+      cursor: pointer;
     }
   }
   thead {
@@ -82,7 +88,7 @@ const WordList = styled.div`
     tr {
       position: relative;
       &:after {
-        z-index: 1;
+        z-index: -1;
         content: "";
         display: block;
         background: #ffffff;
@@ -98,14 +104,24 @@ const WordList = styled.div`
         width: 100%;
       }
       td {
-        z-index: 2;
-        position: relative;
         padding: 16px;
         font-size: 16px;
         font-weight: 400;
-        cursor: pointer;
         &:last-child {
           text-align: right;
+        }
+        div {
+          cursor: pointer;
+          display: inline-block;
+          &:after {
+            content: "";
+            display: block;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 60px;
+            right: 50px;
+          }
         }
       }
     }

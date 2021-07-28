@@ -38,20 +38,7 @@ const WordTable = ({dictionary, deleteWord}) => {
           </tr>
           {dictionary.map((word, key) => {
               return (
-                <tr key={key} onClick={() => {
-                  setResultDetail(true)
-                  setSelectedWord({
-                    input: {
-                      text: word.text,
-                      ts: word.transcription
-                    },
-                    translate: {
-                      text: word.translate,
-                      ts: word.translate_transcription
-                    }
-                  })
-                  setLookupResult(word.data)
-                }}>
+                <tr key={key}>
                   <td>
                     <i 
                       className="icon-sound"
@@ -62,7 +49,20 @@ const WordTable = ({dictionary, deleteWord}) => {
                         )
                       }
                     ></i>
-                    {word.text}
+                    <div onClick={() => {
+                      setResultDetail(true)
+                      setSelectedWord({
+                        input: {
+                          text: word.text,
+                          ts: word.transcription
+                        },
+                        translate: {
+                          text: word.translate,
+                          ts: word.translate_transcription
+                        }
+                      })
+                      setLookupResult(word.data)
+                    }}>{word.text}</div>
                   </td>
                   <td>{word.transcription}</td>
                   <td>{word.translate}</td>

@@ -67,7 +67,7 @@ i[class*="icon-"] {
 .modal-header {
   padding: 24px;
   padding-right: 48px;
-  min-height: 26px;
+  min-height: 72px;
 }
 .modal-header h2 {
   font-weight: 700;

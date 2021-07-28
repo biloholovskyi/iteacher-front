@@ -104,7 +104,7 @@ const Dictionary = ({ user }) => {
               </select>
             </div>
             <button className="btn btn-primary" onClick={showDictionaryModal}>
-              <i className="icon-plus"></i>Добавить слово
+              <i className="icon-plus mr-1"></i>Добавить слово
             </button>
           </div>
         </NavBar>

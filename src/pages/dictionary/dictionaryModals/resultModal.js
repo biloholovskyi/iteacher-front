@@ -1,8 +1,9 @@
 import React, {useState} from "react";
+import { connect } from "react-redux";
 import { DetailResult } from "./styled";
 import YandexApi from "../../../service/yandexApi";
 
-const DictionaryResultModal = ({close, back, lookupResult, selectedWord}) => {
+const DictionaryResultModal = ({user, close, back, lookupResult, selectedWord}) => {
   const [showMoreTranslateOptions, setShowMoreTranslateOptions] = useState(false);
   const [showMoreExamples, setShowMoreExamples] = useState(false);
   const [synthesizeWords, setSynthesizeWords] = useState({});
@@ -28,14 +29,14 @@ const DictionaryResultModal = ({close, back, lookupResult, selectedWord}) => {
   }
   const numberOfExamples = showMoreExamples ? lookupResult.examples.length : 1
 
-  console.log(lookupResult)
-
   return (
     <div className="modal">
       <div className="modal-content">
         <div className="modal-header">
           <i className="modal-close" onClick={close}></i>
-          <i className="modal-back" onClick={back}></i>
+          {user.type === "teacher" &&
+            <i className="modal-back" onClick={back}></i>
+          }
         </div>
         <div>
           <DetailResult>
@@ -118,4 +119,10 @@ const DictionaryResultModal = ({close, back, lookupResult, selectedWord}) => {
   );
 };
 
-export default DictionaryResultModal;
+const mapStateToProps = (state) => {
+  return {
+    user: state.user,
+  };
+};
+
+export default connect(mapStateToProps, null)(DictionaryResultModal);
