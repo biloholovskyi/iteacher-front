@@ -42,10 +42,7 @@ const DictionarySearchModal = ({user, close, addWord}) => {
         translate: word.translate.text,
         translate_language: lookupResult.translate_lang,
         translate_transcription: word.translate.ts,
-        data: {
-          translateOptions: lookupResult.translateOptions,
-          examples: lookupResult.examples
-        }
+        data: lookupResult
     }
     addWord(data);
   };
