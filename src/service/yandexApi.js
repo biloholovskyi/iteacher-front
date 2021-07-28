@@ -35,10 +35,10 @@ class YandexApi {
     return URL.createObjectURL(blob);
   };
 
-  parse_lookup = async (data, input_lang, translate_lang) => {
+  parse_lookup = async (data, language, translate_language) => {
     let result = {
-      input_lang: input_lang, //язык слова
-      translate_lang: translate_lang, //язык перевода
+      language: language, //язык слова
+      translate_language: translate_language, //язык перевода
       words: [], //пары слово - первод
       translateOptions: [], //варианты перевода
       examples: [], //примеры использования
@@ -49,12 +49,12 @@ class YandexApi {
         result.words.push({
           input: {
             text: value.text,
-            ts: value.ts, //Yandex не возвращает транскрипцию русского
+            transcription: value.ts, //Yandex не возвращает транскрипцию русского
           },
 
           translate: {
             text: tr.text,
-            ts: tr.ts, //Yandex не возвращает транскрипцию перевода
+            transcription: tr.ts, //Yandex не возвращает транскрипцию перевода
           },
         });
 
@@ -71,7 +71,8 @@ class YandexApi {
           });
 
         syns = syns.slice(0, -2);
-        if (!syns) syns = tr.text;
+        if (!syns)
+          syns = tr.text;
 
         if (means)
           result.translateOptions.push({
