@@ -48,6 +48,25 @@ const Dictionary = ({ user }) => {
     setDictionaryList({ ...dictionaryList, results: new_results });
   };
 
+  // const addWord = async (word) => {
+  //   const url = `${apiUrl}api/translate/dictionary/`;
+  //   const data = {
+  //       text: word.input.text,
+  //       language: word,
+  //       transcription: word.input.ts,
+  //       translate: word.translate.text,
+  //       translate_language: word,
+  //       translate_transcription: word.transcription.ts,
+  //       data: word,
+  //   }
+
+  //   await axios.post(url);
+  //   const new_results = await dictionaryList.results.filter(function (item) {
+  //     return item.id !== word.id;
+  //   });
+  //   setDictionaryList({ ...dictionaryList, results: new_results });
+  // };
+
   const handleScroll = async (e) => {
     const bottom =
       e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;

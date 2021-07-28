@@ -39,7 +39,7 @@ const DictionarySearchModal = ({user, close}) => {
         <div className="modal-content">
           <div className="modal-header">
             <i className="modal-close" onClick={close}></i>
-            <h2>Найти слово</h2>
+            <h2>{user.type === "student" ? "Добавить слово" : "Найти слово"}</h2>
           </div>
           <div className="modal-body">
             <div className="search-input">
@@ -60,8 +60,12 @@ const DictionarySearchModal = ({user, close}) => {
                   lookupResult.words.slice(0, 4).map((word, key) => {
                     return (
                       <li key={key} onClick={() => {
-                        setResultDetail(true);
-                        setSelectedWord(word);
+                        if (user.type === "student") {
+                          console.log(user)
+                        } else {
+                          setResultDetail(true);
+                          setSelectedWord(word);
+                        }
                       }}>
                         {word.input.text}
                         <span>{word.translate.text}</span>
@@ -91,6 +95,5 @@ const mapStateToProps = (state) => {
     user: state.user,
   };
 };
-
 
 export default connect(mapStateToProps, null)(DictionarySearchModal);
