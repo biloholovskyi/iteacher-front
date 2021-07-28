@@ -1,26 +1,20 @@
-import React from "react";
-import axios from "axios";
+import React, {useState} from "react";
 import YandexApi from "../../service/yandexApi";
 import { WordList } from "./styled";
 
-const apiUrl = process.env.REACT_APP_API_URL;
 
-const WordTable = ({dictionary}) => {
-
-  const deleteWord = (word) => {
-    const url = `${apiUrl}api/translate/dictionary/${word.id}/`
-
-    axios.delete(url).then((res) => {
-      
-    });
-    
-  };
-
-  const play = (text, language) => {
-    YandexApi.synthesize(text, language).then((result) => {
-      const audio = new Audio(result);
-      audio.play();
-    });
+const WordTable = ({dictionary, deleteWord}) => {
+  
+  const [synthesizeWords, setSynthesizeWords] = useState({});
+  const play = async (text, language) => {
+    let synthesize = synthesizeWords[text];
+    if (!synthesize)
+    {
+      synthesize = await YandexApi.synthesize(text, language);
+      synthesizeWords[text] = synthesize;
+      setSynthesizeWords(synthesizeWords);
+    }
+    await new Audio(synthesize).play();
   };
 
   return (

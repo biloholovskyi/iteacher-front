@@ -5,12 +5,17 @@ import YandexApi from "../../../service/yandexApi";
 const DictionaryResultModal = ({close, back, lookupResult, selectedWord}) => {
   const [showMoreTranslateOptions, setShowMoreTranslateOptions] = useState(false);
   const [showMoreExamples, setShowMoreExamples] = useState(false);
+  const [synthesizeWords, setSynthesizeWords] = useState({});
 
-  const play = (text, language) => {
-    YandexApi.synthesize(text, language).then((result) => {
-      const audio = new Audio(result);
-      audio.play();
-    });
+  const play = async (text, language) => {
+    let synthesize = synthesizeWords[text];
+    if (!synthesize)
+    {
+      synthesize = await YandexApi.synthesize(text, language);
+      synthesizeWords[text] = synthesize;
+      setSynthesizeWords(synthesizeWords);
+    }
+    await new Audio(synthesize).play();
   };
   
   const getTranslateOptions = () => {
