@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import axios from "axios";
-import YandexApi from "../../service/yandexApi";
 import WordTable from "./wordList";
 import DictionarySearchModal from '../dictionary/dictionaryModals/searchModal'
 import { DictionaryWrap, NavBar } from "./styled";
@@ -14,13 +13,6 @@ const Dictionary = ({ user }) => {
   const [order, setOrder] = useState("");
   const [dictionaryList, setDictionaryList] = useState(null);
   const [dictionaryModal, setDictionaryModal] = useState(false);
-
-  const play = (text, language) => {
-    YandexApi.synthesize(text, language).then((result) => {
-      const audio = new Audio(result);
-      audio.play();
-    });
-  };
 
   useEffect(() => {
     const timeOutId = setTimeout(() => {
@@ -99,7 +91,7 @@ const Dictionary = ({ user }) => {
           </div>
         </NavBar>
         <main>
-          {dictionaryList && <WordTable dictionary={dictionaryList.results} play={play} />}
+          {dictionaryList && <WordTable dictionary={dictionaryList.results} />}
         </main>
       </div>
       {dictionaryModal && (

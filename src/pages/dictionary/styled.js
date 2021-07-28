@@ -5,7 +5,7 @@ const DictionaryWrap = styled.div`
   overflow-x: hidden;
   .container {
     height: calc(100vh - 122px);
-    overflow-y: scroll;
+    overflow-y: auto;
     overflow-x: hidden;
   }
   h1 {

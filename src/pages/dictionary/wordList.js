@@ -1,8 +1,28 @@
 import React from "react";
-
+import axios from "axios";
+import YandexApi from "../../service/yandexApi";
 import { WordList } from "./styled";
 
-const WordTable = ({dictionary, play}) => {
+const apiUrl = process.env.REACT_APP_API_URL;
+
+const WordTable = ({dictionary}) => {
+
+  const deleteWord = (word) => {
+    const url = `${apiUrl}api/translate/dictionary/${word.id}/`
+
+    axios.delete(url).then((res) => {
+      
+    });
+    
+  };
+
+  const play = (text, language) => {
+    YandexApi.synthesize(text, language).then((result) => {
+      const audio = new Audio(result);
+      audio.play();
+    });
+  };
+
   return (
     <WordList>
       <table>
@@ -36,7 +56,7 @@ const WordTable = ({dictionary, play}) => {
                   <td>{word.transcription}</td>
                   <td>{word.translate}</td>
                   <td>
-                    <i className="icon-delete"></i>
+                    <i className="icon-delete" onClick={() => deleteWord(word)}></i>
                   </td>
                 </tr>
               );
