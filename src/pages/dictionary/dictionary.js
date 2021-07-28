@@ -48,24 +48,18 @@ const Dictionary = ({ user }) => {
     setDictionaryList({ ...dictionaryList, results: new_results });
   };
 
-  // const addWord = async (word) => {
-  //   const url = `${apiUrl}api/translate/dictionary/`;
-  //   const data = {
-  //       text: word.input.text,
-  //       language: word,
-  //       transcription: word.input.ts,
-  //       translate: word.translate.text,
-  //       translate_language: word,
-  //       translate_transcription: word.transcription.ts,
-  //       data: word,
-  //   }
+  const addWord = async (data) => {
+    const url = `${apiUrl}api/translate/dictionary/user/${user.id}/`;
 
-  //   await axios.post(url);
-  //   const new_results = await dictionaryList.results.filter(function (item) {
-  //     return item.id !== word.id;
-  //   });
-  //   setDictionaryList({ ...dictionaryList, results: new_results });
-  // };
+    try {
+      await axios.post(url, data);
+      getDictionary();
+      setDictionaryModal(false);
+    }
+    catch (err) {
+      alert(err.response.data[0])
+    }
+  };
 
   const handleScroll = async (e) => {
     const bottom =
@@ -95,7 +89,7 @@ const Dictionary = ({ user }) => {
           <div>
             <div className="sortby noselect">
               <i
-                className={`icon-sort ${order ? "isReverse" : ""}`}
+                className={`icon-sort ${order ? "" : "isReverse"}`}
                 onClick={() => {
                   setOrder(order ? "" : "-");
                 }}
@@ -123,7 +117,7 @@ const Dictionary = ({ user }) => {
           )}
         </main>
       </div>
-      {dictionaryModal && <DictionarySearchModal close={showDictionaryModal} />}
+      {dictionaryModal && <DictionarySearchModal close={showDictionaryModal} addWord={addWord} />}
     </DictionaryWrap>
   );
 };

@@ -5,7 +5,7 @@ import DictionaryResultModal from './resultModal'
 import { ListResult } from "./styled";
 
 
-const DictionarySearchModal = ({user, close}) => {
+const DictionarySearchModal = ({user, close, addWord}) => {
   const [query, setQuery] = useState("");
   const [lookupResult, setLookupResult] = useState(null);
   const [selectedWord, setSelectedWord] = useState(null);
@@ -32,6 +32,23 @@ const DictionarySearchModal = ({user, close}) => {
     setLookupResult(null);
     setShowClearQuery(false);
   }
+
+  const handleAddWord = async (word) => {
+    
+    const data = {
+        text: word.input.text,
+        language: lookupResult.input_lang,
+        transcription: word.input.ts,
+        translate: word.translate.text,
+        translate_language: lookupResult.translate_lang,
+        translate_transcription: word.translate.ts,
+        data: {
+          translateOptions: lookupResult.translateOptions,
+          examples: lookupResult.examples
+        }
+    }
+    addWord(data);
+  };
 
   return (
     <>
@@ -61,7 +78,8 @@ const DictionarySearchModal = ({user, close}) => {
                     return (
                       <li key={key} onClick={() => {
                         if (user.type === "student") {
-                          console.log(user)
+                          handleAddWord(word);
+
                         } else {
                           setResultDetail(true);
                           setSelectedWord(word);

@@ -54,7 +54,7 @@ class YandexApi {
 
           translate: {
             text: tr.text,
-            ts: value.ts, //Yandex не возвращает транскрипцию перевода
+            ts: tr.ts, //Yandex не возвращает транскрипцию перевода
           },
         });
 
