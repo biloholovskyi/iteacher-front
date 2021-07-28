@@ -44,7 +44,7 @@ const DictionaryResultModal = ({close, back, lookupResult, selectedWord}) => {
                 <div>
                   <strong>{selectedWord.input.text}</strong>
                   <span className="text-muted">
-                    {selectedWord.input.ts}
+                    {selectedWord.input.transcription}
                   </span>
                 </div>
                 <i
@@ -52,7 +52,7 @@ const DictionaryResultModal = ({close, back, lookupResult, selectedWord}) => {
                   onClick={() =>
                     play(
                       selectedWord.input.text,
-                      lookupResult.input_lang
+                      lookupResult.language
                     )
                   }
                 ></i>
@@ -67,7 +67,7 @@ const DictionaryResultModal = ({close, back, lookupResult, selectedWord}) => {
                   onClick={() =>
                     play(
                       selectedWord.translate.text,
-                      lookupResult.translate_lang
+                      lookupResult.translate_language
                     )
                   }
                 ></i>

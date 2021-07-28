@@ -37,11 +37,11 @@ const DictionarySearchModal = ({user, close, addWord}) => {
     
     const data = {
         text: word.input.text,
-        language: lookupResult.input_lang,
-        transcription: word.input.ts,
+        language: lookupResult.language,
+        transcription: word.input.transcription,
         translate: word.translate.text,
-        translate_language: lookupResult.translate_lang,
-        translate_transcription: word.translate.ts,
+        translate_language: lookupResult.translate_language,
+        translate_transcription: word.translate.transcription,
         data: lookupResult
     }
     addWord(data);
