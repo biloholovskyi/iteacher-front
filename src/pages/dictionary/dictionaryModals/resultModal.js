@@ -28,6 +28,8 @@ const DictionaryResultModal = ({close, back, lookupResult, selectedWord}) => {
   }
   const numberOfExamples = showMoreExamples ? lookupResult.examples.length : 1
 
+  console.log(lookupResult)
+
   return (
     <div className="modal">
       <div className="modal-content">

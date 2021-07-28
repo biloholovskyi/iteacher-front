@@ -1,11 +1,15 @@
 import React, {useState} from "react";
 import YandexApi from "../../service/yandexApi";
+import DictionaryResultModal from '../dictionary/dictionaryModals/resultModal'
 import { WordList } from "./styled";
 
 
 const WordTable = ({dictionary, deleteWord}) => {
-  
+  const [selectedWord, setSelectedWord] = useState(null);
+  const [lookupResult, setLookupResult] = useState(null);
+  const [resultDetail, setResultDetail] = useState(false);
   const [synthesizeWords, setSynthesizeWords] = useState({});
+
   const play = async (text, language) => {
     let synthesize = synthesizeWords[text];
     if (!synthesize)
@@ -34,7 +38,20 @@ const WordTable = ({dictionary, deleteWord}) => {
           </tr>
           {dictionary.map((word, key) => {
               return (
-                <tr key={key}>
+                <tr key={key} onClick={() => {
+                  setResultDetail(true)
+                  setSelectedWord({
+                    input: {
+                      text: word.text,
+                      ts: word.transcription
+                    },
+                    translate: {
+                      text: word.translate,
+                      ts: word.translate_transcription
+                    }
+                  })
+                  setLookupResult(word.data)
+                }}>
                   <td>
                     <i 
                       className="icon-sound"
@@ -57,6 +74,12 @@ const WordTable = ({dictionary, deleteWord}) => {
             })}
         </tbody>
       </table>
+      {resultDetail && (
+        <DictionaryResultModal
+          lookupResult={lookupResult}
+          selectedWord={selectedWord}
+          close={() => setResultDetail(false)}/>
+      )}
     </WordList>
   );
 };
