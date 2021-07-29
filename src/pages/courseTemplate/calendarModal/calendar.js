@@ -64,15 +64,15 @@ export default class Calendar extends Component {
     const monthData = calendar.getMonthData(this.year, this.month);
 
     return (
-      <CalendarWrap className={'calendar'} new={this.props.new}>
+      <CalendarWrap className={'calendar'} new={this.props.new} templateCalendarStyle={this.props.templateCalendarStyle}>
         <header>
           <div>
             {monthNames[date.getMonth()]},
             {date.getFullYear()}
           </div>
           <div>
-            <button onClick={this.handlePrevMonthButtonClick}><img className={'prev'} src={calendarArrow} alt="icon"/></button>
-            <button onClick={this.handleNextMonthButtonClick}><img className={'next'} src={calendarArrow} alt="icon"/></button>
+            <button type={'button'} onClick={this.handlePrevMonthButtonClick}><img className={'prev'} src={calendarArrow} alt="icon"/></button>
+            <button type={'button'} onClick={this.handleNextMonthButtonClick}><img className={'next'} src={calendarArrow} alt="icon"/></button>
           </div>
         </header>
 

@@ -101,12 +101,12 @@ const CalendarWrap = styled.div`
   left: 0;
   z-index: 50;
   background-color: #fff;
-
+ 
+  
   header {
     display: flex;
     align-items: center;
-    padding: 25px 24px 0;
-    padding-bottom: 15px;
+    padding: 10px 24px;
     background-color: #fff;
     justify-content: space-between;
 
@@ -118,6 +118,27 @@ const CalendarWrap = styled.div`
       line-height: 22px;
       letter-spacing: -0.01em;
       color: #111111;
+    }
+    
+    & div:first-child {
+      width: 100%;
+      text-align: center;
+      font-size: 14px;
+      color: #000;
+      position: relative;
+      z-index: 1;
+    }
+    
+    & div:last-child {
+      position: absolute;
+      background: transparent;
+      width: 90%;
+      left: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 3;
+      transform: translateX(-50%);
     }
 
     button {
@@ -146,11 +167,11 @@ const CalendarWrap = styled.div`
   }
 
   table {
-    width: 99.9%;
+    width: 100%;
     height: 100%;
     background: #fff;
     border-collapse: collapse;
-
+    border-radius: 8px;
     thead {
       tr {
         th {
@@ -158,35 +179,34 @@ const CalendarWrap = styled.div`
           padding-bottom: 8px;
           font-style: normal;
           font-weight: 500;
-          font-size: 14px;
+          font-size: 12px;
           line-height: 20px;
-          color: #111111;
+          color: #697077;
           text-transform: uppercase;
 
           ${props => props.new && `
             background-color: #F2F4F8;
-            padding: 9px 15px;
-            border-left: 1px solid #DDE1E6;
+            padding: 9px 11px;
             border-top: 1px solid #DDE1E6;
           `}
         }
       }
     }
 
-    tbody {
+    tbody { 
+      border-radius: 8px;
       .week {
       }
 
       tr {
         td {
           background-color: #fff;
-          border: 1px solid #DDE1E6;
           padding-left: 10px;
           padding-top: 10px;
           cursor: pointer;
           position: relative;
           width: 80px;
-          height: 58px;
+          height: 40px;
 
           .tdContainer {
             width: 100%;
@@ -230,17 +250,31 @@ const CalendarWrap = styled.div`
           }
         }
       }
+      
+      & .week:last-child {
+        & td:first-child,
+        & td:last-child {
+          border-radius: 8px;
+        }
+      }
     }
   }
   
   ${props => props.new && `
-    width: calc(100% - 48px);
+    width: calc(52% - 48px);
     height: 100px;
     background: #FFFFFF;
     box-shadow: 0px 0px 16px rgba(105, 112, 119, 0.12), 0px 8px 16px rgba(105, 112, 119, 0.16);
     border-radius: 8px;
     left: 24px;
     top: calc(100% - 86px);
+    @media(max-width: 630px) {
+      min-width: 277px
+    }
+  `}
+  ${props => props.templateCalendarStyle && `
+    top: 100%;
+    left: 0;
   `}
 `
 
@@ -295,7 +329,8 @@ const InfoInput = styled.div`
     position: absolute;
     right: 12px;
     top: 50%;
-    transform: translateY(-50%);
+    transition: .4s;
+    transform: ${props => props.arrow ? 'translateY(-50%) rotate(180deg)' : 'translateY(-50%) rotate(0deg)'};
   }
 
   input {
