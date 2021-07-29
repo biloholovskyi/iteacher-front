@@ -41,6 +41,7 @@ const WordList = styled.div`
     }
     .icon-delete {
       cursor: pointer;
+      &:hover {opacity: .8;}
     }
   }
   thead {

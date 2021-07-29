@@ -4,6 +4,7 @@ import axios from "axios";
 import WordTable from "./wordList";
 import DictionarySearchModal from "../dictionary/dictionaryModals/searchModal";
 import { DictionaryWrap, NavBar } from "./styled";
+import empty from '../../assets/media/image/dictionary_empty.svg';
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -110,10 +111,28 @@ const Dictionary = ({ user }) => {
         </NavBar>
         <main>
           {dictionaryList && (
-            <WordTable
-              dictionary={dictionaryList.results}
-              deleteWord={deleteWord}
-            />
+            <>
+              <WordTable
+                dictionary={dictionaryList.results}
+                deleteWord={deleteWord}
+              />
+              {dictionaryList.results.length === 0 && (
+                <>
+                  {search ? 
+                    <div className="empty-block">
+                      <h4>Слова "{search}" нет в вашем словаре</h4>
+                      <h6>Нажмите “Добавить слово” что бы оно тут появилось</h6>
+                    </div>
+                    : 
+                    <div className="empty-block">
+                      <img src={empty} alt="" width="360px" height="280px"/>
+                      <h3>Словарь пуст</h3>
+                      <h6>Добавьте слова в словарь</h6>
+                    </div>
+                  }
+                </>
+              )}
+            </>
           )}
         </main>
       </div>
