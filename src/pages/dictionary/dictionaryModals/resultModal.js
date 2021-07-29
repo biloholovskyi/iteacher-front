@@ -75,24 +75,26 @@ const DictionaryResultModal = ({user, close, back, lookupResult, selectedWord}) 
               </div>
             </div>
             <div className="modal-body">
-              <div className="dr-other">
-                <h4>Другие варианты перевода</h4>
-                <ul>
-                  {lookupResult.translateOptions.slice(0, numberOfTranslateOptions).map((data, key) => {
-                    return (
-                      <li key={key}>
-                        <span>{data.translate}</span>
-                        <span className="text-muted">{data.input}</span>
-                      </li>
-                    );
-                  })}
-                </ul>
-                {lookupResult.translateOptions.length > 3 &&
-                  <div className="dr-link" onClick={() => getTranslateOptions()}>
-                    {showMoreTranslateOptions ? "Свернуть" : "Показать больше вариантов"}
-                  </div>
-                }
-              </div>
+              {lookupResult.translateOptions.length > 0 &&
+                <div className="dr-other">
+                  <h4>Другие варианты перевода</h4>
+                  <ul>
+                    {lookupResult.translateOptions.slice(0, numberOfTranslateOptions).map((data, key) => {
+                      return (
+                        <li key={key}>
+                          <span>{data.translate}</span>
+                          <span className="text-muted">{data.input}</span>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                  {lookupResult.translateOptions.length > 3 &&
+                    <div className="dr-link" onClick={() => getTranslateOptions()}>
+                      {showMoreTranslateOptions ? "Свернуть" : "Показать больше вариантов"}
+                    </div>
+                  }
+                </div>
+              }
               {lookupResult.examples.length > 0 &&
                 <div className="dr-example">
                   <h4>Примеры использования</h4>
@@ -106,9 +108,11 @@ const DictionaryResultModal = ({user, close, back, lookupResult, selectedWord}) 
                       );
                     })}
                   </ul>
-                  <div className="dr-link" onClick={() => getExamples()}>
-                    {showMoreExamples ? "Свернуть" : "Показать больше вариантов"}
-                  </div>
+                  {lookupResult.examples.length > 1 &&
+                    <div className="dr-link" onClick={() => getExamples()}>
+                      {showMoreExamples ? "Свернуть" : "Показать больше вариантов"}
+                    </div>
+                  }
                 </div>
               }
             </div>
