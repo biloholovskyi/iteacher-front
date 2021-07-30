@@ -17,7 +17,7 @@ i[class*="icon-"] {
   background-position: center;
   background-repeat: no-repeat;
   vertical-align: sub;
-  transition: all 0.5s ease;
+  transition: all 0.3s ease;
 }
 .icon-sound {
   background-image: url(../src/assets/media/icon/sound.svg);
@@ -103,6 +103,7 @@ i[class*="icon-"] {
   top: 24px;
   right: 24px;
   cursor: pointer;
+  transition: all 0.3s ease;
 }
 .modal-back {
   display: block;
@@ -112,6 +113,7 @@ i[class*="icon-"] {
   width: 24px;
   height: 24px;
   cursor: pointer;
+  transition: all 0.3s ease;
 }
 .modal-back:hover,
 .modal-close:hover {
