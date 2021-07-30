@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useRef} from "react";
 import YandexApi from "../../service/yandexApi";
 import DictionaryResultModal from '../dictionary/dictionaryModals/resultModal'
 import { WordList } from "./styled";
@@ -9,16 +9,20 @@ const WordTable = ({dictionary, deleteWord}) => {
   const [lookupResult, setLookupResult] = useState(null);
   const [resultDetail, setResultDetail] = useState(false);
   const [synthesizeWords, setSynthesizeWords] = useState({});
+  const playsRef = useRef([]);
 
-  const play = async (text, language) => {
+  const play = async (text, language, playRef) => {
     let synthesize = synthesizeWords[text];
+    
     if (!synthesize)
     {
       synthesize = await YandexApi.synthesize(text, language);
       synthesizeWords[text] = synthesize;
       setSynthesizeWords(synthesizeWords);
     }
-    await new Audio(synthesize).play();
+    const audio = new Audio(synthesize)
+    audio.addEventListener('ended', () => playRef.classList.remove('disabled'));
+    await audio.play();
   };
 
   return (
@@ -42,12 +46,15 @@ const WordTable = ({dictionary, deleteWord}) => {
                   <td>
                     <i 
                       className="icon-sound"
-                      onClick={() =>
+                      ref={el => playsRef.current[key] = el} 
+                      onClick={() => {
+                        playsRef.current[key].classList.add('disabled')
                         play(
                           word.text,
-                          word.language
+                          word.language,
+                          playsRef.current[key]
                         )
-                      }
+                      }}
                     ></i>
                     <div onClick={() => {
                       setResultDetail(true)
