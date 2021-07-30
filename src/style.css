@@ -17,6 +17,7 @@ i[class*="icon-"] {
   background-position: center;
   background-repeat: no-repeat;
   vertical-align: sub;
+  transition: all 0.3s ease;
 }
 .icon-sound {
   background-image: url(../src/assets/media/icon/sound.svg);
@@ -24,6 +25,13 @@ i[class*="icon-"] {
   height: 32px;
   border-radius: 50%;
   cursor: pointer;
+}
+.icon-sound:hover {
+  opacity: .8;
+}
+.icon-sound.disabled {
+  opacity: .5;
+  pointer-events: none;
 }
 .icon-plus {
   background-image: url(../src/assets/media/icon/plus.svg);
@@ -95,6 +103,7 @@ i[class*="icon-"] {
   top: 24px;
   right: 24px;
   cursor: pointer;
+  transition: all 0.3s ease;
 }
 .modal-back {
   display: block;
@@ -104,6 +113,11 @@ i[class*="icon-"] {
   width: 24px;
   height: 24px;
   cursor: pointer;
+  transition: all 0.3s ease;
+}
+.modal-back:hover,
+.modal-close:hover {
+  opacity: .8;
 }
 
 .btn {
@@ -198,6 +212,8 @@ fieldset:disabled a.btn {
   width: 100%;
   min-height: 48px;
   padding: 12px 0px;
+  font-size: 16px;
+  font-weight: 400;
 }
 .search-input .si-canсel {
   background-image: url(../src/assets/media/icon/cancel.svg);
@@ -222,6 +238,9 @@ fieldset:disabled a.btn {
   position: relative;
   top: -2px;
 }
+.sortby .icon-sort:hover {
+  opacity: .8;
+}
 .sortby .icon-sort.isReverse {
   transform: scaleY(-1);
 }
@@ -241,3 +260,32 @@ fieldset:disabled a.btn {
   background: url(../src/assets/media/icon/arrow.svg) right no-repeat transparent;
 }
 
+.empty-block {
+  color: #697077;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 85px;
+}
+.empty-block img {
+  margin-bottom: 24px;
+}
+.empty-block h3 {
+  font-weight: 400;
+  font-size: 32px;
+  line-height: 42px;
+  margin-bottom: 16px;
+}
+.empty-block h4 {
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 32px;
+  margin-bottom: 12px;
+}
+.empty-block h6 {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 22px;
+}

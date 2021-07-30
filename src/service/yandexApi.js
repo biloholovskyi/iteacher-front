@@ -17,11 +17,24 @@ class YandexApi {
       `${yandexApiUrl}&lang=${lang}&text=${text}`
     );
 
-    return this.parse_lookup(
+    const result = await this.parse_lookup(
       yandex_response.data,
       lang.substring(0, 2),
       lang.substring(3, 5)
     );
+
+    // Преобразование, чтобы первое слово всегда было на английском языке
+    if (result.language !== "en") {
+      result.translate_language = result.language;
+      result.language = "en";
+
+      Object.entries(result.words).forEach(([, word]) => {
+        const temp = word.input;
+        word.input = word.translate;
+        word.translate = temp;
+      });
+    }
+    return result;
   };
 
   synthesize = async (text, language) => {
@@ -71,8 +84,7 @@ class YandexApi {
           });
 
         syns = syns.slice(0, -2);
-        if (!syns)
-          syns = tr.text;
+        if (!syns) syns = tr.text;
 
         if (means)
           result.translateOptions.push({

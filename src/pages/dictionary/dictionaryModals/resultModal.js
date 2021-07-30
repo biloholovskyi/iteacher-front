@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useRef} from "react";
 import { connect } from "react-redux";
 import { DetailResult } from "./styled";
 import YandexApi from "../../../service/yandexApi";
@@ -7,16 +7,21 @@ const DictionaryResultModal = ({user, close, back, lookupResult, selectedWord}) 
   const [showMoreTranslateOptions, setShowMoreTranslateOptions] = useState(false);
   const [showMoreExamples, setShowMoreExamples] = useState(false);
   const [synthesizeWords, setSynthesizeWords] = useState({});
+  const playTextRef = useRef();
+  const playTranslateRef = useRef();
 
-  const play = async (text, language) => {
+  const play = async (text, language, playRef) => {
     let synthesize = synthesizeWords[text];
+    
     if (!synthesize)
     {
       synthesize = await YandexApi.synthesize(text, language);
       synthesizeWords[text] = synthesize;
       setSynthesizeWords(synthesizeWords);
     }
-    await new Audio(synthesize).play();
+    const audio = new Audio(synthesize)
+    audio.addEventListener('ended', () => playRef.current.classList.remove('disabled'));
+    await audio.play();
   };
   
   const getTranslateOptions = () => {
@@ -28,6 +33,7 @@ const DictionaryResultModal = ({user, close, back, lookupResult, selectedWord}) 
     setShowMoreExamples(!showMoreExamples)
   }
   const numberOfExamples = showMoreExamples ? lookupResult.examples.length : 1
+
 
   return (
     <div className="modal">
@@ -50,12 +56,15 @@ const DictionaryResultModal = ({user, close, back, lookupResult, selectedWord}) 
                 </div>
                 <i
                   className="icon-sound"
-                  onClick={() =>
+                  ref={playTextRef}
+                  onClick={() => {
+                    playTextRef.current.classList.add('disabled')
                     play(
                       selectedWord.input.text,
-                      lookupResult.language
+                      lookupResult.language,
+                      playTextRef
                     )
-                  }
+                  }}
                 ></i>
               </div>
               <div className="dr-col">
@@ -65,34 +74,39 @@ const DictionaryResultModal = ({user, close, back, lookupResult, selectedWord}) 
                 </div>
                 <i
                   className="icon-sound"
-                  onClick={() =>
+                  ref={playTranslateRef}
+                  onClick={() => {
+                    playTranslateRef.current.classList.add('disabled')
                     play(
                       selectedWord.translate.text,
-                      lookupResult.translate_language
+                      lookupResult.translate_language,
+                      playTranslateRef
                     )
-                  }
+                  }}
                 ></i>
               </div>
             </div>
             <div className="modal-body">
-              <div className="dr-other">
-                <h4>Другие варианты перевода</h4>
-                <ul>
-                  {lookupResult.translateOptions.slice(0, numberOfTranslateOptions).map((data, key) => {
-                    return (
-                      <li key={key}>
-                        <span>{data.translate}</span>
-                        <span className="text-muted">{data.input}</span>
-                      </li>
-                    );
-                  })}
-                </ul>
-                {lookupResult.translateOptions.length > 3 &&
-                  <div className="dr-link" onClick={() => getTranslateOptions()}>
-                    {showMoreTranslateOptions ? "Свернуть" : "Показать больше вариантов"}
-                  </div>
-                }
-              </div>
+              {lookupResult.translateOptions.length > 0 &&
+                <div className="dr-other">
+                  <h4>Другие варианты перевода</h4>
+                  <ul>
+                    {lookupResult.translateOptions.slice(0, numberOfTranslateOptions).map((data, key) => {
+                      return (
+                        <li key={key}>
+                          <span>{data.translate}</span>
+                          <span className="text-muted">{data.input}</span>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                  {lookupResult.translateOptions.length > 3 &&
+                    <div className="dr-link" onClick={() => getTranslateOptions()}>
+                      {showMoreTranslateOptions ? "Свернуть" : "Показать больше вариантов"}
+                    </div>
+                  }
+                </div>
+              }
               {lookupResult.examples.length > 0 &&
                 <div className="dr-example">
                   <h4>Примеры использования</h4>
@@ -106,9 +120,11 @@ const DictionaryResultModal = ({user, close, back, lookupResult, selectedWord}) 
                       );
                     })}
                   </ul>
-                  <div className="dr-link" onClick={() => getExamples()}>
-                    {showMoreExamples ? "Свернуть" : "Показать больше вариантов"}
-                  </div>
+                  {lookupResult.examples.length > 1 &&
+                    <div className="dr-link" onClick={() => getExamples()}>
+                      {showMoreExamples ? "Свернуть" : "Показать больше вариантов"}
+                    </div>
+                  }
                 </div>
               }
             </div>
