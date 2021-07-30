@@ -17,6 +17,7 @@ i[class*="icon-"] {
   background-position: center;
   background-repeat: no-repeat;
   vertical-align: sub;
+  transition: all 0.5s ease;
 }
 .icon-sound {
   background-image: url(../src/assets/media/icon/sound.svg);
@@ -27,6 +28,10 @@ i[class*="icon-"] {
 }
 .icon-sound:hover {
   opacity: .8;
+}
+.icon-sound.disabled {
+  opacity: .5;
+  pointer-events: none;
 }
 .icon-plus {
   background-image: url(../src/assets/media/icon/plus.svg);
