@@ -4,7 +4,7 @@ import axios from "axios";
 import WordTable from "./wordList";
 import DictionarySearchModal from "../dictionary/dictionaryModals/searchModal";
 import { DictionaryWrap, NavBar } from "./styled";
-import empty from '../../assets/media/image/dictionary_empty.svg';
+import empty from "../../assets/media/image/dictionary_empty.svg";
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -14,8 +14,10 @@ const Dictionary = ({ user }) => {
   const [order, setOrder] = useState("");
   const [dictionaryList, setDictionaryList] = useState(null);
   const [dictionaryModal, setDictionaryModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    setIsLoading(true);
     const timeOutId = setTimeout(() => {
       getDictionary();
     }, 500);
@@ -27,6 +29,7 @@ const Dictionary = ({ user }) => {
   }, [sortBy, order]);
 
   const getDictionary = async (cursor = null, concat = false) => {
+    setIsLoading(true);
     const url = cursor
       ? cursor
       : `${apiUrl}api/translate/dictionary/user/${user.id}/?search=${search}&ordering=${order}${sortBy}`;
@@ -37,6 +40,7 @@ const Dictionary = ({ user }) => {
         response.data.results
       );
     setDictionaryList(response.data);
+    setIsLoading(false);
   };
 
   const deleteWord = async (word) => {
@@ -56,9 +60,8 @@ const Dictionary = ({ user }) => {
       await axios.post(url, data);
       getDictionary();
       setDictionaryModal(false);
-    }
-    catch (err) {
-      alert(err.response.data[0])
+    } catch (err) {
+      alert(err.response.data[0]);
     }
   };
 
@@ -116,27 +119,29 @@ const Dictionary = ({ user }) => {
                 dictionary={dictionaryList.results}
                 deleteWord={deleteWord}
               />
-              {dictionaryList.results.length === 0 && (
+              {!isLoading && dictionaryList.results.length === 0 && (
                 <>
-                  {search ? 
+                  {search ? (
                     <div className="empty-block">
                       <h4>Слова "{search}" нет в вашем словаре</h4>
                       <h6>Нажмите “Добавить слово” что бы оно тут появилось</h6>
                     </div>
-                    : 
+                  ) : (
                     <div className="empty-block">
-                      <img src={empty} alt="" width="360px" height="280px"/>
+                      <img src={empty} alt="" width="360px" height="280px" />
                       <h3>Словарь пуст</h3>
                       <h6>Добавьте слова в словарь</h6>
                     </div>
-                  }
+                  )}
                 </>
               )}
             </>
           )}
         </main>
       </div>
-      {dictionaryModal && <DictionarySearchModal close={showDictionaryModal} addWord={addWord} />}
+      {dictionaryModal && (
+        <DictionarySearchModal close={showDictionaryModal} addWord={addWord} />
+      )}
     </DictionaryWrap>
   );
 };
