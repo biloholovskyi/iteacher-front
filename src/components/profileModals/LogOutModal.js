@@ -7,7 +7,7 @@ const LogOutWrap = ({exit, close}) =>{
   return(
     <LogOutModalWrap>
       <LogOutBody>
-        <img src={closed} alt="image" className={'close'} onClick={close}/>
+        <img src={closed} alt="" className={'close'} onClick={close}/>
         <h2>Вы действительно<br/>
           хотите выйти из системы?</h2>
         <div className="buttonSection">

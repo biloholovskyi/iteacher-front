@@ -121,7 +121,7 @@ class UsersModal extends Component {
           <img onClick={this.props.closed} src={close} alt="icon" className={'closed'}/>
           <NameBlock>
             <img src={user.photo ? user.photo : ava} alt="photo" className={'photo'}/>
-            <div className="name">{user.name}</div>
+            <div className="name">{user.username}</div>
             <div className="type">{type}</div>
           </NameBlock>
           <MainInfo>

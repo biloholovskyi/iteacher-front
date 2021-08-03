@@ -13,7 +13,7 @@ const UserAvatar = ({data}) => {
     <Style.Wrapper>
       <img src={data ? data.photo ? `${server.getApi()}${data.photo.slice(1)}` : ava : null} alt="icon"/>
       <div className="info">
-        <div className="name">{data ? data.name || data.email.split('@')[0] : null}</div>
+        <div className="name">{data ? data.username || data.email.split('@')[0] : null}</div>
         {/*<div className="subs">Some text</div>*/}
       </div>
       {/*<Style.Dots/>*/}

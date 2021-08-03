@@ -13,8 +13,11 @@ import logoImg from "../../../../assets/media/icon/logo.svg";
 import burger from "../../../../assets/media/icon/burger.svg";
 import close from "../../../../assets/media/icon/close.svg";
 
+
 import ServerSettings from "../../../../service/serverSettings";
+import axiosInstance from "../../../../service/iTeacherApi";
 const server = new ServerSettings()
+
 
 // навигация
 const linksArr = [
@@ -57,17 +60,22 @@ class HeaderMain extends React.Component {
   }
 
   // logout function
-  LogOut(e) {
-    e.preventDefault();
-    if (localStorage.getItem('iteacher_login')) {
-      window.localStorage.removeItem("iteacher_login");
+  async LogOut(e) {
+    try {
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('refresh_token');
+      axiosInstance.defaults.headers['Authorization'] = null;
       window.location.assign('/');
+
       this.setState(() => {
         return {
           ...this.state,
           LogOut: true
         }
       })
+    }
+    catch (e) {
+      console.log(e);
     }
   }
 
@@ -231,7 +239,7 @@ class HeaderMain extends React.Component {
             </Link>
           )}
         </NavList>
-        <AvatarBlock avatar={userData.photo ? `${server.getApi()}${userData.photo.slice(1)}` : null}>
+        <AvatarBlock avatar={userData.photo ? userData.photo : null}>
           <div className="bell"/>
           <div className="face" onClick={this.showInfoModal}/>
           <img onClick={this.showMobileMenuLayout} className="burger" src={burger} alt="img"/>

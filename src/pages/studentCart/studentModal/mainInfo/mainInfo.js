@@ -17,7 +17,7 @@ const MainInfo = ({data}) => {
     <Style.Wrapper>
       <Style.AvatarBlock bg={data.photo ? `${server.getApi()}${data.photo.slice(1)}` : ava}>
         <div className={'photo'}/>
-        <div className="name">{data.name || data.email.split('@')[0]}</div>
+        <div className="name">{data.username || data.email.split('@')[0]}</div>
         {/*<div className="subs">Some text</div>*/}
       </Style.AvatarBlock>
 

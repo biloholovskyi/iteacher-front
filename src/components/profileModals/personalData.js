@@ -49,12 +49,12 @@ class PersonalData extends Component {
     const server = new ServerSettings();
 
     const data = new FormData();
-    data.set("name", e.target.login.value);
+    data.set("username", e.target.login.value);
     data.set("email", e.target.email.value);
     data.set("login", this.props.user.login);
     data.set("password", this.props.user.password);
     if(date) {
-      data.set('date', date)
+      data.set('birth_date', date)
     }
     // проверяем была ли изменина фотография
     let sendData = data;
@@ -92,7 +92,7 @@ class PersonalData extends Component {
 
   render() {
     const {closed} = this.props;
-    const date = this.props.user.date ? this.props.user.date.split('-') : ['', '', ''];
+    const date = this.props.user.birth_date ? this.props.user.birth_date.split('-') : ['', '', ''];
     
     return (
       <PersonalDataWrap>

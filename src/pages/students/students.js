@@ -194,7 +194,7 @@ class Students extends Component {
           } else {
             if (!studentListParse) {
               const newData = new FormData();
-              newData.set("name", this.props.user.name);
+              newData.set("username", this.props.user.username);
               newData.set("email", this.props.user.email);
               newData.set("studentList", JSON.stringify([res.data]));
 
@@ -216,7 +216,7 @@ class Students extends Component {
                 .catch(error => console.error(error))
             } else {
               const newData = new FormData();
-              newData.set("name", this.props.user.name);
+              newData.set("username", this.props.user.username);
               newData.set("email", this.props.user.email);
               newData.set("studentList", JSON.stringify([...JSON.parse(this.props.user.studentList), res.data]));
 
@@ -275,7 +275,7 @@ class Students extends Component {
             } else {
               if(!studentListParse) {
                 const newData = new FormData();
-                newData.set("name", this.props.user.name);
+                newData.set("username", this.props.user.username);
                 newData.set("email", this.props.user.email);
                 newData.set("studentList", JSON.stringify([res.data]));
 
@@ -296,7 +296,7 @@ class Students extends Component {
                   })
               } else {
                 const newData = new FormData();
-                newData.set("name", this.props.user.name);
+                newData.set("username", this.props.user.username);
                 newData.set("email", this.props.user.email);
                 newData.set("studentList", JSON.stringify([...JSON.parse(this.props.user.studentList), res.data]));
 

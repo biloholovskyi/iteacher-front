@@ -44,7 +44,7 @@ const Student = ({show, course, user}) => {
                 <img src={data.photo ? server.getApi() + data.photo.slice(1) : ava} alt="icon"/>
               </div>
               <div className="name">
-                <p className={'email'}>{data ? data.name ? data.name : data.email : null}</p>
+                <p className={'email'}>{data ? data.username ? data.username : data.email : null}</p>
               </div>
             </>
           ) : <AddButton text={'Добавить ученика'} func={show}/>

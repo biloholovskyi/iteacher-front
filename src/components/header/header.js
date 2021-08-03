@@ -18,7 +18,7 @@ import ava from '../../assets/media/icon/avatar.svg';
 import burger from '../../assets/media/icon/burger.svg';
 import close from '../../assets/media/icon/close.svg';
 
-import ServerSettings from "../../service/serverSettings";
+import axiosInstance from "../../service/iTeacherApi";
 
 export default class Header extends Component {
   constructor(props) {
@@ -39,17 +39,22 @@ export default class Header extends Component {
   }
 
   // logout function
-  LogOut(e) {
-    e.preventDefault();
-    if (localStorage.getItem('iteacher_login')) {
-      window.localStorage.removeItem("iteacher_login");
+  async LogOut(e) {
+    try {
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('refresh_token');
+      axiosInstance.defaults.headers['Authorization'] = null;
       window.location.assign('/');
+
       this.setState(() => {
         return {
           ...this.state,
           LogOut: true
         }
       })
+    }
+    catch (e) {
+      console.log(e);
     }
   }
 
@@ -236,7 +241,6 @@ export default class Header extends Component {
 
   render() {
     const {personalDataModal, infoModal, LogOutModal, changePassword, successChangePass, errorEmail, notification, showMobileMenu} = this.state;
-    const server = new ServerSettings();
     // навигация
     const nav = this.props.user.type === 'teacher' ? (
       <>
@@ -266,7 +270,7 @@ export default class Header extends Component {
           </NavList>
           <AvatarBlock>
             <img onClick={this.showNotificationModal} className="bell" src={bell} alt="img"/>
-            {this.props.user.type && <img onClick={this.showInfoModal} className="ava" src={this.props.user.photo ?  `${server.getApi()}${this.props.user.photo.slice(1)}` : ava} alt="img"/>}
+            {this.props.user.type && <img onClick={this.showInfoModal} className="ava" src={this.props.user.photo ?  this.props.user.photo : ava} alt="img"/>}
             <img onClick={this.showMobileMenuLayout} className="burger" src={burger} alt="img"/>
           </AvatarBlock>
           {/*profile modal*/}

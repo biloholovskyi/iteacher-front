@@ -34,7 +34,7 @@ class TabChat extends Component {
   addItem(body) {
     const newItem ={
       label: body,
-      name: this.props.user.name,
+      name: this.props.user.username,
       ava: this.props.user.photo
     }
 

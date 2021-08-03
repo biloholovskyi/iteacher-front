@@ -25,7 +25,7 @@ export default class InputName extends Component {
     return (
       <InputWrap className={'name'}>
         <label className={'label active'} >Имя пользователя</label>
-        <input className={'input'} name={'login'}  type="text" defaultValue={this.props.user.name}  onChange={(e) => this.changeInput(e)}/>
+        <input className={'input'} name={'login'}  type="text" defaultValue={this.props.user.username}  onChange={(e) => this.changeInput(e)}/>
       </InputWrap>
     )
   }

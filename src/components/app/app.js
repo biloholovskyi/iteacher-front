@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
 import {Route, Switch} from "react-router";
 import {connect} from "react-redux";
-import axios from "axios";
+
 
 import {
   getAllUsers,
@@ -18,7 +18,7 @@ import Header from "../header/header";
 import AdminHeader from "../header/adminHeader/adminHeader";
 import TopAlertLine from "../alerts/topAlertLine/topAlertLine";
 
-import ServerSettings from "../../service/serverSettings";
+import axiosInstance from "../../service/iTeacherApi";
 // данные для роутинга
 import {routingData} from "./data";
 
@@ -44,52 +44,31 @@ const App = ({loginUser, user, topAlert}) => {
 
   // проверяем наличие токена пользователя
   const checkToken = async () => {
-    const token = localStorage.getItem('iteacher_login');
-
+    const token = localStorage.getItem('access_token');
     if (token) {
-      // если токен есть надо проверить правильный ли он
-      const statusToken = JSON.parse(token).email.toLowerCase();
-      // если токен не верный
-      if (!statusToken) {
-        // удаляем не верный токен
-        localStorage.removeItem('iteacher_login');
-        setLoading(false)
-        return
+      axiosInstance.defaults.headers["Authorization"] = "JWT " + token;
+
+      try {
+        const userResponse = await axiosInstance.get("/users/");
+        const userData = userResponse.data;
+
+        if (userData.type === "student") {
+          const coursesResponse = await axiosInstance.get(
+            `/courses/student/${userData.id}/`
+          );
+          userData.courses = coursesResponse.data;
+        }
+
+        loginUser(userData);
       }
-      // если токен верен, нужно получить данные с сервера
-      axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
-      axios.defaults.xsrfCookieName = 'csrftoken';
-
-      const server = new ServerSettings();
-
-      await axios.get(`${server.getApi()}api/users/${statusToken}/`)
-        .then(res => {
-          // если это студент получаем его курсы отдельно
-          if(res.data.type === 'student') {
-            const api = new ServerSettings();
-            const studentData = res.data;
-
-            axios.get(`${api.getApi()}api/courses/student/${res.data.id}/`)
-              .then(res => {
-                studentData.courses = res.data;
-              })
-              .then(() => {
-                loginUser(studentData);
-                setLoading(false)
-              })
-              .catch(error => console.error(error))
-          } else {
-            loginUser(res.data);
-            setLoading(false)
-          }
-        }).catch(error => {
-          console.error(error)
-          localStorage.removeItem('iteacher_login');
-          setLoading(false)
-        });
-    } else {
-      setLoading(false)
+      catch (error) {
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('refresh_token');
+        axiosInstance.defaults.headers['Authorization'] = null;
+        // window.location.assign('/'); 
+      }
     }
+    setLoading(false);
   }
 
   // определяем на странице админки мы или нет

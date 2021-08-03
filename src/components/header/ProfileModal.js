@@ -9,14 +9,11 @@ import unlogin from '../../assets/media/icon/unlogin.svg';
 
 import {PersonalData, Photo, ProfileModalWrap, Name, ChangePassword, Exit, Email} from './headerStyle';
 
-import ServerSettings from "../../service/serverSettings";
-const server = new ServerSettings();
-
 const ProfileModal = ({logOut, user, changePass, personalDataModal}) => {
   return(
     <ProfileModalWrap className={'infoModal'}>
-      <Photo className="ava" src={user.photo ? `${server.getApi()}${user.photo.slice(1)}` : ava} alt="img"/>
-      <Name>{user.name}</Name>
+      <Photo className="ava" src={user.photo ? user.photo : ava} alt="img"/>
+      <Name>{user.username}</Name>
       <Email>{user.email}</Email>
 
       <PricingBlock/>

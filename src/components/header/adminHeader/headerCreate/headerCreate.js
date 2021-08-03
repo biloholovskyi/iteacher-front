@@ -7,7 +7,7 @@ import {setTypeAdminHead, setTemplate, getAllTemplates} from "../../../../action
 
 import {IconArrow, HeaderInput, ChangeTime} from './headerCreateStyled';
 import axios from "axios";
-import ServerSettings from "../../../../service/serverSettings";
+import axiosInstance from "../../../../service/iTeacherApi";
 
 const HeaderCreate = (props) => {
   const history = useHistory();
@@ -75,11 +75,7 @@ const HeaderCreate = (props) => {
     getAllTemplates(newTemplatesList);
 
     // обновляем сервер
-    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
-    axios.defaults.xsrfCookieName = 'csrftoken';
-
-    const serverSettings = new ServerSettings();
-    await axios.put(`${serverSettings.getApi()}api/template/${newTemplate.id}/update/`, newTemplate)
+    axiosInstance.put(`/template/${newTemplate.id}/update/`, newTemplate)
       .catch(error => console.error(error));
   }
 
@@ -118,12 +114,8 @@ const HeaderCreate = (props) => {
     getAllTemplates(newTemplatesList);
 
     // обновляем сервер
-    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
-    axios.defaults.xsrfCookieName = 'csrftoken';
-
-    const serverSettings = new ServerSettings();
-    await axios.put(`${serverSettings.getApi()}api/lesson/${newLesson.id}/update/`, newLesson)
-      .catch(error => console.error(error));
+    axiosInstance.put(`/lesson/${newLesson.id}/update/`, newLesson)
+        .catch(error => console.error(error));
   }
 
   return (

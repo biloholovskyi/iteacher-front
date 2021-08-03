@@ -14,7 +14,7 @@ const Registration = () => {
       <div className={'container'}>
         <SignInModalWrapp>
           <SignInModal>
-            <img src={logo} alt="image" className={'logo'}/>
+            <img src={logo} alt="" className={'logo'}/>
             <h4>Регистрация</h4>
             <TabsBody>
               <RegisterTab/>

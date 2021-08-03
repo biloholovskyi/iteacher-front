@@ -13,7 +13,7 @@ import search from "../../assets/media/icon/search.svg";
 import close from '../../assets/media/icon/close.svg';
 import filter from "../../assets/media/icon/filter.svg";
 
-import ServerSettings from "../../service/serverSettings";
+import axiosInstance from "../../service/iTeacherApi";
 
 const CalendarSchedule = ({user}) => {
 
@@ -30,11 +30,7 @@ const CalendarSchedule = ({user}) => {
 
   // получаем все курсы
   const getAllCourses = async () => {
-    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
-    axios.defaults.xsrfCookieName = 'csrftoken';
-
-    const serverSettings = new ServerSettings();
-    await axios.get(`${serverSettings.getApi()}api/courses/`)
+    axiosInstance.get("/courses/")
       .then(res => {
         setCourses(res.data);
       })
@@ -43,11 +39,7 @@ const CalendarSchedule = ({user}) => {
 
   // получаем все события с сервера
   const setAllSchedules = async () => {
-    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
-    axios.defaults.xsrfCookieName = 'csrftoken';
-
-    const serverSettings = new ServerSettings();
-    await axios.get(`${serverSettings.getApi()}api/schedules/`)
+    axiosInstance.get("/schedules/")
       .then(res => {
         // отбираем только события текущего пользователя
         if (user.type === 'teacher') {
@@ -61,11 +53,7 @@ const CalendarSchedule = ({user}) => {
   // получаем данные студентов
   const getStudentData = async () => {
     const needUser = [];
-    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
-    axios.defaults.xsrfCookieName = 'csrftoken';
-
-    const server = new ServerSettings();
-    await axios.get(`${server.getApi()}api/users/`)
+    axiosInstance.get("/users/")
       .then(res => {
         user.courses.filter(course => course.status === 'active')
           .forEach(courseObject => {

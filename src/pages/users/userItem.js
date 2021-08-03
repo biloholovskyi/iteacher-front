@@ -36,7 +36,7 @@ export default class UserItem extends Component {
         <Info>
           <img src={data.photo} alt="icon"/>
           <div className="nameBlock">
-            <div className="name">{data.name}</div>
+            <div className="name">{data.username}</div>
             <div className="user">Ученик</div>
           </div>
         </Info>
