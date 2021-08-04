@@ -22,8 +22,14 @@ class CourseTabs extends Component {
     this.setTemplates();
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    if(JSON.stringify(this.props.templates) !== JSON.stringify(this.state.courses)) {
+  // componentDidUpdate(prevProps, prevState, snapshot) {
+  //   if(JSON.stringify(this.props.templates) !== JSON.stringify(this.state.courses)) {
+  //     this.setTemplates();
+  //   }
+  // }
+
+  componentDidUpdate(prevProps, prevState) {
+    if(JSON.stringify(prevProps.templates) !== JSON.stringify(prevState.courses)) {
       this.setTemplates();
     }
   }
