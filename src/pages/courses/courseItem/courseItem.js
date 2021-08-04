@@ -14,8 +14,8 @@ const CourseItem = ({course, user}) => {
   // близжайший урок
   const [event, setEvent] = useState(null)
 
-  console.log(user)
-  console.log(course)
+  // console.log(user)
+  // console.log(course)
 
   // задаем близжайший урок
   useEffect(() => {

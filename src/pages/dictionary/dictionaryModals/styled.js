@@ -35,7 +35,7 @@ const ListResult = styled.div`
 const DetailResult = styled.div`
   .modal-body {
     overflow-y: auto;
-    max-height: 540px;
+    max-height: 530px;
   }
   h4 {
     margin-bottom: 8px;

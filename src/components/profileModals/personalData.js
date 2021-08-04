@@ -46,8 +46,6 @@ class PersonalData extends Component {
     const data = new FormData();
     data.set("username", e.target.login.value);
     data.set("email", e.target.email.value);
-    data.set("login", this.props.user.login);
-    data.set("password", this.props.user.password);
     if(date) {
       data.set('birth_date', date)
     }
