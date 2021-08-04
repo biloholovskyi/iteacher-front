@@ -14,9 +14,7 @@ import burger from "../../../../assets/media/icon/burger.svg";
 import close from "../../../../assets/media/icon/close.svg";
 
 
-import ServerSettings from "../../../../service/serverSettings";
 import axiosInstance from "../../../../service/iTeacherApi";
-const server = new ServerSettings()
 
 
 // навигация
@@ -242,12 +240,12 @@ class HeaderMain extends React.Component {
         <AvatarBlock avatar={userData.photo ? userData.photo : null}>
           <div className="bell"/>
           <div className="face" onClick={this.showInfoModal}/>
-          <img onClick={this.showMobileMenuLayout} className="burger" src={burger} alt="img"/>
+          <img onClick={this.showMobileMenuLayout} className="burger" src={burger} alt=""/>
         </AvatarBlock>
         {
           showMobileMenu && (
             <MobileWrapOverylay>
-              <img onClick={this.closeMobileMenu} src={close} className={'close'} alt="image"/>
+              <img onClick={this.closeMobileMenu} src={close} className={'close'} alt=""/>
               <MobileWrap>
                 <NavList onClick={this.closeMobileMenu}>
                   {linksArr.map((item, k) =>

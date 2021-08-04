@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from "react";
-import axios from "axios";
 
 import AdminModalTask from "../../adminModalTask/adminModalTask";
 import MainInput from "../../../inputs/mainInput/mainInput";
@@ -9,7 +8,7 @@ import SimpleTextArea from "../../../inputs/simpleTextArea/simpleTextArea";
 import * as Style from "../sentenceOfWords/style";
 import {Form} from '../tf/style'
 
-import ServerSettings from "../../../../service/serverSettings";
+import axiosInstance from "../../../../service/iTeacherApi";
 
 const TransferWords = ({
                          edit,
@@ -65,12 +64,7 @@ const TransferWords = ({
       task_type: 'TRANSFER_WORDS',
     }
 
-    // отправляем его на сервер
-    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
-    axios.defaults.xsrfCookieName = 'csrftoken';
-
-    const serverSettings = new ServerSettings();
-    await axios.post(`${serverSettings.getApi()}api/tasks/`, task)
+    await axiosInstance.post(`/tasks/`, task)
       .then(res => {
         // обновляем данные выбранной секции
         update(res.data, indexLesson, indexSection);
@@ -93,12 +87,7 @@ const TransferWords = ({
     // обновляем текущую секцию
     update(task, indexLesson, indexSection, true, indexTask);
 
-    // обновляем сервер
-    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
-    axios.defaults.xsrfCookieName = 'csrftoken';
-
-    const serverSettings = new ServerSettings();
-    await axios.put(`${serverSettings.getApi()}api/tasks/${taskData.id}/update/`, task)
+    await axiosInstance.put(`/tasks/${taskData.id}/update/`, task)
       .then(res => {
         close()
       })

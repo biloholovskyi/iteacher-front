@@ -1,4 +1,4 @@
-import React, {Component, useEffect} from "react";
+import React, {Component} from "react";
 
 import CoursesList from './coursesList/coursesList'
 import StudentsList from "./studentsList/studentsList";
@@ -20,8 +20,8 @@ import close from "../../assets/media/icon/close.svg";
 import photo from "../../assets/media/icon/avatar.png";
 import ava from "../../assets/media/icon/avatar.svg";
 import arrow from '../../assets/media/icon/arrow-modal.svg';
-import axios from "axios";
-import ServerSettings from "../../service/serverSettings";
+
+import axiosInstance from "../../service/iTeacherApi";
 
 class UsersModal extends Component {
   constructor(props) {
@@ -53,12 +53,7 @@ class UsersModal extends Component {
       // получаем студента
       const student = course.student;
 
-      axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
-      axios.defaults.xsrfCookieName = 'csrftoken';
-
-      const server = new ServerSettings();
-
-      axios.get(`${server.getApi()}api/users/${student}/`)
+      axiosInstance.get(`/users/${student}/`)
         .then(res => {
           if(this.state.students.find(s => parseInt(res.data.id) === parseInt(s.id)) === undefined) {
             this.setState({students: [...this.state.students, res.data]});
@@ -120,7 +115,7 @@ class UsersModal extends Component {
         <UserModal id={user.id}>
           <img onClick={this.props.closed} src={close} alt="icon" className={'closed'}/>
           <NameBlock>
-            <img src={user.photo ? user.photo : ava} alt="photo" className={'photo'}/>
+            <img src={user.photo ? user.photo : ava} alt="" className={'photo'}/>
             <div className="name">{user.username}</div>
             <div className="type">{type}</div>
           </NameBlock>

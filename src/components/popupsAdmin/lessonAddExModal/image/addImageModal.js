@@ -1,6 +1,5 @@
 import React, {Component} from "react";
 import Dropzone from 'react-dropzone';
-import axios from "axios";
 
 import InputText from "../../../inputs/inputsAdmin/inputText/inputText";
 import Button from "../../../buttons/button/button";
@@ -10,7 +9,8 @@ import {TextModalBody, TextModalOverlay, ImageZone} from './styled';
 import closed from "../../../../assets/media/icon/close.svg";
 import arrow from '../../../../assets/media/icon/arrow-left.svg';
 
-import ServerSettings from "../../../../service/serverSettings";
+import axiosInstance from "../../../../service/iTeacherApi";
+
 
 export default class AddImageModal extends Component {
   constructor(props) {
@@ -78,13 +78,7 @@ export default class AddImageModal extends Component {
       task_type: 'PHOTO',
     }
 
-    // отправляем его на сервер
-    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
-    axios.defaults.xsrfCookieName = 'csrftoken';
-
-    const serverSettings = new ServerSettings();
-
-    await axios.post(`${serverSettings.getApi()}api/tasks/`, data)
+    await axiosInstance.post(`/tasks/`, data)
       .then(res => {
         console.log(res);
         // обновляем данные выбранной секции
@@ -110,10 +104,6 @@ export default class AddImageModal extends Component {
 
     this.props.update(newTask, indexLesson, indexSection, true, indexTask);
 
-    // обновляем сервер
-    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
-    axios.defaults.xsrfCookieName = 'csrftoken';
-
     // данные для сервера
     const data = new FormData();
     data.set("task_type", "PHOTO");
@@ -123,8 +113,7 @@ export default class AddImageModal extends Component {
       data.set("file", file);
     }
 
-    const serverSettings = new ServerSettings();
-    await axios.put(`${serverSettings.getApi()}api/tasks/${newTask.id}/update/`, data)
+    await axiosInstance.put(`/tasks/${newTask.id}/update/`, data)
       .then(res => {
         close()
       })

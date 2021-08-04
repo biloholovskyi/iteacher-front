@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import {connect} from "react-redux";
-import axios from "axios";
 
 import AddEventModal from "./addEventModal/addEventModal";
 import List from "./list/list";
@@ -10,7 +9,7 @@ import {ScheduleWrap, Title, AddCourse, Caption} from './styled';
 
 import plus from "../../assets/media/icon/plusW.svg";
 
-import ServerSettings from "../../service/serverSettings";
+import axiosInstance from "../../service/iTeacherApi";
 
 const Schedules = ({teacher, user}) => {
   const [EventModal, setEventMModal] = useState(false);
@@ -26,11 +25,7 @@ const Schedules = ({teacher, user}) => {
 
   // получаем все курсы (костыль на время для студента)
   const getAllCourses = async () => {
-    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
-    axios.defaults.xsrfCookieName = 'csrftoken';
-
-    const serverSettings = new ServerSettings();
-    await axios.get(`${serverSettings.getApi()}api/courses/`)
+    await axiosInstance.get(`/courses/`)
       .then(res => {
         setCourses(res.data);
       })
@@ -39,11 +34,7 @@ const Schedules = ({teacher, user}) => {
 
   // получаем все события с сервера
   const setAllSchedules = async () => {
-    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
-    axios.defaults.xsrfCookieName = 'csrftoken';
-
-    const serverSettings = new ServerSettings();
-    await axios.get(`${serverSettings.getApi()}api/schedules/`)
+    await axiosInstance.get(`/schedules/`)
       .then(res => {
         // отбираем только события текущего пользователя
         // если это преподаватель
@@ -69,11 +60,7 @@ const Schedules = ({teacher, user}) => {
   // получаем данные студентов
   const getStudentData = async () => {
     const needUser = [];
-    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
-    axios.defaults.xsrfCookieName = 'csrftoken';
-
-    const server = new ServerSettings();
-    await axios.get(`${server.getApi()}api/users/`)
+    await axiosInstance.get(`/users/`)
       .then(res => {
         user.courses.filter(course => course.status === 'active')
           .forEach(courseObject => {

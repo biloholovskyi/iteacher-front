@@ -10,7 +10,6 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
 import {Redirect} from "react-router-dom";
-import axios from "axios";
 
 import {loginUser, setTopAlertText} from "../../actions";
 
@@ -24,7 +23,7 @@ import CaptionBlock from './captionBlock/captionBlock';
 
 import * as Style from './styled'
 
-import ServerSettings from "../../service/serverSettings";
+import axiosInstance from "../../service/iTeacherApi";
 
 class CourseTemplate extends Component {
   constructor(props) {
@@ -140,12 +139,7 @@ class CourseTemplate extends Component {
 
   // создание учениника
   createNewStudent = async (email) => {
-    // проверяем есть ли пользователеь с таким емейлом уже
-    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
-    axios.defaults.xsrfCookieName = 'csrftoken';
-
-    const server = new ServerSettings();
-    await axios.get(`${server.getApi()}api/users/${email.toLowerCase()}/`)
+    await axiosInstance.get(`/users/${email.toLowerCase()}/`)
       .then(res => {
         // если есть проверяем тип пользователя
         if (res.data.type === 'student') {
@@ -159,10 +153,10 @@ class CourseTemplate extends Component {
           delete updateCourse.id;
           delete updateCourse.teacher;
 
-          axios.put(`${server.getApi()}api/courses/${this.props.courseId}/update/`, updateCourse)
+          axiosInstance.put(`/courses/${this.props.courseId}/update/`, updateCourse)
             .then((res) => {
               // обновляем данные пользователя в сторе
-              axios.get(`${server.getApi()}api/users/${this.props.user.id}/`, {
+              axiosInstance.get(`/users/${this.props.user.id}/`, {
                 validateStatus: (status) => {
                   return true; // I'm always returning true, you may want to do it depending on the status received
                 },
@@ -204,7 +198,7 @@ class CourseTemplate extends Component {
         data.set('password', password);
         data.set('type', 'student')
 
-        axios.post(`${server.getApi()}api/users/`, data)
+        axiosInstance.post(`/users/`, data)
           .then(res => {
             // обновляем курс и подключаем к курсу студента
             let updateCourse = {
@@ -216,16 +210,16 @@ class CourseTemplate extends Component {
             delete updateCourse.teacher;
 
             // отправляем письмо
-            axios.get(`${server.getApi()}api/user/email/${res.data.id}/`)
+            axiosInstance.get(`/user/email/${res.data.id}/`)
               .catch(error => {
                 console.error(error);
               });
 
 
-            axios.put(`${server.getApi()}api/courses/${this.props.courseId}/update/`, updateCourse)
+              axiosInstance.put(`/courses/${this.props.courseId}/update/`, updateCourse)
               .then((res) => {
                 // обновляем данные пользователя в сторе
-                axios.get(`${server.getApi()}api/users/${this.props.user.id}/`, {
+                axiosInstance.get(`/users/${this.props.user.id}/`, {
                   validateStatus: (status) => {
                     return true; // I'm always returning true, you may want to do it depending on the status received
                   },
@@ -253,9 +247,6 @@ class CourseTemplate extends Component {
 
   // активировтаь курс
   openActiveSidebar = async () => {
-    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
-    axios.defaults.xsrfCookieName = 'csrftoken';
-
     // обновляем курс и подключаем к курсу студента
     let updateCourse = {
       name: this.state.course.name,
@@ -265,11 +256,10 @@ class CourseTemplate extends Component {
       status: 'active'
     }
 
-    const server = new ServerSettings();
-    await axios.put(`${server.getApi()}api/courses/${this.state.course.id}/update/`, updateCourse)
+    await axiosInstance.put(`/courses/${this.state.course.id}/update/`, updateCourse)
       .then((res) => {
         // обновляем данные пользователя в сторе
-        axios.get(`${server.getApi()}api/users/${this.props.user.id}/`, {
+        axiosInstance.get(`/users/${this.props.user.id}/`, {
           validateStatus: (status) => {
             return true; // I'm always returning true, you may want to do it depending on the status received
           },

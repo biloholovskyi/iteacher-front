@@ -1,5 +1,4 @@
 import React, {Component} from "react";
-import axios from "axios";
 
 import InputText from "../../../inputs/inputsAdmin/inputText/inputText";
 import Button from "../../../buttons/button/button";
@@ -9,7 +8,7 @@ import {TextModalBody, TextModalOverlay} from './styled';
 import closed from "../../../../assets/media/icon/close.svg";
 import arrow from '../../../../assets/media/icon/arrow-left.svg';
 
-import ServerSettings from "../../../../service/serverSettings";
+import axiosInstance from "../../../../service/iTeacherApi";
 
 export default class VideoModal extends Component {
   constructor(props) {
@@ -64,13 +63,8 @@ export default class VideoModal extends Component {
       link: this.state.link,
       task_type: 'VIDEO',
     }
-
-    // отправляем его на сервер
-    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
-    axios.defaults.xsrfCookieName = 'csrftoken';
-
-    const serverSettings = new ServerSettings();
-    await axios.post(`${serverSettings.getApi()}api/tasks/`, task)
+    
+    await axiosInstance.post(`/tasks/`, task)
       .then(res => {
         // обновляем данные выбранной секции
         this.props.update(res.data, indexLesson, indexSection);
@@ -94,12 +88,7 @@ export default class VideoModal extends Component {
 
     this.props.update(newTask, indexLesson, indexSection, true, indexTask);
 
-    // обновляем сервер
-    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
-    axios.defaults.xsrfCookieName = 'csrftoken';
-
-    const serverSettings = new ServerSettings();
-    await axios.put(`${serverSettings.getApi()}api/tasks/${newTask.id}/update/`, newTask)
+    await axiosInstance.put(`/tasks/${newTask.id}/update/`, newTask)
       .then(res => {
         close()
       })

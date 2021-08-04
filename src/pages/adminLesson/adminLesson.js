@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
-import axios from "axios";
 
 import {setTemplate, getAllTemplates, setActiveSection, setTypeAdminHead} from "../../actions";
 
@@ -27,7 +26,7 @@ import RecordAudio from "../../components/popupsAdmin/lessonAddExModal/recordAud
 
 import {LessonWrap, CleanPlan} from './adminLessonStyled';
 
-import ServerSettings from "../../service/serverSettings";
+import axiosInstance from "../../service/iTeacherApi";
 
 export async function addLessonPart(lessonID, data, selectTemplate, list, setTemplate, setTemplates) {
   // объект новой секции
@@ -40,12 +39,8 @@ export async function addLessonPart(lessonID, data, selectTemplate, list, setTem
   // создать новый объект шаблона
   // получаем выбранный урок
   const currentLesson = selectTemplate.lesson.find(l => l.id.toString() === lessonID.toString());
-  // сохраняем на сервере новую секцию
-  axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
-  axios.defaults.xsrfCookieName = 'csrftoken';
-
-  const serverSettings = new ServerSettings();
-  await axios.post(`${serverSettings.getApi()}api/section/`, newSection)
+ 
+  await axiosInstance.post(`/section/`, newSection)
     .then(res => {
       // обновить запись выбраного шаблона в редаксе
       // получаем индекс нужного урока
@@ -148,11 +143,7 @@ class AdminLesson extends Component {
 
   // грузим данные шаблонов
   getTemplates = async () => {
-    const server = new ServerSettings()
-    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
-    axios.defaults.xsrfCookieName = 'csrftoken';
-
-    await axios.get(`${server.getApi()}api/template/`)
+    await axiosInstance.get(`/template/`)
       .then(res => {
         this.props.getAllTemplates(res.data);
       }).catch(error => console.log(error));

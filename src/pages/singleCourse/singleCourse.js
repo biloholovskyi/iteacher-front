@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {Link, Redirect} from "react-router-dom";
 import {connect} from "react-redux";
-import axios from "axios";
 
 import {loginUser, setActivateCourse, getAllTemplates, setStudentToCourse} from "../../actions";
 
@@ -21,7 +20,7 @@ import {
 import arrow from '../../assets/media/icon/arrow-left.svg';
 import close from '../../assets/media/icon/close.svg';
 
-import ServerSettings from "../../service/serverSettings";
+import axiosInstance from "../../service/iTeacherApi";
 
 class SingleCourse extends Component {
   constructor(props) {
@@ -41,7 +40,6 @@ class SingleCourse extends Component {
       creating: false
     }
     document.body.addEventListener('click', (e) => this.closeBody(e));
-    this.serverSettings = new ServerSettings();
   }
 
   componentDidMount() {
@@ -58,11 +56,7 @@ class SingleCourse extends Component {
   // если их нету закачиваем их заного
   checkTemplateInRedux = async () => {
     if (!this.props.templates || this.props.templates.length < 1) {
-      // если их нету
-      axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
-      axios.defaults.xsrfCookieName = 'csrftoken';
-
-      await axios.get(`${this.serverSettings.getApi()}api/template/`)
+      await axiosInstance.get(`/template/`)
         .then(res => {
           this.props.getAllTemplates(res.data);
         }).catch(error => console.log(error));
@@ -187,11 +181,7 @@ class SingleCourse extends Component {
     delete newCourse.price;
     delete newCourse.id;
 
-    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
-    axios.defaults.xsrfCookieName = 'csrftoken';
-
-    const server = new ServerSettings();
-    await axios.post(`${server.getApi()}api/courses/`, data)
+    await axiosInstance.post(`/courses/`, data)
       .then(res => {
         // обновляем данные пользователя в сторе
         const oldDataUser = this.props.user;

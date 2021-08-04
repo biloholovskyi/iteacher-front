@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react';
 import {connect} from "react-redux";
-import axios from "axios";
 
 import {setTypeAdminHead, getAllTemplates} from "../../actions";
 
@@ -20,9 +19,8 @@ import {
   SortSelect,
 } from './adminCoursesListStyled';
 
-import ServerSettings from "../../service/serverSettings";
+import axiosInstance from "../../service/iTeacherApi";
 
-const server = new ServerSettings();
 
 const AdminCoursesList = (props) => {
   const [templatesListData, setTemplatesListData] = useState([]);
@@ -37,10 +35,7 @@ const AdminCoursesList = (props) => {
   }, [props.templates])
 
   const getTemplates = async () => {
-    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
-    axios.defaults.xsrfCookieName = 'csrftoken';
-
-    await axios.get(`${server.getApi()}api/template/`)
+    await axiosInstance.get(`/template/`)
       .then(res => {
         console.log(res.data)
         getAllTemplates(res.data);

@@ -2,19 +2,16 @@ import React from 'react';
 import {connect} from "react-redux";
 
 import { ImageWrap } from './mediaImgStyled';
-
-import ServerSettings from "../../../service/serverSettings";
 import {bindReporter} from "web-vitals/dist/modules/lib/bindReporter";
-const server = new ServerSettings();
 
 const MediaImg = ({imageData, user}) => {
 
   return (
     <ImageWrap>
       <img
-        src={user.type === 'admin' ? imageData.file : `${server.getApi()}${imageData.file.slice(1)}`}
+        src={user.type === 'admin' ? imageData.file : imageData.file}
         className="image__container"
-        alt={'image'}
+        alt=""
       />
 
       <div className="image__wrap image__wrap_1">

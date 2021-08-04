@@ -1,6 +1,5 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
-import axios from "axios";
 
 import {getAllTemplates} from "../../actions";
 
@@ -9,9 +8,7 @@ import MyTemplates from "./MyTabs";
 
 import {TabsHead, TabsHeadNav, TabsBody} from "./addCoursesStyle";
 
-import ServerSettings from "../../service/serverSettings";
-
-const server = new ServerSettings();
+import axiosInstance from "../../service/iTeacherApi";
 
 class CourseTabs extends Component {
   constructor(props) {
@@ -44,10 +41,7 @@ class CourseTabs extends Component {
   }
 
   getTemplates = async () => {
-    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
-    axios.defaults.xsrfCookieName = 'csrftoken';
-
-    await axios.get(`${server.getApi()}api/template/`)
+    await axiosInstance.get(`/template/`)
       .then(res => {
         getAllTemplates(res.data);
         this.setState({courses: res.data});

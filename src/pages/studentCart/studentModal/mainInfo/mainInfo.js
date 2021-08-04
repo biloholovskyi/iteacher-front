@@ -1,21 +1,13 @@
 import React from "react";
 
 import MainInput from "../../../../components/inputs/mainInput/mainInput";
-import MainButton from "../../../../components/buttons/mainButton/mainButton";
-
 import * as Style from './styled'
-
 import ava from "../../../../assets/media/icon/avatar.svg";
 
-import ServerSettings from "../../../../service/serverSettings";
-
-const server = new ServerSettings();
-
 const MainInfo = ({data}) => {
-
   return (
     <Style.Wrapper>
-      <Style.AvatarBlock bg={data.photo ? `${server.getApi()}${data.photo.slice(1)}` : ava}>
+      <Style.AvatarBlock bg={data.photo ? data.photo : ava}>
         <div className={'photo'}/>
         <div className="name">{data.username || data.email.split('@')[0]}</div>
         {/*<div className="subs">Some text</div>*/}

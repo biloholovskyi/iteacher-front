@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
-import axios from "axios";
 
 import {loginUser} from "../../actions";
 
@@ -27,7 +26,7 @@ import arrow from "../../assets/media/icon/arrow.svg";
 import sort from "../../assets/media/icon/sort.svg";
 import filter from "../../assets/media/icon/filter.svg";
 
-import ServerSettings from "../../service/serverSettings";
+import axiosInstance from "../../service/iTeacherApi";
 
 class Students extends Component {
   constructor(props) {
@@ -180,8 +179,7 @@ class Students extends Component {
 
     const email = e.target.email.value;
     // проверяем есть ли пользователеь с таким емейлом уже
-    const server = new ServerSettings();
-    await axios.get(`${server.getApi()}api/users/${email.toLowerCase()}/`)
+    await axiosInstance.get(`/users/${email.toLowerCase()}/`)
       .then(res => {
         // если есть проверяем тип пользователя
         if (res.data.type === 'student') {
@@ -198,10 +196,10 @@ class Students extends Component {
               newData.set("email", this.props.user.email);
               newData.set("studentList", JSON.stringify([res.data]));
 
-              axios.put(`${server.getApi()}api/users/${this.props.user.id}/update/`, newData)
+              axiosInstance.put(`/users/${this.props.user.id}/update/`, newData)
                 .then((res) => {
                   // обновляем данные пользователя в сторе
-                  axios.get(`${server.getApi()}api/users/${this.props.user.id}/`, {
+                  axiosInstance.get(`/users/${this.props.user.id}/`, {
                     validateStatus: (status) => {
                       return true; // I'm always returning true, you may want to do it depending on the status received
                     },
@@ -220,10 +218,10 @@ class Students extends Component {
               newData.set("email", this.props.user.email);
               newData.set("studentList", JSON.stringify([...JSON.parse(this.props.user.studentList), res.data]));
 
-              axios.put(`${server.getApi()}api/users/${this.props.user.id}/update/`, newData)
+              axiosInstance.put(`/users/${this.props.user.id}/update/`, newData)
                 .then((res) => {
                   // обновляем данные пользователя в сторе
-                  axios.get(`${server.getApi()}api/users/${this.props.user.id}/`, {
+                  axiosInstance.get(`/users/${this.props.user.id}/`, {
                     validateStatus: (status) => {
                       return true; // I'm always returning true, you may want to do it depending on the status received
                     },
@@ -259,10 +257,10 @@ class Students extends Component {
         data.set('password', password);
         data.set('type', 'student')
 
-        axios.post(`${server.getApi()}api/users/`, data)
+        axiosInstance.post(`/users/`, data)
           .then(res => {
             // отправляем письмо
-            axios.get(`${server.getApi()}api/user/email/${res.data.id}/`)
+            axiosInstance.get(`/user/email/${res.data.id}/`)
               .catch(error => {
                 console.error(error);
               });
@@ -279,10 +277,10 @@ class Students extends Component {
                 newData.set("email", this.props.user.email);
                 newData.set("studentList", JSON.stringify([res.data]));
 
-                axios.put(`${server.getApi()}api/users/${this.props.user.id}/update/`, newData)
+                axiosInstance.put(`/users/${this.props.user.id}/update/`, newData)
                   .then((res) => {
                     // обновляем данные пользователя в сторе
-                    axios.get(`${server.getApi()}api/users/${this.props.user.id}/`, {
+                    axiosInstance.get(`/users/${this.props.user.id}/`, {
                       validateStatus: (status) => {
                         return true; // I'm always returning true, you may want to do it depending on the status received
                       },
@@ -300,10 +298,10 @@ class Students extends Component {
                 newData.set("email", this.props.user.email);
                 newData.set("studentList", JSON.stringify([...JSON.parse(this.props.user.studentList), res.data]));
 
-                axios.put(`${server.getApi()}api/users/${this.props.user.id}/update/`, newData)
+                axiosInstance.put(`/users/${this.props.user.id}/update/`, newData)
                   .then((res) => {
                     // обновляем данные пользователя в сторе
-                    axios.get(`${server.getApi()}api/users/${this.props.user.id}/`, {
+                    axiosInstance.get(`/users/${this.props.user.id}/`, {
                       validateStatus: (status) => {
                         return true; // I'm always returning true, you may want to do it depending on the status received
                       },

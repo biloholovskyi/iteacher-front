@@ -1,11 +1,10 @@
 import React, {Component} from "react";
-import axios from "axios";
 
 import {InputWrap} from "./styled";
 
 import plus from '../../../../assets/media/icon/plusW.svg';
 
-import ServerSettings from "../../../../service/serverSettings";
+import axiosInstance from "../../../../service/iTeacherApi";
 
 class NoteForm extends Component {
   constructor(props) {
@@ -15,7 +14,6 @@ class NoteForm extends Component {
     }
     this.onValueChange = this.onValueChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
-    this.serverSettings = new ServerSettings();
   }
 
   // status input
@@ -28,10 +26,7 @@ class NoteForm extends Component {
   // checked form send
   onSubmit = async (e) => {
     e.preventDefault();
-    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
-    axios.defaults.xsrfCookieName = 'csrftoken';
-
-    await axios.post(`${this.serverSettings.getApi()}api/notations/`, {
+    await axiosInstance.post(`/notations/`, {
       text: this.state.text,
       teacher: this.props.teacherID,
       student: this.props.studentID

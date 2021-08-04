@@ -1,5 +1,4 @@
 import React, {Component} from "react";
-import axios from "axios";
 import './react-draft-wysiwyg.css'; // editor default style
 import {Editor} from "react-draft-wysiwyg";
 import {EditorState, ContentState, convertFromHTML} from "draft-js";
@@ -19,7 +18,7 @@ import image from "../../../../assets/media/icon/photo.svg";
 
 import {TextModalBody, TextModalOverlay} from './textStyled';
 
-import ServerSettings from "../../../../service/serverSettings";
+import axiosInstance from "../../../../service/iTeacherApi";
 
 export default class TextModal extends Component {
   constructor(props) {
@@ -91,12 +90,7 @@ export default class TextModal extends Component {
       task_type: 'TEXT',
     }
 
-    // отправляем его на сервер
-    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
-    axios.defaults.xsrfCookieName = 'csrftoken';
-
-    const serverSettings = new ServerSettings();
-    await axios.post(`${serverSettings.getApi()}api/tasks/`, task)
+    await axiosInstance.post(`/tasks/`, task)
       .then(res => {
         this.props.update(res.data, indexLesson, indexSection);
         this.props.close();
@@ -118,12 +112,7 @@ export default class TextModal extends Component {
 
     this.props.update(newTask, indexLesson, indexSection, true, indexTask);
 
-    // обновляем сервер
-    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
-    axios.defaults.xsrfCookieName = 'csrftoken';
-
-    const serverSettings = new ServerSettings();
-    await axios.put(`${serverSettings.getApi()}api/tasks/${newTask.id}/update/`, newTask)
+    await axiosInstance.put(`/tasks/${newTask.id}/update/`, newTask)
       .then(res => {
         close()
       })

@@ -1,6 +1,5 @@
 import React, {useState, useEffect, useRef} from "react";
 import {useHistory} from "react-router";
-import axios from "axios";
 
 import MainButton from "../../../components/buttons/mainButton/mainButton";
 import ModalButtons from "./modalButtons/modalButtons";
@@ -11,8 +10,7 @@ import closed from '../../../assets/media/icon/close.svg';
 import editor from './media/edit.svg'
 import ava from "../../../assets/media/icon/avatar.svg";
 
-import ServerSettings from "../../../service/serverSettings";
-const server = new ServerSettings();
+import axiosInstance from "../../../service/iTeacherApi";
 
 const ModalCard = ({close, event, course, lesson, studentData, update}) => {
   const [student, setStudent] = useState('');
@@ -34,11 +32,9 @@ const ModalCard = ({close, event, course, lesson, studentData, update}) => {
   // создание урока (классной комнаты)
   const startLesson = async () => {
     let idClassRoom = null;
-    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
-    axios.defaults.xsrfCookieName = 'csrftoken';
 
     // получаем данные урока
-    await axios.get(`${server.getApi()}api/lesson/${event.lesson}/`)
+    await axiosInstance.get(`/lesson/${event.lesson}/`)
       .then(res => {
         const data = {
           name: res.data.name,
@@ -52,13 +48,13 @@ const ModalCard = ({close, event, course, lesson, studentData, update}) => {
         }
 
         // получаем данные курса для формирования JSON
-        axios.get(`${server.getApi()}api/courses/${event.course}/`)
+        axiosInstance.get(`/courses/${event.course}/`)
           .then(res => {
             data.course = JSON.stringify(res.data)
           })
           .then(() => {
             // создаем новую комнату
-            axios.post(`${server.getApi()}api/classrooms/`, data)
+            axiosInstance.post(`/classrooms/`, data)
               .then(res => {
                 idClassRoom = res.data.id
                 // обновляем статус события
@@ -68,7 +64,7 @@ const ModalCard = ({close, event, course, lesson, studentData, update}) => {
                   class_room: idClassRoom
                 }
 
-                axios.put(`${server.getApi()}api/schedules/${event.id}/update/`, dataEvent)
+                axiosInstance.put(`/schedules/${event.id}/update/`, dataEvent)
                   .then(() => {
                     history.push('/class-room/' + idClassRoom)
                   })
@@ -87,8 +83,7 @@ const ModalCard = ({close, event, course, lesson, studentData, update}) => {
       ...event,
       status: 'deleted'
     }
-    const serverSettings = new ServerSettings();
-    await axios.put(`${serverSettings.getApi()}api/schedules/${data.id}/update/`, data)
+    await axiosInstance.put(`/schedules/${data.id}/update/`, data)
       .then(() => {
         // eslint-disable-next-line no-restricted-globals
         location.reload()
@@ -173,7 +168,7 @@ const ModalCard = ({close, event, course, lesson, studentData, update}) => {
 
         <Caption>
           <div className="title_block">
-            <img src={student && student.photo ? `${server.getApi()}${student.photo.slice(1)}` : ava} alt="photo" className="photo"/>
+            <img src={student && student.photo ? student.photo : ava} alt="" className="photo"/>
             <div className="info-block">
               <div className="title">{student.name || student.email}</div>
               <div className="date">{event.date}, {event.time}</div>

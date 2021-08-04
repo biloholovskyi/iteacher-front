@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react';
 import {connect} from "react-redux";
-import axios from "axios";
 
 import InfoMenu from "./infoMenu/infoMenu";
 import Plan from '../../components/plan/plan';
@@ -14,8 +13,7 @@ import {CourseWrap} from './adminCourseStyled';
 
 import {setTypeAdminHead, setTemplate, getAllTemplates} from "../../actions";
 
-import ServerSettings from "../../service/serverSettings";
-const server = new ServerSettings()
+import axiosInstance from "../../service/iTeacherApi";
 
 // получения данных курса, похоже Андрея, нужно проверить нужно ли это нам
 export async function getCourseData(token, list, id, setID, setData, reject) {
@@ -114,10 +112,7 @@ const AdminCourse = (props) => {
 
   // грузим данные шаблонов
   const getTemplates = async () => {
-    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
-    axios.defaults.xsrfCookieName = 'csrftoken';
-
-    await axios.get(`${server.getApi()}api/template/`)
+    await axiosInstance.get(`/template/`)
       .then(res => {
         props.getAllTemplates(res.data);
         setTemplateData(res.data)

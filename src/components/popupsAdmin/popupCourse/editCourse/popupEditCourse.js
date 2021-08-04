@@ -3,9 +3,7 @@ import { connect } from "react-redux";
 import PopupCourse from '../popupCourse';
 
 import {setTemplate, getAllTemplates} from "../../../../actions";
-import axios from "axios";
-import ServerSettings from "../../../../service/serverSettings";
-const serverSettings = new ServerSettings();
+import axiosInstance from "../../../../service/iTeacherApi";
 
 const PopupEditCourse = (props) => {
   // не совсем понятноз почему нельзя было сразу из props прокинуть данные на модалку
@@ -26,7 +24,7 @@ const PopupEditCourse = (props) => {
       ...data
     }
 
-    await axios.put(`${serverSettings.getApi()}api/template/${props.id}/update/`, _data)
+    await axiosInstance.put(`/template/${props.id}/update/`, _data)
       .then(res => {
         // обновляем данные на сервере
         console.log(props);

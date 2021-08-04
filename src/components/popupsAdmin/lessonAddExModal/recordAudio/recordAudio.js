@@ -8,8 +8,8 @@ import {TextModalBody, TextModalOverlay} from '../audio/styled';
 
 import closed from "../../../../assets/media/icon/close.svg";
 import arrow from '../../../../assets/media/icon/arrow-left.svg';
-import axios from "axios";
-import ServerSettings from "../../../../service/serverSettings";
+
+import axiosInstance from "../../../../service/iTeacherApi";
 
 export default class RecordAudio extends Component {
   constructor(props) {
@@ -62,13 +62,7 @@ export default class RecordAudio extends Component {
     data.set("title", this.state.text);
     data.set("section", this.props.section.id);
 
-    // отправляем его на сервер
-    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
-    axios.defaults.xsrfCookieName = 'csrftoken';
-
-    const serverSettings = new ServerSettings();
-
-    await axios.post(`${serverSettings.getApi()}api/tasks/`, data)
+    await axiosInstance.post(`/tasks/`, data)
       .then(res => {
         // обновляем данные выбранной секции
         this.props.update(res.data, indexLesson, indexSection);
@@ -93,16 +87,11 @@ export default class RecordAudio extends Component {
 
     this.props.update(newTask, indexLesson, indexSection, true, indexTask);
 
-    // обновляем сервер
-    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
-    axios.defaults.xsrfCookieName = 'csrftoken';
-
     // данные для сервера
     const data = new FormData();
     data.set("title", text);
 
-    const serverSettings = new ServerSettings();
-    await axios.put(`${serverSettings.getApi()}api/tasks/${newTask.id}/update/`, data)
+    await axiosInstance.put(`/tasks/${newTask.id}/update/`, data)
       .then(res => {
         close()
       })

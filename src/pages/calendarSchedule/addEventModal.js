@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from "react";
-import axios from "axios";
 
 import MainInput from "../../components/inputs/mainInput/mainInput";
 import MainDropList from "../../components/inputs/mainDropList/mainDropList";
@@ -9,7 +8,7 @@ import Calendar from "../courseTemplate/calendarModal/calendar";
 import {TextModalBody, TextModalOverlay, Line, SmallTitle} from "./styled";
 
 import closed from "../../assets/media/icon/close.svg";
-import ServerSettings from "../../service/serverSettings";
+import axiosInstance from "../../service/iTeacherApi";
 import TimeModal from "./timeModal/timeModal";
 
 const monthNames = ['Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря'];
@@ -118,9 +117,8 @@ const AddEventModal = ({close, courses, user, studentsList, update, updateData})
 
   // проверяем занято ли время или нет
   const checkTime = async (date, time) => {
-    const api = new ServerSettings();
     // получаем все события
-    return await axios.get(`${api.getApi()}api/schedules/`)
+    return await axiosInstance.get(`/schedules/`)
       .then(result => {return result; })
       .then(res => {
         const schThisDate = res.data
@@ -136,9 +134,6 @@ const AddEventModal = ({close, courses, user, studentsList, update, updateData})
   // создане нового события
   const createNewEvent = async (e) => {
     e.preventDefault()
-
-    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
-    axios.defaults.xsrfCookieName = 'csrftoken';
 
     const data = {
       user: user.id,
@@ -156,8 +151,7 @@ const AddEventModal = ({close, courses, user, studentsList, update, updateData})
         if(res) {
           setDateValidation(true);
         } else {
-          const serverSettings = new ServerSettings();
-          axios.post(`${serverSettings.getApi()}api/schedules/`, data)
+          axiosInstance.post(`/schedules/`, data)
             .then(res => {
               update(res.data);
               close()
@@ -170,9 +164,6 @@ const AddEventModal = ({close, courses, user, studentsList, update, updateData})
   // обновление события
   const updateSchedule = async (e) => {
     e.preventDefault()
-
-    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
-    axios.defaults.xsrfCookieName = 'csrftoken';
 
     const dataServer = {
       ...data,
@@ -190,8 +181,7 @@ const AddEventModal = ({close, courses, user, studentsList, update, updateData})
         if(res && parseInt(res.id) !== parseInt(data.id)) {
           setDateValidation(true);
         } else {
-          const serverSettings = new ServerSettings();
-          axios.put(`${serverSettings.getApi()}api/schedules/${data.id}/update/`, dataServer)
+          axiosInstance.put(`/schedules/${data.id}/update/`, dataServer)
             .then(() => {
               update({...data, ...dataServer});
               close()

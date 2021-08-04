@@ -1,13 +1,8 @@
-import ServerSettings from "./serverSettings";
-import axios from "axios";
-const api = new ServerSettings();
+import axiosInstance from "./iTeacherApi";
 
 class CoursesServices {
   getAllCourses = async () => {
-    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
-    axios.defaults.xsrfCookieName = 'csrftoken';
-
-    return await axios.get(`${api.getApi()}api/courses/`)
+    return await axiosInstance.get(`/courses/`)
       .then(res => {
         return res
       })

@@ -1,5 +1,4 @@
 import React, {Component} from "react";
-import axios from 'axios'
 import {connect} from "react-redux";
 
 import {getAllUsers, loginUser} from "../../actions";
@@ -25,7 +24,7 @@ import {
 import arrow from "../../assets/media/icon/arrow.svg";
 import sort from "../../assets/media/icon/sort.svg";
 
-import ServerSettings from "../../service/serverSettings";
+import axiosInstance from "../../service/iTeacherApi";
 
 class Users extends Component {
   constructor(props) {
@@ -47,8 +46,6 @@ class Users extends Component {
   // регистрация нового пользователя
   registrationNewUser = async (e) => {
     e.preventDefault();
-    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
-    axios.defaults.xsrfCookieName = 'csrftoken';
 
     const newUser = {
       type: e.target.type.value,
@@ -58,20 +55,14 @@ class Users extends Component {
       name: e.target.name.value
     }
 
-    const server = new ServerSettings();
-    await axios.post(`${server.getApi()}api/users/`, newUser)
+    await axiosInstance.post(`/users/`, newUser)
       .then(res => {
         this.setState({modals: false})
       }).catch(error => console.error(error));
   }
 
   getUsers = async () => {
-    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
-    axios.defaults.xsrfCookieName = 'csrftoken';
-
-    const server = new ServerSettings();
-
-    await axios.get(`${server.getApi()}api/users/`)
+    await axiosInstance.get(`/users/`)
       .then(res => {
         this.props.getAllUsers(res.data);
         this.setState({users: res.data});

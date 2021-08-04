@@ -3,9 +3,7 @@ import {useHistory} from 'react-router-dom';
 import {connect} from "react-redux";
 
 import PopupCourse from '../popupCourse';
-import ServerSettings from "../../../../service/serverSettings";
-
-import axios from "axios";
+import axiosInstance from "../../../../service/iTeacherApi";
 
 import {getAllTemplates} from "../../../../actions";
 
@@ -25,11 +23,7 @@ const PopupAddCourse = ({close, templates, getAllTemplates}) => {
       ...data,
     }
 
-    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
-    axios.defaults.xsrfCookieName = 'csrftoken';
-
-    const serverSettings = new ServerSettings();
-    await axios.post(`${serverSettings.getApi()}api/template/`, {
+    await axiosInstance.post(`/template/`, {
       name: newCourse.name,
       count_lessons: 0,
       average_lessons_time: parseFloat(newCourse.average_lessons_time),
@@ -44,7 +38,7 @@ const PopupAddCourse = ({close, templates, getAllTemplates}) => {
         // нужно обновить весь список шаблонов
         if(!templatesList || templatesList.length < 1) {
           const resData = res.data;
-          axios.get(`${serverSettings.getApi()}api/template/`)
+          axiosInstance.get(`/template/`)
             .then(res => {
               getAllTemplates(res.data);
               // перенаправляем на страницу курса

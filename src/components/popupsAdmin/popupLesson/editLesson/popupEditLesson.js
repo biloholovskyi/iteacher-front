@@ -3,8 +3,7 @@ import { connect } from "react-redux";
 import PopupLesson from '../popupLesson';
 
 import {setTemplate, getAllTemplates} from "../../../../actions";
-import axios from "axios";
-import ServerSettings from "../../../../service/serverSettings";
+import axiosInstance from "../../../../service/iTeacherApi";
 
 export const PopupEditLesson = (props) => {
   // задаем старрые данные урока
@@ -30,13 +29,7 @@ export const PopupEditLesson = (props) => {
     const newTemplatesList = [...props.allTemplates.slice(0, indexTemplate), newTemplate, ...props.allTemplates.slice(indexTemplate + 1)];
     props.getAllTemplates(newTemplatesList);
 
-    // обновляем на сервере
-    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
-    axios.defaults.xsrfCookieName = 'csrftoken';
-
-    const serverSettings = new ServerSettings();
-
-    await axios.put(`${serverSettings.getApi()}api/lesson/${newLesson.id}/update/`, newLesson)
+    await axiosInstance.put(`/lesson/${newLesson.id}/update/`, newLesson)
       .then(res => {
         props.close();
       })

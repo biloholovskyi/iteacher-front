@@ -1,15 +1,13 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
-import axios from "axios";
 
 import NoteForm from "./noteForm/noteForm";
 import NotesList from "./noteList/noteList";
 
 import {NotesWrap, Notes} from "./styled";
-
 import close from "../../../assets/media/icon/close.svg";
 
-import ServerSettings from "../../../service/serverSettings";
+import axiosInstance from "../../../service/iTeacherApi";
 
 class Note extends Component{
   constructor(props) {
@@ -19,7 +17,6 @@ class Note extends Component{
     }
     this.addItem = this.addItem.bind(this);
     this.deleteItem = this.deleteItem.bind(this);
-    this.serverSettings = new ServerSettings();
   }
 
   componentDidMount() {
@@ -53,7 +50,7 @@ class Note extends Component{
 
   // delete message
   deleteItem = async (id) => {
-    await axios.delete(`${this.serverSettings.getApi()}api/notations/${id}/`)
+    await axiosInstance.delete(`/notations/${id}/`)
       .then(res => {
         console.log(res);
         this.setState(({data}) => {

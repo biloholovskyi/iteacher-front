@@ -1,5 +1,4 @@
 import React from "react";
-import axios from "axios";
 
 import MainInfo from "./mainInfo/mainInfo";
 import Contacts from "./contacts/contacts";
@@ -7,8 +6,7 @@ import MainButton from "../../../components/buttons/mainButton/mainButton";
 
 import * as Style from './styled'
 
-import ServerSettings from "../../../service/serverSettings";
-const server = new ServerSettings();
+import axiosInstance from "../../../service/iTeacherApi";
 
 const StudentModal = ({data, close, update}) => {
   // обновляем данные студента
@@ -45,7 +43,7 @@ const StudentModal = ({data, close, update}) => {
 
     delete dataUser.photo
 
-    await axios.put(`${server.getApi()}api/users/${data.id}/update/`, dataUser)
+    await axiosInstance.put(`/users/${data.id}/update/`, dataUser)
       .then(() => {
         update();
         close();

@@ -8,8 +8,7 @@ import ItemSection from './itemSection/itemSection';
 import {PlanWrap} from './planStyled';
 import {getAllTemplates, setTemplate, setActiveSection} from "../../actions";
 import {connect} from "react-redux";
-import axios from "axios";
-import ServerSettings from "../../service/serverSettings";
+import axiosInstance from "../../service/iTeacherApi";
 
 const Plan = ({
                 open,
@@ -54,13 +53,7 @@ const Plan = ({
     // записываем новый массив в redux
     getAllTemplates(newTemplatesList);
 
-    // удаляем урок на сервере
-    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
-    axios.defaults.xsrfCookieName = 'csrftoken';
-
-    const serverSettings = new ServerSettings();
-
-    await axios.delete(`${serverSettings.getApi()}api/lesson/${id}/delete/`)
+    await axiosInstance.delete(`/lesson/${id}/delete/`)
       .catch(error => console.error(error));
   }
 
@@ -112,13 +105,8 @@ const Plan = ({
     const newTemplatesList = [...allTemplates.slice(0, currentTemplateIndex), newSelectTemplate, ...allTemplates.slice(currentTemplateIndex + 1)];
     // записываем новый массив в redux
     getAllTemplates(newTemplatesList);
-    // удаляем урок на сервере
-    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
-    axios.defaults.xsrfCookieName = 'csrftoken';
 
-    const serverSettings = new ServerSettings();
-
-    await axios.delete(`${serverSettings.getApi()}api/tasks/${id}/delete/`)
+    await axiosInstance.delete(`/tasks/${id}/delete/`)
       .catch(error => console.error(error));
   }
 

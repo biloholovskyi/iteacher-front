@@ -1,16 +1,11 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {useHistory} from "react-router";
-import axios from "axios";
 
 import ModalCard from './ModalCard';
-
 import {SmallCardWrap} from "./styled";
-
 import ava from '../../../assets/media/icon/avatar.svg'
 
-import ServerSettings from "../../../service/serverSettings";
+import axiosInstance from "../../../service/iTeacherApi";
 
-const api = new ServerSettings();
 
 const SmallCard = ({events, course, update}) => {
 
@@ -69,7 +64,7 @@ const SmallCard = ({events, course, update}) => {
 
   // получаем данные студента
   const getStudentData = async () => {
-    await axios.get(`${api.getApi()}api/users/${events.student}/`)
+    await axiosInstance.get(`/users/${events.student}/`)
       .then(res => {
         setStudentData(res.data);
       })
@@ -92,8 +87,7 @@ const SmallCard = ({events, course, update}) => {
               onClick={() => setModalCard(true)}
             >
               {/*<div className="indicator"/>*/}
-              <img src={studentData && studentData.photo ? `${api.getApi()}${studentData.photo.slice(1)}` : ava}
-                   alt="photo" className="photo"/>
+              <img src={studentData && studentData.photo ? studentData.photo : ava} alt="" className="photo"/>
               <div className="title">{studentData ? studentData.name ? studentData.name : studentData.email : ''}</div>
             </SmallCardWrap>
 

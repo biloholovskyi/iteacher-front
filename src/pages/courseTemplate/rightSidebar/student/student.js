@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from "react";
-import axios from "axios";
 import {connect} from "react-redux";
 
 import AddButton from "../../../../components/buttons/addButton/addButton";
@@ -8,9 +7,8 @@ import {SidebarItem} from "../../styled";
 
 import ava from "../../../../assets/media/icon/avatar.svg";
 
-import ServerSettings from "../../../../service/serverSettings";
+import axiosInstance from "../../../../service/iTeacherApi";
 
-const server = new ServerSettings();
 
 const Student = ({show, course, user}) => {
   // данные студента/преподавателя
@@ -20,7 +18,7 @@ const Student = ({show, course, user}) => {
     // проверяем преподаватель или студент залогинен
     const id = user.type === 'teacher' ? course.student : course.teacher;
 
-    await axios.get(`${server.getApi()}api/users/${id}/`)
+    await axiosInstance.get(`/users/${id}/`)
       .then(res => {
         if(typeof res.data === "object") {
           setData(res.data)
@@ -41,7 +39,7 @@ const Student = ({show, course, user}) => {
           data ? (
             <>
               <div className={data.photo ? 'photo' : 'no-photo'}>
-                <img src={data.photo ? server.getApi() + data.photo.slice(1) : ava} alt="icon"/>
+                <img src={data.photo ? data.photo : ava} alt="icon"/>
               </div>
               <div className="name">
                 <p className={'email'}>{data ? data.username ? data.username : data.email : null}</p>

@@ -3,8 +3,7 @@ import {connect} from "react-redux";
 import PopupLesson from '../popupLesson';
 
 import {setTemplate, getAllTemplates} from "../../../../actions";
-import axios from "axios";
-import ServerSettings from "../../../../service/serverSettings";
+import axiosInstance from "../../../../service/iTeacherApi";
 
 const PopupAddLesson = (props) => {
   // функция создания урока
@@ -43,14 +42,7 @@ const PopupAddLesson = (props) => {
       lesson: newLessonList
     }
 
-    // сохранение нового урока на сервере
-    // нужен объект самого урока без id
-    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
-    axios.defaults.xsrfCookieName = 'csrftoken';
-
-    const serverSettings = new ServerSettings();
-
-    await axios.post(`${serverSettings.getApi()}api/lesson/`, newLesson)
+    await axiosInstance.post(`/lesson/`, newLesson)
       .then(res => {
         // нужно теперь повторить все и добавить id
         // обновить запись выбраного шаблона в редаксе

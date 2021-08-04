@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from "react";
-import axios from "axios";
 import {connect} from "react-redux";
 
 import UserAvatar from "./userAvatar/userAvatar";
@@ -11,9 +10,8 @@ import * as Style from './styled'
 
 import pan from './media/pan.svg'
 
-import ServerSettings from "../../service/serverSettings";
+import axiosInstance from "../../service/iTeacherApi";
 
-const server = new ServerSettings();
 
 const StudentCart = ({id, user}) => {
   const [nextLesson, setNextLesson] = useState(null)
@@ -58,10 +56,7 @@ const StudentCart = ({id, user}) => {
 
 
   const getDataUser = async () => {
-    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
-    axios.defaults.xsrfCookieName = 'csrftoken';
-
-    await axios.get(`${server.getApi()}api/users/${id}/`)
+    await axiosInstance.get(`/users/${id}/`)
       .then(res => {
         setStudentData(res.data)
       }).catch(error => {
@@ -72,7 +67,7 @@ const StudentCart = ({id, user}) => {
   // получаем ближайший урок
   const getNextLesson = async () => {
     let sortList;
-    await axios.get(`${server.getApi()}api/schedules/${user.id}/${id}/`)
+    await axiosInstance.get(`/schedules/${user.id}/${id}/`)
       .then(res => {
         // меняем формат даты для сортировки
         sortList = res.data.map(event => {
@@ -90,7 +85,7 @@ const StudentCart = ({id, user}) => {
         })
 
         // получаем данные курса события
-        axios.get(`${server.getApi()}api/courses/${sortList[0].course}/`)
+        axiosInstance.get(`/courses/${sortList[0].course}/`)
           .then(res => {
             const lessons = JSON.parse(res.data.lessons);
             const lessonIndex = lessons.findIndex(l => parseInt(l.id) === parseInt(sortList[0].lesson))

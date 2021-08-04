@@ -4,10 +4,6 @@ import {connect} from "react-redux";
 
 import {AudioWrap} from './mediaAudioStyled';
 
-import ServerSettings from "../../../service/serverSettings";
-
-const api = new ServerSettings();
-
 class MediaAudio extends Component {
   constructor(props) {
     super(props);
@@ -53,7 +49,7 @@ class MediaAudio extends Component {
 
         <ReactPlayer
           className='react-player'
-          url={this.props.user.type === 'admin' ? audioData.file : api.getApi() + audioData.file.slice(1)}
+          url={this.props.user.type === 'admin' ? audioData.file : audioData.file}
           width="400px"
           height="50px"
           playing={this.state.play}

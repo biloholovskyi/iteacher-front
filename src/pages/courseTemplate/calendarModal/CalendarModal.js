@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import axios from "axios";
 
 import MainInput from "../../../components/inputs/mainInput/mainInput";
 
@@ -10,7 +9,7 @@ import {CalendarModalWrapp, CalendarBody, InfoInput} from './CalendarStyled';
 import closed from '../../../assets/media/icon/close.svg';
 import arrow from '../../../assets/media/icon/arrow.svg';
 
-import ServerSettings from "../../../service/serverSettings";
+import axiosInstance from "../../../service/iTeacherApi";
 import TimeModal from "../timeModal/timeModal";
 
 export default class CalendarModal extends Component {
@@ -51,12 +50,8 @@ export default class CalendarModal extends Component {
       status: 'active'
     }
 
-    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
-    axios.defaults.xsrfCookieName = 'csrftoken';
-
-    const server = new ServerSettings();
     // отправляем данные на сервер и закрываем модалку переходя на следующий шаг
-    await axios.post(`${server.getApi()}api/schedules/`, object)
+    await axiosInstance.post(`/schedules/`, object)
         .then(res => {
           // активируем курс
           this.props.active();

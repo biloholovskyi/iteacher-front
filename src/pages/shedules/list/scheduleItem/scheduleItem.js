@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from "react";
 import {useHistory} from "react-router";
-import axios from "axios";
 
 import MainButton from "../../../../components/buttons/mainButton/mainButton";
 
@@ -13,7 +12,7 @@ import {HomeWorkItemWrap, LeftTimes, NameCourse} from './styled';
 
 import ok from '../../../../assets/media/icon/ok-green.svg';
 
-import ServerSettings from "../../../../service/serverSettings";
+import axiosInstance from "../../../../service/iTeacherApi";
 
 // type - нужен что бы понимать вошел студент или преподаватель
 const ScheduleItem = ({done, event, course, type}) => {
@@ -64,12 +63,9 @@ const ScheduleItem = ({done, event, course, type}) => {
   // создание урока (классной комнаты)
   const startLesson = async () => {
     let idClassRoom = null;
-    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
-    axios.defaults.xsrfCookieName = 'csrftoken';
 
     // получаем данные урока
-    const serverSettings = new ServerSettings();
-    await axios.get(`${serverSettings.getApi()}api/lesson/${event.lesson}/`)
+    await axiosInstance.get(`/lesson/${event.lesson}/`)
       .then(res => {
         const data = {
           name: res.data.name,
@@ -83,13 +79,13 @@ const ScheduleItem = ({done, event, course, type}) => {
         }
 
         // получаем данные курса для формирования JSON
-        axios.get(`${serverSettings.getApi()}api/courses/${event.course}/`)
+        axiosInstance.get(`/courses/${event.course}/`)
           .then(res => {
             data.course = JSON.stringify(res.data)
           })
           .then(() => {
             // создаем новую комнату
-            axios.post(`${serverSettings.getApi()}api/classrooms/`, data)
+            axiosInstance.post(`/classrooms/`, data)
               .then(res => {
                 idClassRoom = res.data.id
                 // обновляем статус события
@@ -99,7 +95,7 @@ const ScheduleItem = ({done, event, course, type}) => {
                   class_room: idClassRoom
                 }
 
-                axios.put(`${serverSettings.getApi()}api/schedules/${event.id}/update/`, dataEvent)
+                axiosInstance.put(`/schedules/${event.id}/update/`, dataEvent)
                   .then(() => {
                     history.push('/class-room/' + idClassRoom)
                   })

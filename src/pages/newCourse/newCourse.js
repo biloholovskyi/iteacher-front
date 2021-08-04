@@ -1,7 +1,6 @@
 import React, {useEffect} from 'react';
 import {Link} from "react-router-dom";
 import {connect} from "react-redux";
-import axios from "axios";
 
 import {getAllTemplates} from "../../actions";
 
@@ -12,9 +11,8 @@ import * as Style from './styled'
 import close from "../../assets/media/icon/close.svg";
 import plus from '../../assets/media/icon/plus.svg';
 
-import ServerSettings from "../../service/serverSettings";
+import axiosInstance from "../../service/iTeacherApi";
 
-const server = new ServerSettings();
 
 const NewCourse = ({getAllTemplates}) => {
   // получаем все шаблоны
@@ -23,10 +21,7 @@ const NewCourse = ({getAllTemplates}) => {
   }, [])
 
   const getTemplates = async () => {
-    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
-    axios.defaults.xsrfCookieName = 'csrftoken';
-
-    await axios.get(`${server.getApi()}api/template/`)
+    await axiosInstance.get(`/template/`)
       .then(res => {
         getAllTemplates(res.data);
       }).catch(error => console.log(error));

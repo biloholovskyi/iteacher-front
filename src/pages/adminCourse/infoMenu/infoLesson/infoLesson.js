@@ -3,8 +3,7 @@ import React, {useState, useEffect} from 'react';
 import {LessonWrap, LessonLi} from './infoLessonStyled';
 import {setActiveSection, setTemplate, getAllTemplates} from "../../../../actions";
 import {connect} from "react-redux";
-import axios from "axios";
-import ServerSettings from "../../../../service/serverSettings";
+import axiosInstance from "../../../../service/iTeacherApi";
 import {InfoLiEmpty} from "../infoMenuStyled";
 
 const InfoLessonList = ({
@@ -99,13 +98,8 @@ const InfoLessonList = ({
       ...allTemplates.slice(indexTemplate + 1)
     ];
     getAllTemplates(newTemplatesList);
-    // обновляем на сервере
-    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
-    axios.defaults.xsrfCookieName = 'csrftoken';
 
-    const serverSettings = new ServerSettings();
-
-    await axios.put(`${serverSettings.getApi()}api/section/${sectionsList[currentSectionIndex].id}/update/`, sectionsList[currentSectionIndex])
+    await axiosInstance.put(`/section/${sectionsList[currentSectionIndex].id}/update/`, sectionsList[currentSectionIndex])
       .catch(error => console.error(error));
   }
 
@@ -148,13 +142,7 @@ const InfoLessonList = ({
     // перезаписываем redux
     getAllTemplates(newTemplatesList);
 
-    // удаляем на сервере
-    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
-    axios.defaults.xsrfCookieName = 'csrftoken';
-
-    const serverSettings = new ServerSettings();
-
-    await axios.delete(`${serverSettings.getApi()}api/section/${id}/delete/`)
+    await axiosInstance.delete(`/section/${id}/delete/`)
       .then(res => {
         // если удаляемая секция была активной делаем активной первую секцию из отсавшихся
         if (activeSectionIndex === indexSection) {

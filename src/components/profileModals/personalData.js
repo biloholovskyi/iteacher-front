@@ -1,5 +1,4 @@
 import React, {Component} from "react";
-import axios from "axios";
 
 import InputName from './personalDateModal/inputName';
 import InputEmail from './personalDateModal/inputEmail';
@@ -10,7 +9,7 @@ import InputYear from './personalDateModal/inputYear';
 import close from '../../assets/media/icon/close.svg';
 import {PersonalDataWrap, PersonalDataBody, Form,DeleteBtn, ChangeBtn, SaveChange} from './personalDataStyled';
 import ava from '../../assets/media/icon/avatar.svg';
-import ServerSettings from "../../service/serverSettings";
+import axiosInstance from "../../service/iTeacherApi";
 import {connect} from "react-redux";
 import {loginUser} from "../../actions";
 
@@ -24,7 +23,6 @@ class PersonalData extends Component {
   }
 
   componentDidMount() {
-    const server = new ServerSettings();
     // это не совсем понятно зачем
     setTimeout(() => {
       this.file = React.createRef();
@@ -32,21 +30,18 @@ class PersonalData extends Component {
 
     // заменяем фото пользователя
     const photo = this.props.user.photo ? this.props.user.photo : ava;
-    this.setState({imagePreviewUrl: server.getApi() + photo.slice(1)})
+    this.setState({imagePreviewUrl: photo})
   }
 
   // изминения данных пользователя
   changeData = async (e) => {
     e.preventDefault();
-    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
-    axios.defaults.xsrfCookieName = 'csrftoken';
     // дата рождения
     let date = `${e.target.year.value}-${e.target.month.value}-${e.target.day.value}`;
     // проверяем правильно ли введена дата
     if(isNaN(parseInt(e.target.year.value)) || isNaN(parseInt(e.target.month.value)) || isNaN(parseInt(e.target.day.value))) {
       date = null
     }
-    const server = new ServerSettings();
 
     const data = new FormData();
     data.set("username", e.target.login.value);
@@ -62,11 +57,10 @@ class PersonalData extends Component {
       data.set("photo", this.state.file);
       sendData = data;
     }
-
-    await axios.put(`${server.getApi()}api/users/${this.props.user.id}/update/`, sendData)
+    await axiosInstance.put(`/users/${this.props.user.id}/update/`, sendData)
       .then(res => {
         // получаем правильный путь новой фото
-        axios.get(`${server.getApi()}api/users/${this.props.user.email}/`)
+        axiosInstance.get(`/users/${this.props.user.email}/`)
           .then(res => {
             // обновляем данные пользователя в сторе
             this.props.loginUser(res.data);
@@ -113,7 +107,7 @@ class PersonalData extends Component {
             <div className="photoSection">
               <h3>Фотография</h3>
               <div className="photoWrap">
-                <img src={this.state.imagePreviewUrl} alt="photo" className={'avatar'}/>
+                <img src={this.state.imagePreviewUrl} alt="" className={'avatar'}/>
                 <input
                   ref={this.file}
                   accept="image/*"

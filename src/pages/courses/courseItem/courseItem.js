@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react';
-import axios from "axios";
 
 import CourseCover from "../../../components/courseCover/courseCover";
 import AddButton from "../../../components/buttons/addButton/addButton";
@@ -8,7 +7,7 @@ import * as Style from './styled';
 
 import ava from "../../../assets/media/icon/avatar.svg";
 
-import ServerSettings from "../../../service/serverSettings";
+import axiosInstance from "../../../service/iTeacherApi";
 
 const CourseItem = ({course, user}) => {
   const [photo, setPhoto] = useState('');
@@ -58,15 +57,11 @@ const CourseItem = ({course, user}) => {
   }, []);
 
   const getStudent = async () => {
-    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
-    axios.defaults.xsrfCookieName = 'csrftoken';
-
     const id = user.type === 'student' ? course.teacher : course.student;
 
-    const server = new ServerSettings();
-    await axios.get(`${server.getApi()}api/users/${id}/`)
+    await axiosInstance.get(`/users/${id}/`)
       .then(res => {
-        setPhoto(`${server.getApi()}${res.data.photo.slice(1)}`);
+        setPhoto(res.data.photo);
       })
       .catch(error => console.error(error))
   }

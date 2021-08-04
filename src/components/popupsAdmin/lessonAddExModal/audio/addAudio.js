@@ -10,8 +10,7 @@ import {ImageZone} from "../image/styled";
 import closed from "../../../../assets/media/icon/close.svg";
 import arrow from '../../../../assets/media/icon/arrow-left.svg';
 import dlt from '../../../../assets/media/icon/trash_basket.svg'
-import axios from "axios";
-import ServerSettings from "../../../../service/serverSettings";
+import axiosInstance from "../../../../service/iTeacherApi";
 
 export default class AddAudioModal extends Component {
 
@@ -87,13 +86,7 @@ export default class AddAudioModal extends Component {
       file_size: this.state.file_size
     }
 
-    // отправляем его на сервер
-    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
-    axios.defaults.xsrfCookieName = 'csrftoken';
-
-    const serverSettings = new ServerSettings();
-
-    await axios.post(`${serverSettings.getApi()}api/tasks/`, data)
+    await axiosInstance.post(`/tasks/`, data)
       .then(res => {
         // обновляем данные выбранной секции
         this.props.update(res.data, indexLesson, indexSection);
@@ -122,10 +115,6 @@ export default class AddAudioModal extends Component {
 
     this.props.update(newTask, indexLesson, indexSection, true, indexTask);
 
-    // обновляем сервер
-    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
-    axios.defaults.xsrfCookieName = 'csrftoken';
-
     // данные для сервера
     const data = new FormData();
     data.set("title", text);
@@ -137,8 +126,7 @@ export default class AddAudioModal extends Component {
       data.set('file_size', file_size);
     }
 
-    const serverSettings = new ServerSettings();
-    await axios.put(`${serverSettings.getApi()}api/tasks/${newTask.id}/update/`, data)
+    await axiosInstance.put(`/tasks/${newTask.id}/update/`, data)
       .then(res => {
         close()
       })

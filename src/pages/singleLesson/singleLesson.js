@@ -1,8 +1,6 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
 import {Redirect} from "react-router";
-import axios from "axios";
-import {useHistory} from "react-router";
 
 import {setTopAlertText, setCRactiveWord, setCRactiveEmpty} from "../../actions";
 
@@ -18,7 +16,7 @@ import {LessonHeader, LessonNav, LessonBody, LessonWrap} from './singleLessonSty
 import IconDictionary from '../../assets/media/icon/dictionary.svg';
 
 import ClassRoom from "./services";
-import ServerSettings from "../../service/serverSettings";
+import axiosInstance from "../../service/iTeacherApi";
 import {onMessage} from "./onmessage";
 
 const ws_url = process.env.REACT_APP_WS_URL;
@@ -113,12 +111,8 @@ class SingleLesson extends Component {
       sections: [...lesson.sections.slice(0, this.state.activeSection), newSection, ...lesson.sections.slice(this.state.activeSection + 1)]
     }
 
-    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
-    axios.defaults.xsrfCookieName = 'csrftoken';
-
     // получаем данные урока
-    const serverSettings = new ServerSettings();
-    await axios.put(`${serverSettings.getApi()}api/classrooms/${this.state.data.id}/update/`, {
+    await axiosInstance.put(`/classrooms/${this.state.data.id}/update/`, {
       ...this.state.data,
       lesson: JSON.stringify(newLesson)
     })
@@ -259,17 +253,13 @@ class SingleLesson extends Component {
     // задаем новую активуню секцию
     this.setState({activeSection: this.state.activeSection + 1});
 
-    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
-    axios.defaults.xsrfCookieName = 'csrftoken';
-
     // получаем данные урока
-    const serverSettings = new ServerSettings();
     const newLesson = {
       ...JSON.parse(this.state.data.lesson),
       active_section: newSection
     }
 
-    axios.put(`${serverSettings.getApi()}api/classrooms/${this.state.data.id}/update/`, {
+    axiosInstance.put(`/classrooms/${this.state.data.id}/update/`, {
       ...this.state.data,
       lesson: JSON.stringify(newLesson)
     })
@@ -344,24 +334,19 @@ class SingleLesson extends Component {
 
   // завершение урока
   endClassRoom = async () => {
-    // меняем статус урока на сервере
-    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
-    axios.defaults.xsrfCookieName = 'csrftoken';
-
     // получаем данные урока
-    const serverSettings = new ServerSettings();
-    await axios.put(`${serverSettings.getApi()}api/classrooms/${this.state.data.id}/update/`, {
+    await axiosInstance.put(`/classrooms/${this.state.data.id}/update/`, {
       ...this.state.data,
       status: 'completed'
     })
       .then(() => {
 
-        axios.get(`${serverSettings.getApi()}api/schedules/`)
+        axiosInstance.get(`/schedules/`)
           .then(res => {
             console.log(res.data);
             const needEvent = res.data.find(event => parseInt(event.class_room) === parseInt(this.state.data.id));
 
-            axios.put(`${serverSettings.getApi()}api/schedules/${needEvent.id}/update/`, {
+            axiosInstance.put(`/schedules/${needEvent.id}/update/`, {
               ...needEvent,
               status: 'completed'
             })

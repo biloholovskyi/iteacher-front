@@ -2,7 +2,6 @@ import React, {useState, useEffect} from 'react'
 import {connect} from "react-redux";
 import {useHistory} from "react-router";
 import {NavLink} from "react-router-dom";
-import axios from "axios";
 
 import {setStudentToCourse} from "../../../../actions";
 
@@ -13,9 +12,8 @@ import * as Style from './styled.js'
 import plus from "../../../../assets/media/icon/plus-blue.svg";
 
 import CoursesServices from "../../../../service/courses";
-import ServerSettings from "../../../../service/serverSettings";
+import axiosInstance from "../../../../service/iTeacherApi";
 
-const server = new ServerSettings();
 const coursesService = new CoursesServices();
 
 const TabCourses = ({id, setStudentToCourse, user}) => {
@@ -35,7 +33,7 @@ const TabCourses = ({id, setStudentToCourse, user}) => {
 
   // получаем ближайший урок
   const getNextLesson = async () => {
-    await axios.get(`${server.getApi()}api/schedules/${user.id}/${id}/`)
+    await axiosInstance.get(`/schedules/${user.id}/${id}/`)
       .then(res => {
         // меняем формат даты для сортировки и отбираем только события текущего курса
         const sortList = res.data.map(event => {

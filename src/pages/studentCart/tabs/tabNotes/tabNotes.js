@@ -1,14 +1,11 @@
 import React, {useState, useEffect} from 'react'
-import axios from "axios";
 import {connect} from "react-redux";
 
 import MainInput from "../../../../components/inputs/mainInput/mainInput";
 import Note from "./note/note";
-
 import * as Style from './styled'
 
-import ServerSettings from "../../../../service/serverSettings";
-const server = new ServerSettings();
+import axiosInstance from "../../../../service/iTeacherApi";
 
 const TabNotes = ({data, user}) => {
   const [noteList, setNoteList] = useState([])
@@ -33,7 +30,7 @@ const TabNotes = ({data, user}) => {
 
     delete dataUser.photo
 
-    await axios.put(`${server.getApi()}api/users/${data.id}/update/`, dataUser)
+    await axiosInstance.put(`/users/${data.id}/update/`, dataUser)
       .then(() => {
         setNoteList([...noteList, {text: e.target.note.value, date: stringDate, teacher: user.id}])
         e.target.note.value = '';

@@ -1,13 +1,8 @@
 import React, {Component} from "react";
-import Moment from "react-moment";
 import moment from 'moment'
 
 import {ChatItemWrap, Data, Message} from "./ChatStyled";
-
 import ava from '../../../assets/media/icon/avatar.svg';
-
-import ServerSettings from "../../../service/serverSettings";
-const server = new ServerSettings();
 
 export default class ChatItem  extends Component{
   constructor(props) {
@@ -32,7 +27,7 @@ export default class ChatItem  extends Component{
     
     return(
       <ChatItemWrap>
-        <img src={post.ava ? `${server.getApi()}${post.ava.slice(1)}` : ava} alt="icon"/>
+        <img src={post.ava ? post.ava : ava} alt=""/>
         <div>
 
           <Data>{post.name}, { currentTime }</Data>

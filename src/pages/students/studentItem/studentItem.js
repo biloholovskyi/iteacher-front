@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react';
 import {useHistory} from "react-router";
-import axios from "axios";
 import {connect} from "react-redux";
 
 import ava from "../../../assets/media/icon/avatar.svg";
@@ -9,9 +8,8 @@ import lesson from '../../../assets/media/icon/lesson.svg';
 
 import * as Style from './styled'
 
-import ServerSettings from "../../../service/serverSettings";
+import axiosInstance from "../../../service/iTeacherApi";
 
-const server = new ServerSettings();
 
 const StudentItem = ({note, data, user}) => {
   const [nextLesson, setNextLesson] = useState(null)
@@ -24,7 +22,7 @@ const StudentItem = ({note, data, user}) => {
 
   // получаем ближайший урок
   const getNextLesson = async () => {
-    await axios.get(`${server.getApi()}api/schedules/${user.id}/${data.id}/`)
+    await axiosInstance.get(`/schedules/${user.id}/${data.id}/`)
       .then(res => {
         // меняем формат даты для сортировки
         const sortList = res.data.map(event => {
@@ -53,7 +51,7 @@ const StudentItem = ({note, data, user}) => {
     >
       <div className="right">
         <div className={"right__name"}>
-          <img src={data.photo ? `${server.getApi()}${data.photo.slice(1)}` : ava} alt="img"/>
+          <img src={data.photo ? data.photo : ava} alt=""/>
           <div className="names">
             <h3>{data.name}</h3>
             <p>{data.email}</p>

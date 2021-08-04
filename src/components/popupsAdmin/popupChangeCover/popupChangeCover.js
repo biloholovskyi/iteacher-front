@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import {connect} from 'react-redux';
 import Dropzone from 'react-dropzone'
-import axios from "axios";
 
 import Popup from '../popupContainer/popupContainer';
 import Button from "../../buttons/button/button";
@@ -11,8 +10,7 @@ import {setTemplate, getAllTemplates} from "../../../actions";
 import {PopupTitle} from '../popupContainer/popupStyled';
 import {CoverWrap} from './popupChangeCoverStyled';
 
-import ServerSettings from "../../../service/serverSettings";
-const api = new ServerSettings();
+import axiosInstance from "../../../service/iTeacherApi";
 
 const PopupChangeCover = (props) => {
 
@@ -46,17 +44,17 @@ const PopupChangeCover = (props) => {
     data.set("bg_type", 'image');
 
     // обновляем данные на сервере
-    await axios.put(`${api.getApi()}api/template/${props.selectTemplate.id}/update/`, data)
+    await axiosInstance.put(`/template/${props.selectTemplate.id}/update/`, data)
       .then(res => {
-        axios.get(`${api.getApi()}api/template/${props.selectTemplate.id}/`)
+        axiosInstance.get(`/template/${props.selectTemplate.id}/`)
           .then(res => {
             // обновляем все шаблоны
             // получаем нужным нам шаблон
             const currentTemplateIndex = props.allTemplates.findIndex(t => t.id.toString() === props.selectTemplate.id.toString());
-            const newArrayTemplates = [...props.allTemplates.slice(0, currentTemplateIndex), {...res.data, background_image: `${api.getApi()}${res.data.background_image.slice(1)}`}, ...props.allTemplates.slice(currentTemplateIndex + 1)];
+            const newArrayTemplates = [...props.allTemplates.slice(0, currentTemplateIndex), {...res.data, background_image: res.data.background_image}, ...props.allTemplates.slice(currentTemplateIndex + 1)];
             props.getAllTemplates(newArrayTemplates);
             // обновляем выбраный шаблон
-            props.setTemplate({...res.data, background_image: `${api.getApi()}${res.data.background_image.slice(1)}`});
+            props.setTemplate({...res.data, background_image: res.data.background_image});
             props.close();
           })
       }).catch(error => console.error(error))
@@ -86,13 +84,7 @@ const PopupChangeCover = (props) => {
 
     props.getAllTemplates(newTemplatesList);
 
-    // нужно заменить данные на сервере
-    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
-    axios.defaults.xsrfCookieName = 'csrftoken';
-
-    const serverSettings = new ServerSettings();
-
-    await axios.put(`${serverSettings.getApi()}api/template/${newTemplate.id}/update/`, data)
+    await axiosInstance.put(`/template/${newTemplate.id}/update/`, data)
       .then(res => {
         console.log(res);
         props.close();

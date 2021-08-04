@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from "react";
-import axios from "axios";
 
 import MainInput from "../../../components/inputs/mainInput/mainInput";
 import MainDropList from "../../../components/inputs/mainDropList/mainDropList";
@@ -9,7 +8,7 @@ import {TextModalBody, TextModalOverlay} from "./styled";
 
 import closed from "../../../assets/media/icon/close.svg";
 
-import ServerSettings from "../../../service/serverSettings";
+import axiosInstance from "../../../service/iTeacherApi";
 
 const AddEventModal = ({close, courses, user, update, studentsList}) => {
   // список студентов
@@ -95,9 +94,6 @@ const AddEventModal = ({close, courses, user, update, studentsList}) => {
   const createNewEvent = async (e) => {
     e.preventDefault()
 
-    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
-    axios.defaults.xsrfCookieName = 'csrftoken';
-
     const data = {
       user: user.id,
       course: e.target.course.value,
@@ -108,8 +104,7 @@ const AddEventModal = ({close, courses, user, update, studentsList}) => {
       student: e.target.student.value
     }
 
-    const serverSettings = new ServerSettings();
-    await axios.post(`${serverSettings.getApi()}api/schedules/`, data)
+    await axiosInstance.post(`/schedules/`, data)
       .then(res => {
         update(res.data);
         close()
