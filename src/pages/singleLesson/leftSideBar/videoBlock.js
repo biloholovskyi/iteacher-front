@@ -43,7 +43,7 @@ const VideoBlock = ({ user, classRoom }) => {
     if (!stream) return;
 
     if (streamIsReady) {
-      let endPoint = `${video_ws_url}${classRoom}/`;
+      const endPoint = `${video_ws_url}${classRoom}/?token=${localStorage.getItem('access_token')}`;
       socketRef.current = new WebSocket(endPoint);
 
       socketRef.current.onopen = (event) => {
