@@ -49,7 +49,7 @@ const App = ({loginUser, user, topAlert}) => {
       axiosInstance.defaults.headers["Authorization"] = "JWT " + token;
 
       try {
-        const userResponse = await axiosInstance.get("/users/");
+        const userResponse = await axiosInstance.get("/users/me/");
         const userData = userResponse.data;
 
         if (userData.type === "student") {

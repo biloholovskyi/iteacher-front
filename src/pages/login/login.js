@@ -29,7 +29,7 @@ const Login = ({ loginUser }) => {
       localStorage.setItem("access_token", tokenResponse.data.access);
       localStorage.setItem("refresh_token", tokenResponse.data.refresh);
 
-      const userResponse = await axiosInstance.get("/users/");
+      const userResponse = await axiosInstance.get("/users/me/");
       const userData = userResponse.data;
 
       if (userData.type === "student") {

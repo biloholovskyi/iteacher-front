@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import axios from "axios";
 import WordTable from "./wordList";
 import DictionarySearchModal from "../dictionary/dictionaryModals/searchModal";
 import { DictionaryWrap, NavBar } from "./styled";
 import empty from "../../assets/media/image/dictionary_empty.svg";
+import axiosInstance from "../../service/iTeacherApi";
 
-const apiUrl = process.env.REACT_APP_API_URL;
 
 const Dictionary = ({ user }) => {
   const [search, setSearch] = useState("");
@@ -32,9 +31,9 @@ const Dictionary = ({ user }) => {
     setIsLoading(true);
     const url = cursor
       ? cursor
-      : `${apiUrl}api/translate/dictionary/user/${user.id}/?search=${search}&ordering=${order}${sortBy}`;
+      : `/translate/dictionary/?search=${search}&ordering=${order}${sortBy}`;
 
-    const response = await axios.get(url);
+    const response = await axiosInstance.get(url);
     if (concat && dictionaryList != null)
       response.data.results = await dictionaryList.results.concat(
         response.data.results
@@ -44,9 +43,7 @@ const Dictionary = ({ user }) => {
   };
 
   const deleteWord = async (word) => {
-    const url = `${apiUrl}api/translate/dictionary/${word.id}/`;
-
-    await axios.delete(url);
+    await axiosInstance.delete(`/translate/dictionary/${word.id}/`);
     const new_results = await dictionaryList.results.filter(function (item) {
       return item.id !== word.id;
     });
@@ -54,10 +51,8 @@ const Dictionary = ({ user }) => {
   };
 
   const addWord = async (data) => {
-    const url = `${apiUrl}api/translate/dictionary/user/${user.id}/`;
-
     try {
-      await axios.post(url, data);
+      await axiosInstance.post("/translate/dictionary/", data);
       getDictionary();
       setDictionaryModal(false);
     } catch (err) {

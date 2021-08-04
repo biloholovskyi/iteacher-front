@@ -1,8 +1,7 @@
 import axios from "axios";
+import axiosInstance from "./iTeacherApi";
 
 const yandexApiUrl = `https://dictionary.yandex.net/api/v1/dicservice.json/lookup?key=${process.env.REACT_APP_YANDEX_DICTIONARY_KEY}`;
-const apiDetectUrl = `${process.env.REACT_APP_API_URL}api/translate/detect/`;
-const apiSynthesizeUrl = `${process.env.REACT_APP_API_URL}api/translate/synthesize/`;
 const languages = {
   en: "en-ru",
   ru: "ru-en",
@@ -10,7 +9,8 @@ const languages = {
 
 class YandexApi {
   lookup = async (text) => {
-    const response = await axios.post(apiDetectUrl, { text: text });
+    const response = await axiosInstance.post("/translate/detect/", { text: text });
+
     const lang = languages[response.data.languageCode];
     if (!lang) return null;
     const yandex_response = await axios.get(
@@ -38,8 +38,8 @@ class YandexApi {
   };
 
   synthesize = async (text, language) => {
-    const response = await axios.post(
-      apiSynthesizeUrl,
+    const response = await axiosInstance.post(
+      "/translate/synthesize/",
       { text: text, language: language },
       { responseType: "blob" }
     );
