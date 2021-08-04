@@ -32,7 +32,7 @@ const ItemSection = ({type, data, onDelete, onEdit}) => {
       <div className="section__row section__row-2">
 
         {
-          type === 'TEXT'
+          (type === 'TEXT' || type === 'NOTE')
             ? <MediaModals type={type} data={textData}/>
             : <MediaModals type={type} data={data}/>
         }

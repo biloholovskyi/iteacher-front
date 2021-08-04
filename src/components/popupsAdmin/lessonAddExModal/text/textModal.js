@@ -45,6 +45,7 @@ export default class TextModal extends Component {
     });
   };
 
+
   // проверяем модалка на создания или редактирование
   setTypeModal = () => {
     const {edit, template, lesson, section} = this.props;

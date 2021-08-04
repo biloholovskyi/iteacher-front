@@ -1,11 +1,23 @@
 import React, {useEffect, useState} from "react";
+import '../text/react-draft-wysiwyg.css';
+import {Editor} from "react-draft-wysiwyg";
+import {EditorState, ContentState, convertFromHTML} from "draft-js";
+import {stateToHTML} from "draft-js-export-html";
 
 import AdminModalTask from "../../adminModalTask/adminModalTask";
 import MainButton from "../../../buttons/mainButton/mainButton";
 import SimpleTextArea from "../../../inputs/simpleTextArea/simpleTextArea";
 
+import bold from "../../../../assets/media/icon/bold.svg";
+import italic from "../../../../assets/media/icon/italic.svg";
+import underline from "../../../../assets/media/icon/underline.svg";
+import unordered from "../../../../assets/media/icon/mark_list.svg";
+import link from "../../../../assets/media/icon/link.svg";
+import image from "../../../../assets/media/icon/photo.svg";
+
 import * as Style from "../sentenceOfWords/style";
 import {Form} from '../tf/style'
+import {NoteEditor} from './styled';
 
 import axiosInstance from "../../../../service/iTeacherApi";
 
@@ -30,6 +42,13 @@ const Note = ({
   const [indexLesson, setIndexLesson] = useState(0);
   const [indexSection, setIndexSection] = useState(0);
   const [indexTask, setIndexTask] = useState(0);
+  const [editorState, setEditorState] = useState(EditorState.createEmpty());
+  const [editorContent, setEditorContent] = useState();
+
+  const onEditorStateChange = (editorState) => {
+    setEditorState(editorState)
+    setEditorContent(stateToHTML(editorState.getCurrentContent()))
+  };
 
   // добавление или обновление
   useEffect(() => {
@@ -39,6 +58,13 @@ const Note = ({
     const currentTaskIndex = template.lesson[currentLessonIndex].sections[currentSectionIndex].tasks.findIndex(task => parseInt(task.id) === parseInt(edit));
     const currentTaskData = template.lesson[currentLessonIndex].sections[currentSectionIndex].tasks[currentTaskIndex];
     if (typeof edit === 'number') {
+      setEditorContent(
+        EditorState.createWithContent(
+          ContentState.createFromBlockArray(
+            convertFromHTML(currentTaskData.desc)
+          )
+        )
+      )
       setType(edit);
       setTaskData(currentTaskData);
       setIndexSection(currentSectionIndex);
@@ -54,13 +80,13 @@ const Note = ({
   // создание задания
   const createTask = async (e) => {
     e.preventDefault();
-    const text = e.target.text.value;
+    // const text = e.target.text.value;
 
     // создаем объект задания
     const task = {
       section: section.id,
       title: 'Заметка (видна только вам)',
-      desc: text,
+      desc: editorContent,
       task_type: 'NOTE',
     }
 
@@ -76,13 +102,14 @@ const Note = ({
   // изминения задания
   const editTask = async (e) => {
     e.preventDefault();
-    const text = e.target.text.value;
+    // const text = e.target.text.value;
 
     // создаем объект задания
     const task = {
       ...taskData,
       title: e.target.title.value,
-      desc: text
+      desc: editorContent,
+      task_type: 'NOTE',
     }
     // обновляем текущую секцию
     update(task, indexLesson, indexSection, true, indexTask);
@@ -111,7 +138,7 @@ const Note = ({
           <div className="desc">Введите текст заметки (заметка будет видна только вам)</div>
         </Style.TextBlock>
 
-        {
+        {/* {
           type === 'add'
             ? (
               <SimpleTextArea
@@ -128,7 +155,81 @@ const Note = ({
                 defaultValue={taskData.desc}
               />
             )
-        }
+        } */}
+
+        <NoteEditor>
+          <Editor
+            defaultEditorState={editorState}
+            editorState={editorState}
+            wrapperClassName="wrapper-class"
+            editorClassName="editor-class"
+            toolbarClassName="toolbar-class"
+            onEditorStateChange={onEditorStateChange}
+            toolbar={{
+              options: ['inline', 'image', 'link', 'list',],
+              inline: {
+                inDropdown: false,
+                className: 'media icon_font',
+                component: undefined,
+                dropdownClassName: undefined,
+                options: ['bold', 'italic', 'underline'],
+                bold: {icon: bold, className: undefined},
+                italic: {icon: italic, className: undefined},
+                underline: {icon: underline, className: undefined},
+              },
+              list: {
+                inDropdown: false,
+                className: 'media icon_list',
+                component: undefined,
+                dropdownClassName: undefined,
+                options: ['unordered', 'ordered'],
+                unordered: {icon: unordered, className: undefined},
+                //ordered: { icon: ordered, className: undefined },
+              },
+              // textAlign: {
+              //   inDropdown: false,
+              //   className: 'media icon_text',
+              //   component: undefined,
+              //   dropdownClassName: undefined,
+              //   options: ['left', 'center', 'right'],
+              //   left: {icon: left, className: undefined},
+              //   center: {icon: center, className: undefined},
+              //   right: {icon: right, className: undefined},
+              //   //justify: { icon: justify, className: undefined },
+              // },
+              link: {
+                inDropdown: false,
+                className: 'media icon_link',
+                component: undefined,
+                popupClassName: undefined,
+                dropdownClassName: undefined,
+                showOpenOptionOnHover: true,
+                defaultTargetOption: '_self',
+                options: ['link'],
+                link: {icon: link, className: undefined},
+                //unlink: { icon: unlink, className: undefined },
+                linkCallback: undefined
+              },
+              image: {
+                icon: image,
+                className: 'media',
+                component: undefined,
+                popupClassName: undefined,
+                urlEnabled: true,
+                uploadEnabled: false,
+                alignmentEnabled: false,
+                // uploadCallback: uploadImageCallBack,
+                alt: {present: true, mandatory: false},
+                previewImage: true,
+                inputAccept: 'image/gif,image/jpeg,image/jpg,image/png,image/svg',
+                defaultSize: {
+                  height: 'auto',
+                  width: 'auto',
+                },
+              },
+            }}
+          />
+        </NoteEditor>
 
         <MainButton
           func={() => console.log('...')}

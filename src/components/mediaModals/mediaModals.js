@@ -52,7 +52,7 @@ const MediaModals = ({type, data, wsUpdate, sectionIndex, setActiveWord, setActi
 
     case 'NOTE':
       if(user.type === 'teacher' || user.type === 'admin') {
-        return <MediaNote data={data}/>
+        return <MediaText textData={data} />
       } else {
         return <div/>
       }
