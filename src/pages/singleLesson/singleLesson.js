@@ -142,7 +142,7 @@ class SingleLesson extends Component {
   // создание websocket
   createWebsocket = () => {
     this.chatSocket = new WebSocket(
-      ws_url
+      `${ws_url}?token=${localStorage.getItem('access_token')}`
     );
     
 
