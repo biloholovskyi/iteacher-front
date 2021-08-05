@@ -58,13 +58,12 @@ const Note = ({
     const currentTaskIndex = template.lesson[currentLessonIndex].sections[currentSectionIndex].tasks.findIndex(task => parseInt(task.id) === parseInt(edit));
     const currentTaskData = template.lesson[currentLessonIndex].sections[currentSectionIndex].tasks[currentTaskIndex];
     if (typeof edit === 'number') {
-      setEditorContent(
-        EditorState.createWithContent(
-          ContentState.createFromBlockArray(
-            convertFromHTML(currentTaskData.desc)
-          )
+      setEditorState(EditorState.createWithContent(
+        ContentState.createFromBlockArray(
+          convertFromHTML(currentTaskData.desc)
         )
-      )
+      ))
+      setEditorContent(editorState)
       setType(edit);
       setTaskData(currentTaskData);
       setIndexSection(currentSectionIndex);
@@ -107,7 +106,7 @@ const Note = ({
     // создаем объект задания
     const task = {
       ...taskData,
-      title: e.target.title.value,
+      title: 'Заметка (видна только вам)',
       desc: editorContent,
       task_type: 'NOTE',
     }
