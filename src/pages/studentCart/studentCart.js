@@ -125,9 +125,9 @@ const StudentCart = ({id, user}) => {
       setTableData(dataArray)
       setMore(false)
     } else {
-      const socials = JSON.parse(studentData.socials).map(social => {
+      const socials = studentData.socials ? JSON.parse(studentData.socials).map(social => {
         return {value: social.type, name: social.link}
-      });
+      }) : [];
 
       setTableData([
         ...tableData,

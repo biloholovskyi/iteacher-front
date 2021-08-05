@@ -252,7 +252,7 @@ class Students extends Component {
         }
 
         const data = new FormData();
-        data.set('name', '');
+        data.set('username', email.toLowerCase());
         data.set('email', email.toLowerCase());
         data.set('password', password);
         data.set('type', 'student')
@@ -260,7 +260,7 @@ class Students extends Component {
         axiosInstance.post(`/users/`, data)
           .then(res => {
             // отправляем письмо
-            axiosInstance.get(`/user/email/${res.data.id}/`)
+            axiosInstance.get(`/users/email/${res.data.id}/`)
               .catch(error => {
                 console.error(error);
               });
@@ -276,7 +276,7 @@ class Students extends Component {
                 newData.set("username", this.props.user.username);
                 newData.set("email", this.props.user.email);
                 newData.set("studentList", JSON.stringify([res.data]));
-
+                
                 axiosInstance.put(`/users/${this.props.user.id}/update/`, newData)
                   .then((res) => {
                     // обновляем данные пользователя в сторе

@@ -58,7 +58,7 @@ class PersonalData extends Component {
     await axiosInstance.put(`/users/${this.props.user.id}/update/`, sendData)
       .then(res => {
         // получаем правильный путь новой фото
-        axiosInstance.get(`/users/${this.props.user.email}/`)
+        axiosInstance.get(`/users/me/`)
           .then(res => {
             // обновляем данные пользователя в сторе
             this.props.loginUser(res.data);

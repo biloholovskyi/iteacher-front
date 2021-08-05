@@ -322,7 +322,7 @@ export default class Header extends Component {
         {
           showMobileMenu && (
             <MobileWrapOverylay>
-              <img onClick={this.closeMobileMenu} src={close} className={'close'} alt="image"/>
+              <img onClick={this.closeMobileMenu} src={close} className={'close'} alt=""/>
               <MobileWrap>
                 <NavList onClick={this.closeMobileMenu}>
                   {nav}
