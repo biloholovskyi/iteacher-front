@@ -37,7 +37,18 @@ export default class CalendarModal extends Component {
   createNewSchedule = async (e) => {
     e.preventDefault();
 
-    const lesson = typeof this.props.data === 'object' ? this.props.data.id : JSON.parse(this.props.course.lessons)[0].id;
+    let lesson = null;
+    // const lesson = typeof this.props.data === 'object' ? this.props.data.id : JSON.parse(this.props.course.lessons)[0].id;
+    if (typeof this.props.data === 'object') {
+      lesson = this.props.data.id
+    } else {
+      if (this.props.course.lessons && this.props.course.lessons.length > 0) {
+        const lessonArray = JSON.parse(this.props.course.lessons)
+        if (lessonArray.length > 0)
+          lesson = lessonArray[0].id
+      }
+
+    }
 
     // формирум объект для отправки на сервер
     const object = {
