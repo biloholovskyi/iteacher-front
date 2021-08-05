@@ -105,7 +105,7 @@ class UsersModal extends Component {
     const type = user.type === 'teacher' ? 'Преподаватель' : user.type === 'admin' ? 'Админ' : user.type === 'student' ? 'Студент' : '';
 
     // берем дату регистрации юзера
-    const date = user.created_at;
+    const date = user.date_joined;
     // обрезаем что б получить только день,месяц,год
     const MyNewDate = date.split("T")[0];
     const dateNormal = this.formatDate(MyNewDate);

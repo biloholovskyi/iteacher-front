@@ -54,8 +54,9 @@ export default class TeacherItem extends Component {
     }
 
       // берем дату регистрации юзера
-    const date = data.created_at;
+    const date = data.date_joined;
     // обрезаем что б получить только день,месяц,год
+    // debugger
     const MyNewDate = date.split("T")[0];
     const dateNormal = this.formatDate(MyNewDate);
 
