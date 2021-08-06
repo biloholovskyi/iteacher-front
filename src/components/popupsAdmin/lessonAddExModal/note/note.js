@@ -42,7 +42,7 @@ const Note = ({
   const [indexLesson, setIndexLesson] = useState(0);
   const [indexSection, setIndexSection] = useState(0);
   const [indexTask, setIndexTask] = useState(0);
-  const [isChecked, setIsChecked] = useState(false);
+  const [studentVisibility, setStudentVisibility] = useState(false);
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const [editorContent, setEditorContent] = useState();
 
@@ -58,6 +58,7 @@ const Note = ({
     const currentSectionIndex = template.lesson[currentLessonIndex].sections.findIndex(s => parseInt(s.id) === parseInt(section.id));
     const currentTaskIndex = template.lesson[currentLessonIndex].sections[currentSectionIndex].tasks.findIndex(task => parseInt(task.id) === parseInt(edit));
     const currentTaskData = template.lesson[currentLessonIndex].sections[currentSectionIndex].tasks[currentTaskIndex];
+    
     if (typeof edit === 'number') {
       setEditorState(EditorState.createWithContent(
         ContentState.createFromBlockArray(
@@ -75,6 +76,8 @@ const Note = ({
       setIndexLesson(currentLessonIndex);
       setIndexTask(currentTaskIndex);
     }
+    if (currentTaskData)
+      setStudentVisibility(currentTaskData.student_visibility);
   }, [])
 
   
@@ -83,12 +86,13 @@ const Note = ({
     e.preventDefault();
     
     // создаем объект задания
+    debugger;
     const task = {
       section: section.id,
-      title: isChecked ? 'Заметка' : 'Заметка (видна только вам)',
+      title: studentVisibility ? 'Заметка' : 'Заметка (видна только вам)',
       desc: editorContent,
       task_type: 'NOTE',
-      student_visibility: isChecked
+      student_visibility: studentVisibility
     }
 
     await axiosInstance.post(`/tasks/`, task)
@@ -107,10 +111,10 @@ const Note = ({
     // создаем объект задания
     const task = {
       ...taskData,
-      title: isChecked ? 'Заметка' : 'Заметка (видна только вам)',
+      title: studentVisibility ? 'Заметка' : 'Заметка (видна только вам)',
       desc: editorContent,
       task_type: 'NOTE',
-      student_visibility: isChecked
+      student_visibility: studentVisibility
     }
     // обновляем текущую секцию
     update(task, indexLesson, indexSection, true, indexTask);
@@ -140,7 +144,7 @@ const Note = ({
           <div>
             <span className="switch-text text-muted">Видимость для ученика</span>
             <label className="switch">
-                <input type="checkbox" value={isChecked} onChange={() => setIsChecked(!isChecked)}/>
+                <input type="checkbox" checked={studentVisibility} onChange={() => setStudentVisibility(!studentVisibility)}/>
                 <span className="switch-slider"></span>
             </label>
           </div>
