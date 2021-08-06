@@ -86,7 +86,6 @@ const Note = ({
     e.preventDefault();
     
     // создаем объект задания
-    debugger;
     const task = {
       section: section.id,
       title: studentVisibility ? 'Заметка' : 'Заметка (видна только вам)',

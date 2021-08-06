@@ -81,7 +81,6 @@ export const uploadFile = (file) => {
     axiosInstance
       .post("/users/file/", data)
       .then((response) => {
-        debugger;
         resolve({ data: { link: response.data.file } });
       })
       .catch((error) => {
