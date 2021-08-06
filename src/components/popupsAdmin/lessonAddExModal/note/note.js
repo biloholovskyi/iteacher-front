@@ -19,7 +19,7 @@ import * as Style from "../sentenceOfWords/style";
 import {Form} from '../tf/style'
 import {NoteEditor} from './styled';
 
-import axiosInstance from "../../../../service/iTeacherApi";
+import axiosInstance, {uploadFile} from "../../../../service/iTeacherApi";
 
 
 const Note = ({
@@ -224,9 +224,9 @@ const Note = ({
                 component: undefined,
                 popupClassName: undefined,
                 urlEnabled: true,
-                uploadEnabled: false,
+                uploadEnabled: true,
                 alignmentEnabled: false,
-                // uploadCallback: uploadImageCallBack,
+                uploadCallback: uploadFile,
                 alt: {present: true, mandatory: false},
                 previewImage: true,
                 inputAccept: 'image/gif,image/jpeg,image/jpg,image/png,image/svg',
