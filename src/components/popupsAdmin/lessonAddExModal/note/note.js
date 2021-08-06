@@ -42,6 +42,7 @@ const Note = ({
   const [indexLesson, setIndexLesson] = useState(0);
   const [indexSection, setIndexSection] = useState(0);
   const [indexTask, setIndexTask] = useState(0);
+  const [isChecked, setIsChecked] = useState(false);
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const [editorContent, setEditorContent] = useState();
 
@@ -76,17 +77,18 @@ const Note = ({
     }
   }, [])
 
+  
   // создание задания
   const createTask = async (e) => {
     e.preventDefault();
-    // const text = e.target.text.value;
-
+    
     // создаем объект задания
     const task = {
       section: section.id,
-      title: 'Заметка (видна только вам)',
+      title: isChecked ? 'Заметка' : 'Заметка (видна только вам)',
       desc: editorContent,
       task_type: 'NOTE',
+      student_visibility: isChecked
     }
 
     await axiosInstance.post(`/tasks/`, task)
@@ -101,14 +103,14 @@ const Note = ({
   // изминения задания
   const editTask = async (e) => {
     e.preventDefault();
-    // const text = e.target.text.value;
 
     // создаем объект задания
     const task = {
       ...taskData,
-      title: 'Заметка (видна только вам)',
+      title: isChecked ? 'Заметка' : 'Заметка (видна только вам)',
       desc: editorContent,
       task_type: 'NOTE',
+      student_visibility: isChecked
     }
     // обновляем текущую секцию
     update(task, indexLesson, indexSection, true, indexTask);
@@ -134,7 +136,14 @@ const Note = ({
         }}
       >
         <Style.TextBlock>
-          <div className="desc">Введите текст заметки (заметка будет видна только вам)</div>
+          <div className="desc">Введите текст заметки</div>
+          <div>
+            <span className="switch-text text-muted">Видимость для ученика</span>
+            <label className="switch">
+                <input type="checkbox" value={isChecked} onChange={() => setIsChecked(!isChecked)}/>
+                <span className="switch-slider"></span>
+            </label>
+          </div>
         </Style.TextBlock>
 
         {/* {

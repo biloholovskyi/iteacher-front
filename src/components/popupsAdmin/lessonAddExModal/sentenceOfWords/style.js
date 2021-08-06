@@ -4,7 +4,10 @@ const TextBlock = styled.div`
   margin-top: 32px;
   margin-bottom: 16px;
   width: 100%;
-  
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
   .title {
     font-family: Inter, sans-serif;
     font-style: normal;
